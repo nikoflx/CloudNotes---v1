@@ -1,6 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure License</title>
+<style>
+  body { font-family: Arial,sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; background:#111; color:#fff;}
+  #license-container{background:#222;padding:40px;border-radius:12px;text-align:center;width:300px;box-shadow:0 0 20px rgba(0,0,0,0.5);}
+  input{padding:10px;width:100%;border-radius:6px;border:none;margin-bottom:15px;font-size:16px;}
+  button{padding:10px 20px;border:none;border-radius:6px;background:#4caf50;color:white;font-size:16px;cursor:pointer;width:100%;}
+  button:hover{background:#45a049;}
+  #error{margin-top:10px;}
+</style>
+</head>
+<body>
+<div id="license-container">
+  <h2>Enter License Key</h2>
+  <input type="text" id="license-input" placeholder="License Key">
+  <button onclick="checkLicense()">Activate</button>
+  <div id="error"></div>
+</div>
+
+<script>
+  // Obfuscated keys & simple scramble
+  const keys = ["QzNodWRld05vdGVzcTN2aGprcTh=", "SGVsbG93b3JsZHdndmp4czg=", "Tmlrb2ZseHJ0aDlzOHnyeTAx"];
+  
+  function decode(str){ return atob(str); } // decode base64
+
+  function checkLicense() {
+    const input = document.getElementById('license-input').value.trim();
+    const errorDiv = document.getElementById('error');
+    let valid=false;
+
+    for(let k of keys){ if(input===decode(k)){ valid=true; break; } }
+
+    if(valid){
+      errorDiv.style.color="#4caf50"; errorDiv.innerText="License valid! ✅";
+      document.getElementById('license-container').style.display='none';
+      startYourApp();
+    } else {
+      errorDiv.style.color="#ff4c4c"; errorDiv.innerText="Invalid license key ❌";
+    }
+  }
+
+  function startYourApp(){
+    // Original website code here
+    alert(" Your License Key was accepted. Enjoy! :D");
+  }
+
+  // Optional: disable right-click & keyboard shortcuts to slow down Inspect
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => { if(e.ctrlKey && ["u","s","i","c"].includes(e.key.toLowerCase())) e.preventDefault(); });
+</script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CloudNotes v1</title>
