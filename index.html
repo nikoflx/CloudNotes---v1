@@ -87,7 +87,7 @@
             font-size: 13px;
             color: var(--text-secondary);
             font-weight: 500;
-            margin-bottom: 15px; /* Added margin for new button */
+            margin-bottom: 15px;
         }
         
         /* New 'Why Us?' Button Style */
@@ -973,6 +973,10 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
         }
 
         .clipboard-section {
@@ -999,17 +1003,25 @@
     <div class="app-container">
         <div class="sidebar">
             <div class="sidebar-header">
-                <div class="app-title">CloudNotes v1</div>
-                <div class="app-author">by Niko</div>
+                <div class="app-title" data-i18n="appTitle">CloudNotes v1</div>
+                <div class="app-author" data-i18n="appAuthor">by Niko</div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="langSelect" style="font-size: 13px; color: var(--text-secondary); font-weight: 500;">Language:</label>
+                    <select id="langSelect" onchange="switchLanguage(this.value)" style="padding: 5px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary);">
+                        <option value="en">English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
                 <div class="sidebar-header-buttons">
-                    <button class="why-us-btn" onclick="openWhyUsModal()">Why Us?</button>
-                    <button class="why-us-btn" style="border-color: var(--warning); color: var(--warning);" onclick="openUpgradeModal()">✨ Upgrade to Pro</button>
+                    <button class="why-us-btn" data-i18n="whyUsBtn" onclick="openWhyUsModal()">Why Us?</button>
+                    <button class="why-us-btn" style="border-color: var(--warning); color: var(--warning);" data-i18n="upgradeBtn" onclick="openUpgradeModal()">✨ Upgrade to Pro</button>
                 </div>
             </div>
             
             <div class="toolbar">
-                <button class="btn" onclick="createFolder()">+ Folder</button>
-                <button class="btn btn-icon" onclick="openNewNote()">📝</button>
+                <button class="btn" data-i18n="folderBtn" onclick="createFolder()">+ Folder</button>
+                <button class="btn btn-icon" data-i18n="newNoteIcon" onclick="openNewNote()">📝</button>
             </div>
 
             <div class="folders-container" id="foldersContainer">
@@ -1019,13 +1031,13 @@
         <div class="main-content">
             <div class="topbar">
                 <div class="search-bar">
-                    <input type="text" placeholder="Search notes..." id="searchInput" oninput="searchNotes()">
+                    <input type="text" data-i18n="searchPlaceholder" placeholder="Search notes..." id="searchInput" oninput="searchNotes()">
                     <span class="search-icon">🔍</span>
                 </div>
                 <div class="topbar-actions">
                     <div class="stat-item">
                         <span class="stat-value" id="totalNotes">0</span>
-                        <div class="stat-label">Total Notes</div>
+                        <div class="stat-label" id="totalNotesLabel" data-i18n="totalNotesLabel">Total Notes</div>
                     </div>
                     <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
                 </div>
@@ -1034,7 +1046,7 @@
             <div class="content-area" id="contentArea">
                 <div class="empty-state">
                     <div class="empty-icon">📝</div>
-                    <div class="empty-text">Select a folder or create a new note</div>
+                    <div class="empty-text" data-i18n="emptySelectFolder">Select a folder or create a new note</div>
                 </div>
             </div>
         </div>
@@ -1043,11 +1055,11 @@
     <div class="modal" id="noteModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title" id="modalTitle">New Note</div>
+                <div class="modal-title" id="modalTitle" data-i18n="newNoteTitle">New Note</div>
                 <button class="close-btn" onclick="closeNoteModal()">×</button>
             </div>
             <div class="modal-body">
-                <input type="text" class="note-input" id="noteTitle" placeholder="✨ Note title...">
+                <input type="text" class="note-input" id="noteTitle" data-i18n="noteTitlePlaceholder" placeholder="✨ Note title...">
                 
                 <div class="editor-toolbar">
                     <select id="fontFamily" onchange="updateEditorStyle()">
@@ -1063,21 +1075,21 @@
                     
                     <input type="number" id="fontSize" value="16" min="10" max="48" onchange="updateEditorStyle()" placeholder="Size">
                     
-                    <button onclick="toggleDrawing()">🎨 Draw</button>
-                    <button onclick="document.getElementById('imageUpload').click()">🖼️ Image</button>
-                    <button onclick="document.getElementById('fileUpload').click()">📎 File</button>
-                    <button onclick="pasteFromClipboard()" class="btn-warning">📋 Paste Clipboard</button>
-                    <button onclick="toggleBookmark()" id="bookmarkBtn">⭐ Bookmark</button>
-                    <button onclick="saveNote()" class="btn btn-success">💾 Save Note</button>
+                    <button onclick="toggleDrawing()" data-i18n="drawBtn">🎨 Draw</button>
+                    <button onclick="document.getElementById('imageUpload').click()" data-i18n="imageBtn">🖼️ Image</button>
+                    <button onclick="document.getElementById('fileUpload').click()" data-i18n="fileBtn">📎 File</button>
+                    <button onclick="pasteFromClipboard()" class="btn-warning" data-i18n="pasteClipboardBtn">📋 Paste Clipboard</button>
+                    <button onclick="toggleBookmark()" id="bookmarkBtn" data-i18n="bookmarkBtn">⭐ Bookmark</button>
+                    <button onclick="saveNote()" class="btn btn-success" data-i18n="saveNoteBtn">💾 Save Note</button>
                 </div>
 
-                <textarea class="note-editor" id="noteContent" placeholder="✍️ Start writing your amazing ideas..."></textarea>
+                <textarea class="note-editor" id="noteContent" data-i18n="noteContentPlaceholder" placeholder="✍️ Start writing your amazing ideas..."></textarea>
 
                 <div class="canvas-container" id="canvasContainer" style="display: none;">
                     <canvas id="drawingCanvas"></canvas>
                     <div class="canvas-toolbar">
-                        <button onclick="clearCanvas()" style="background: var(--danger); color: white;">🗑️ Clear</button>
-                        <button onclick="saveDrawing()" class="btn-success" style="background: var(--success); color: white;">💾 Save Drawing</button>
+                        <button onclick="clearCanvas()" style="background: var(--danger); color: white;" data-i18n="clearCanvasBtn">🗑️ Clear</button>
+                        <button onclick="saveDrawing()" class="btn-success" style="background: var(--success); color: white;" data-i18n="saveDrawingBtn">💾 Save Drawing</button>
                         <input type="color" id="drawColor" value="#6366f1">
                         <label style="color: var(--text-secondary); font-size: 13px; font-weight: 600;">Brush Size:</label>
                         <input type="range" id="drawSize" min="1" max="30" value="3">
@@ -1086,13 +1098,13 @@
                 </div>
 
                 <div class="clipboard-section" id="clipboardSection" style="display: none;">
-                    <h3 class="section-title">📋 Clipboard Content</h3>
+                    <h3 class="section-title" data-i18n="clipboardTitle">📋 Clipboard Content</h3>
                     <div class="clipboard-preview" id="clipboardPreview"></div>
-                    <button class="btn" style="margin-top: 12px;" onclick="insertClipboard()">✨ Insert into Note</button>
+                    <button class="btn" style="margin-top: 12px;" onclick="insertClipboard()" data-i18n="insertClipboardBtn">✨ Insert into Note</button>
                 </div>
 
                 <div class="attachments-section">
-                    <h3 class="section-title">📎 Attachments</h3>
+                    <h3 class="section-title" data-i18n="attachmentsTitle">📎 Attachments</h3>
                     <div class="attachments-grid" id="attachmentsGrid"></div>
                 </div>
 
@@ -1105,13 +1117,13 @@
     <div class="modal" id="folderModal">
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
-                <div class="modal-title">✨ New Folder</div>
+                <div class="modal-title" data-i18n="newFolderTitle">✨ New Folder</div>
                 <button class="close-btn" onclick="closeFolderModal()">×</button>
             </div>
             <div class="modal-body">
-                <input type="text" class="note-input" id="folderName" placeholder="📁 Folder name...">
+                <input type="text" class="note-input" id="folderName" data-i18n="folderNamePlaceholder" placeholder="📁 Folder name...">
                 
-                <h3 class="section-title">🎨 Choose Icon Color</h3>
+                <h3 class="section-title" data-i18n="colorTitle">🎨 Choose Icon Color</h3>
                 <div class="color-picker-container">
                     <div class="color-option selected" style="background: #6366f1;" data-color="#6366f1" onclick="selectColor(this)"></div>
                     <div class="color-option" style="background: #10b981;" data-color="#10b981" onclick="selectColor(this)"></div>
@@ -1123,7 +1135,7 @@
                     <div class="color-option" style="background: #84cc16;" data-color="#84cc16" onclick="selectColor(this)"></div>
                 </div>
 
-                <button class="btn" style="margin-top: 28px; width: 100%;" onclick="saveFolderModal()">✨ Create Folder</button>
+                <button class="btn" style="margin-top: 28px; width: 100%;" onclick="saveFolderModal()" data-i18n="createFolderBtn">✨ Create Folder</button>
             </div>
         </div>
     </div>
@@ -1131,37 +1143,37 @@
     <div class="modal" id="whyUsModal">
         <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
-                <div class="modal-title">🌟 Why Choose CloudNotes v1?</div>
+                <div class="modal-title" data-i18n="whyUsModalTitle">🌟 Why Choose CloudNotes v1?</div>
                 <button class="close-btn" onclick="closeWhyUsModal()">×</button>
             </div>
             <div class="modal-body">
-                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);">Your Data. Your Control. Always.</h2>
-                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);">We built CloudNotes v1 on a simple principle: <strong>ultimate privacy and simplicity<strong>.</p>
+                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);" data-i18n="whyUsSubtitle">Your Data. Your Control. Always.</h2>
+                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);" data-i18n="whyUsTagline">We built CloudNotes v1 on a simple principle: <strong>ultimate privacy and simplicity<strong>.</p>
                 <div class="why-us-section">
                     
                     <div class="why-us-card">
-                        <h4>🔒 Absolute Privacy</h4>
-                        <p>We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application.                                                                                                     Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> </p>
+                        <h4 data-i18n="privacyHeader">🔒 Absolute Privacy</h4>
+                        <p data-i18n="privacyBody">We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application. Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> </p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>🚫 Zero Accounts</h4>
-                        <p>No need for email, usernames, or passwords. <strong>No sign-ups<strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
+                        <h4 data-i18n="noAccountsHeader">🚫 Zero Accounts</h4>
+                        <p data-i18n="noAccountsBody">No need for email, usernames, or passwords. <strong>No sign-ups<strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>⚡️ Fast & Reliable</h4>
-                        <p>Since your notes are stored <strong>locally<strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
+                        <h4 data-i18n="fastHeader">⚡️ Fast & Reliable</h4>
+                        <p data-i18n="fastBody">Since your notes are stored <strong>locally<strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>📝 Feature-Rich Editor</h4>
-                        <p>Our editor includes <strong>rich text options<strong>, a full <strong>drawing canvas<strong>, and the ability to add <strong>attachments<strong>, all while keeping your data private and local.</p>
+                        <h4 data-i18n="editorHeader">📝 Feature-Rich Editor</h4>
+                        <p data-i18n="editorBody">Our editor includes <strong>rich text options<strong>, a full <strong>drawing canvas<strong>, and the ability to add <strong>attachments<strong>, all while keeping your data private and local.</p>
                     </div>
 
                 </div>
                 <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;">CloudNotes v1: Simple, powerful, and truly private note-taking.</p>
+                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;" data-i18n="whyUsFooter">CloudNotes v1: Simple, powerful, and truly private note-taking.</p>
                 </div>
             </div>
         </div>
@@ -1170,105 +1182,382 @@
     <div class="modal" id="upgradeModal">
         <div class="modal-content" style="max-width: 1000px;">
             <div class="modal-header">
-                <div class="modal-title">🚀 Upgrade to CloudNotes Pro</div>
+                <div class="modal-title" data-i18n="upgradeModalTitle">🚀 Upgrade to CloudNotes Pro</div>
                 <button class="close-btn" onclick="closeUpgradeModal()">×</button>
             </div>
             <div class="modal-body">
-                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);">Get the Full CloudNotes v1 Experience!</h2>
-                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);">Unlock Pro features while maintaining **ultimate privacy and simplicity**.</p>
+                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);" data-i18n="upgradeSubtitle">Get the Full CloudNotes v1 Experience!</h2>
+                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);" data-i18n="upgradeTagline">Unlock Pro features while maintaining **ultimate privacy and simplicity**.</p>
                 <div class="why-us-section">
                     
                     <div class="why-us-card">
-                        <h4>🔒 Absolute Privacy</h4>
-                        <p>We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application. Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> </p>
+                        <h4 data-i18n="privacyHeader">🔒 Absolute Privacy</h4>
+                        <p data-i18n="privacyBody">We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application. Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> </p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>🚫 Zero Accounts</h4>
-                        <p>No need for email, usernames, or passwords. <strong>No sign-ups<strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
+                        <h4 data-i18n="noAccountsHeader">🚫 Zero Accounts</h4>
+                        <p data-i18n="noAccountsBody">No need for email, usernames, or passwords. <strong>No sign-ups<strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>⚡️ Fast & Reliable</h4>
-                        <p>Since your notes are stored <strong>locally<strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
+                        <h4 data-i18n="fastHeader">⚡️ Fast & Reliable</h4>
+                        <p data-i18n="fastBody">Since your notes are stored <strong>locally<strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>📝 Feature-Rich Editor</h4>
-                        <p>Our editor includes <strong>rich text options<strong>, a full <strong>drawing canvas<strong>, and the ability to add <strong>attachments<strong>, all while keeping your data private and local.</p>
+                        <h4 data-i18n="editorHeader">📝 Feature-Rich Editor</h4>
+                        <p data-i18n="editorBody">Our editor includes <strong>rich text options<strong>, a full <strong>drawing canvas<strong>, and the ability to add <strong>attachments<strong>, all while keeping your data private and local.</p>
                     </div>
                 </div>
 
-                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-top: 60px; margin-bottom: 30px; color: var(--accent);">Simple & Affordable Pricing</h2>
+                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-top: 60px; margin-bottom: 30px; color: var(--accent);" data-i18n="pricingTitle">Simple & Affordable Pricing</h2>
                 <div class="upgrade-pricing">
                     <div class="price-card">
-                        <div class="plan-title">Pro Monthly</div>
-                        <div class="plan-price">$3.49</div>
-                        <div class="plan-duration">per month</div>
-                        <div class="plan-details">*cancel anytime</div>
-                        <button class="buy-btn" onclick="alert('Proceed to checkout for Monthly Plan')">Choose Monthly</button>
+                        <div class="plan-title" data-i18n="proMonthlyTitle">Pro Monthly</div>
+                        <div class="plan-price" data-i18n="proMonthlyPrice">$3.49</div>
+                        <div class="plan-duration" data-i18n="proMonthlyDuration">per month</div>
+                        <div class="plan-details" data-i18n="proMonthlyCancel">*cancel anytime</div>
+                        <button class="buy-btn" data-i18n="chooseMonthlyBtn" onclick="alert('Proceed to checkout for Monthly Plan')">Choose Monthly</button>
                     </div>
                     
                     <div class="price-card annual">
-                        <div class="plan-title">Pro Annual</div>
-                        <div class="save-badge">🔥 Save 59%</div>
-                        <div class="plan-price">$24.99</div>
-                        <div class="plan-duration">per year (Billed Annually)</div>
-                        <div class="plan-details">*cancel anytime</div>
-                        <button class="buy-btn" style="background: var(--warning); color: var(--text-primary);" onclick="alert('Proceed to checkout for Annual Plan')">Choose Annual</button>
+                        <div class="plan-title" data-i18n="proAnnualTitle">Pro Annual</div>
+                        <div class="save-badge" data-i18n="saveBadge">🔥 Save 59%</div>
+                        <div class="plan-price" data-i18n="proAnnualPrice">$24.99</div>
+                        <div class="plan-duration" data-i18n="proAnnualDuration">per year (Billed Annually)</div>
+                        <div class="plan-details" data-i18n="proMonthlyCancel">*cancel anytime</div>
+                        <button class="buy-btn" style="background: var(--warning); color: var(--text-primary);" data-i18n="chooseAnnualBtn" onclick="alert('Proceed to checkout for Annual Plan')">Choose Annual</button>
                     </div>
                 </div>
 
-                <h2 style="font-size: 24px; font-weight: 700; text-align: center; margin-top: 40px; margin-bottom: 20px; color: var(--text-primary);">Free vs. Pro Comparison</h2>
+                <h2 style="font-size: 24px; font-weight: 700; text-align: center; margin-top: 40px; margin-bottom: 20px; color: var(--text-primary);" data-i18n="comparisonTitle">Free vs. Pro Comparison</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Feature</th>
-                            <th>Free Plan</th>
-                            <th>Pro Plan</th>
+                            <th data-i18n="featureCol">Feature</th>
+                            <th data-i18n="freePlanCol">Free Plan</th>
+                            <th data-i18n="proPlanCol">Pro Plan</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Maximum Folders</td>
-                            <td class="free-feature">Up to 5 folders</td>
-                            <td class="pro-feature">Up to 25 folders</td>
+                            <td data-i18n="maxFolders">Maximum Folders</td>
+                            <td class="free-feature" data-i18n="freeFolders">Up to 5 folders</td>
+                            <td class="pro-feature" data-i18n="proFolders">Up to 25 folders</td>
                         </tr>
                         <tr>
-                            <td>Maximum Notes per Folder</td>
-                            <td class="free-feature">5 notes max</td>
-                            <td class="pro-feature">100 notes max</td>
+                            <td data-i18n="maxNotes">Maximum Notes per Folder</td>
+                            <td class="free-feature" data-i18n="freeNotes">5 notes max</td>
+                            <td class="pro-feature" data-i18n="proNotes">100 notes max</td>
                         </tr>
                         <tr>
-                            <td>Gemini AI Requests (per week)</td>
-                            <td class="free-feature">3 requests</td>
-                            <td class="pro-feature">Up to 100 requests</td>
+                            <td data-i18n="geminiRequests">Gemini AI Requests (per week)</td>
+                            <td class="free-feature" data-i18n="freeGemini">3 requests</td>
+                            <td class="pro-feature" data-i18n="proGemini">Up to 100 requests</td>
                         </tr>
                         <tr>
-                            <td>Custom Icons</td>
-                            <td class="no-feature">No custom icons</td>
-                            <td class="pro-feature">✅ Custom Icons</td>
+                            <td data-i18n="customIcons">Custom Icons</td>
+                            <td class="no-feature" data-i18n="freeIcons">No custom icons</td>
+                            <td class="pro-feature" data-i18n="proIcons">✅ Custom Icons</td>
                         </tr>
                         <tr>
-                            <td>Custom Backgrounds</td>
-                            <td class="no-feature">No custom backgrounds</td>
-                            <td class="pro-feature">✅ Custom Backgrounds</td>
+                            <td data-i18n="customBackgrounds">Custom Backgrounds</td>
+                            <td class="no-feature" data-i18n="freeBackgrounds">No custom backgrounds</td>
+                            <td class="pro-feature" data-i18n="proBackgrounds">✅ Custom Backgrounds</td>
                         </tr>
                         <tr>
-                            <td>File Support (.wav, .zip, etc.)</td>
-                            <td class="no-feature">No .waw files supported</td>
-                            <td class="pro-feature">✅ Almost all type of files are supported</td>
+                            <td data-i18n="fileSupport">File Support (.wav, .zip, etc.)</td>
+                            <td class="no-feature" data-i18n="freeFiles">No .waw files supported</td>
+                            <td class="pro-feature" data-i18n="proFiles">✅ Almost all type of files are supported</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;">Upgrade to Pro and make CloudNotes v1 truly unlimited.</p>
+                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;" data-i18n="upgradeFooter">Upgrade to Pro and make CloudNotes v1 truly unlimited.</p>
                 </div>
             </div>
         </div>
     </div>
     <script>
+        // --- START INTERNATIONALIZATION (I18N) ---
+        const TRANSLATIONS = {
+            'en': {
+                // Sidebar & Toolbar
+                'appTitle': 'CloudNotes v1',
+                'appAuthor': 'by Niko',
+                'whyUsBtn': 'Why Us?',
+                'upgradeBtn': '✨ Upgrade to Pro',
+                'folderBtn': '+ Folder',
+                'newNoteIcon': '📝',
+                'totalNotesLabel': 'Total Notes',
+                'searchPlaceholder': 'Search notes...',
+
+                // Notes & Editor
+                'emptySelectFolder': 'Select a folder or create a new note',
+                'newNoteTitle': 'New Note',
+                'noteTitlePlaceholder': '✨ Note title...',
+                'noteContentPlaceholder': '✍️ Start writing your amazing ideas...',
+                'drawBtn': '🎨 Draw',
+                'imageBtn': '🖼️ Image',
+                'fileBtn': '📎 File',
+                'pasteClipboardBtn': '📋 Paste Clipboard',
+                'bookmarkBtn': '⭐ Bookmark',
+                'bookmarkedBtn': '🌟 Bookmarked',
+                'saveNoteBtn': '💾 Save Note',
+                'clearCanvasBtn': '🗑️ Clear',
+                'saveDrawingBtn': '💾 Save Drawing',
+                'drawingStatusReady': 'Ready',
+                'drawingStatusDrawing': 'Drawing...',
+                'drawingStatusLoaded': 'Drawing loaded.',
+                'drawingStatusSaved': 'Drawing saved!',
+                'clipboardTitle': '📋 Clipboard Content',
+                'insertClipboardBtn': '✨ Insert into Note',
+                'attachmentsTitle': '📎 Attachments',
+                'noteBadge': 'Note',
+                'bookmarkedBadge': '⭐ Bookmarked',
+                'saveIndicator': '✅ Saved!',
+                'noteNotFound': 'Folder not found.',
+                'noNotesYet': 'No notes yet. Create your first note!',
+                'searchEmpty': 'No notes found matching ',
+                'alertFolderEmpty': 'Folder name cannot be empty!',
+                'alertNoFolderSelected': 'No folder selected!',
+                'alertTitleEmpty': 'Title cannot be empty!',
+                'alertClipboardEmpty': 'Clipboard is empty! ',
+                'alertClipboardError': 'Could not access clipboard. Please make sure you granted permission.',
+                'alertDeleteConfirm': 'Are you sure you want to delete this attachment?',
+                'alertSelectFolder': 'Please select a folder first or create a new one!',
+                'brushSizeLabel': 'Brush Size:',
+
+                // Folder Modal
+                'newFolderTitle': '✨ New Folder',
+                'folderNamePlaceholder': '📁 Folder name...',
+                'colorTitle': '🎨 Choose Icon Color',
+                'createFolderBtn': '✨ Create Folder',
+                
+                // Why Us Modal
+                'whyUsModalTitle': '🌟 Why Choose CloudNotes v1?',
+                'whyUsSubtitle': 'Your Data. Your Control. Always.',
+                'whyUsTagline': 'We built CloudNotes v1 on a simple principle: **ultimate privacy and simplicity**.',
+                'privacyHeader': '🔒 Absolute Privacy',
+                'privacyBody': 'We **don\'t track, collect, or sell any of your data**. Everything you write or draw stays **private** on your device\'s local storage. This is a local-first application. Big companies (Giants) **sell storage and integration. (your data too!)**. **We (CloudeNotes) sell privacy, simplity, and vibe.** Our prices are avalaible for **Everyone**',
+                'noAccountsHeader': '🚫 Zero Accounts',
+                'noAccountsBody': 'No need for email, usernames, or passwords. **No sign-ups**, no log-ins, and no cloud storage required. Just open the app and start noting.',
+                'fastHeader': '⚡️ Fast & Reliable',
+                'fastBody': 'Since your notes are stored **locally** on your browser, loading is instantaneous. You\'re never dependent on a network connection or server status.',
+                'editorHeader': '📝 Feature-Rich Editor',
+                'editorBody': 'Our editor includes **rich text options**, a full **drawing canvas**, and the ability to add **attachments**, all while keeping your data private and local.',
+                'whyUsFooter': 'CloudNotes v1: Simple, powerful, and truly private note-taking.',
+                
+                // Upgrade Modal
+                'upgradeModalTitle': '🚀 Upgrade to CloudNotes Pro',
+                'upgradeSubtitle': 'Get the Full CloudNotes v1 Experience!',
+                'upgradeTagline': 'Unlock Pro features while maintaining **ultimate privacy and simplicity**.',
+                'pricingTitle': 'Simple & Affordable Pricing',
+                'proMonthlyTitle': 'Pro Monthly',
+                'proMonthlyPrice': '$3.49',
+                'proMonthlyDuration': 'per month',
+                'proMonthlyCancel': '*cancel anytime',
+                'chooseMonthlyBtn': 'Choose Monthly',
+                'proAnnualTitle': 'Pro Annual',
+                'saveBadge': '🔥 Save 59%',
+                'proAnnualPrice': '$24.99',
+                'proAnnualDuration': 'per year (Billed Annually)',
+                'chooseAnnualBtn': 'Choose Annual',
+                'comparisonTitle': 'Free vs. Pro Comparison',
+                'featureCol': 'Feature',
+                'freePlanCol': 'Free Plan',
+                'proPlanCol': 'Pro Plan',
+                'maxFolders': 'Maximum Folders',
+                'maxNotes': 'Maximum Notes per Folder',
+                'geminiRequests': 'Gemini AI Requests (per week)',
+                'customIcons': 'Custom Icons',
+                'customBackgrounds': 'Custom Backgrounds',
+                'fileSupport': 'File Support (.wav, .zip, etc.)',
+                'freeFolders': 'Up to 5 folders',
+                'proFolders': 'Up to 25 folders',
+                'freeNotes': '5 notes max',
+                'proNotes': '100 notes max',
+                'freeGemini': '3 requests',
+                'proGemini': 'Up to 100 requests',
+                'freeIcons': 'No custom icons',
+                'proIcons': '✅ Custom Icons',
+                'freeBackgrounds': 'No custom backgrounds',
+                'proBackgrounds': '✅ Custom Backgrounds',
+                'freeFiles': 'No .waw files supported',
+                'proFiles': '✅ Almost all type of files are supported',
+                'upgradeFooter': 'Upgrade to Pro and make CloudNotes v1 truly unlimited.',
+            },
+            'ru': {
+                // Sidebar & Toolbar
+                'appTitle': 'CloudNotes v1',
+                'appAuthor': 'от Niko',
+                'whyUsBtn': 'Почему мы?',
+                'upgradeBtn': '✨ Обновить до Pro',
+                'folderBtn': '+ Папка',
+                'newNoteIcon': '📝',
+                'totalNotesLabel': 'Всего заметок',
+                'searchPlaceholder': 'Искать заметки...',
+                
+                // Notes & Editor
+                'emptySelectFolder': 'Выберите папку или создайте новую заметку',
+                'newNoteTitle': 'Новая заметка',
+                'noteTitlePlaceholder': '✨ Заголовок заметки...',
+                'noteContentPlaceholder': '✍️ Начните писать свои потрясающие идеи...',
+                'drawBtn': '🎨 Рисовать',
+                'imageBtn': '🖼️ Изображение',
+                'fileBtn': '📎 Файл',
+                'pasteClipboardBtn': '📋 Вставить из буфера',
+                'bookmarkBtn': '⭐ В закладки',
+                'bookmarkedBtn': '🌟 В закладках',
+                'saveNoteBtn': '💾 Сохранить заметку',
+                'clearCanvasBtn': '🗑️ Очистить',
+                'saveDrawingBtn': '💾 Сохранить рисунок',
+                'drawingStatusReady': 'Готов',
+                'drawingStatusDrawing': 'Рисуем...',
+                'drawingStatusLoaded': 'Рисунок загружен.',
+                'drawingStatusSaved': 'Рисунок сохранен!',
+                'clipboardTitle': '📋 Содержимое буфера',
+                'insertClipboardBtn': '✨ Вставить в заметку',
+                'attachmentsTitle': '📎 Вложения',
+                'noteBadge': 'Заметка',
+                'bookmarkedBadge': '⭐ В закладках',
+                'saveIndicator': '✅ Сохранено!',
+                'noteNotFound': 'Папка не найдена.',
+                'noNotesYet': 'Заметок пока нет. Создайте первую заметку!',
+                'searchEmpty': 'Заметки не найдены по запросу ',
+                'alertFolderEmpty': 'Имя папки не может быть пустым!',
+                'alertNoFolderSelected': 'Папка не выбрана!',
+                'alertTitleEmpty': 'Заголовок не может быть пустым!',
+                'alertClipboardEmpty': 'Буфер обмена пуст!',
+                'alertClipboardError': 'Нет доступа к буферу. Предоставьте разрешение.',
+                'alertDeleteConfirm': 'Вы уверены, что хотите удалить это вложение?',
+                'alertSelectFolder': 'Сначала выберите папку или создайте новую!',
+                'brushSizeLabel': 'Размер кисти:',
+
+                // Folder Modal
+                'newFolderTitle': '✨ Новая папка',
+                'folderNamePlaceholder': '📁 Имя папки...',
+                'colorTitle': '🎨 Выберите цвет иконки',
+                'createFolderBtn': '✨ Создать папку',
+
+                // Why Us Modal
+                'whyUsModalTitle': '🌟 Почему CloudNotes v1?',
+                'whyUsSubtitle': 'Ваши данные. Ваш контроль. Всегда.',
+                'whyUsTagline': 'Мы создали CloudNotes v1 по простому принципу: **абсолютная конфиденциальность и простота**.',
+                'privacyHeader': '🔒 Абсолютная конфиденциальность',
+                'privacyBody': 'Мы **не отслеживаем, не собираем и не продаем ваши данные**. Все, что вы пишете или рисуете, остается **конфиденциальным** в локальном хранилище вашего устройства. Это приложение, ориентированное на локальное использование. Крупные компании (Гиганты) **продают хранилище и интеграцию. (и ваши данные!)**. **Мы (CloudeNotes) продаем конфиденциальность, простоту и атмосферу.** Наши цены доступны **Каждому**',
+                'noAccountsHeader': '🚫 Нулевые аккаунты',
+                'noAccountsBody': 'Не нужны электронная почта, логины или пароли. **Никакой регистрации**, входа и облачного хранилища. Просто откройте приложение и начните делать заметки.',
+                'fastHeader': '⚡️ Быстро и надежно',
+                'fastBody': 'Поскольку ваши заметки хранятся **локально** в вашем браузере, загрузка происходит мгновенно. Вы не зависите от подключения к сети или статуса сервера.',
+                'editorHeader': '📝 Многофункциональный редактор',
+                'editorBody': 'Наш редактор включает **расширенные текстовые опции**, полнофункциональный **холст для рисования** и возможность добавлять **вложения**, сохраняя при этом ваши данные приватными и локальными.',
+                'whyUsFooter': 'CloudNotes v1: Простое, мощное и по-настоящему конфиденциальное приложение для заметок.',
+                
+                // Upgrade Modal
+                'upgradeModalTitle': '🚀 Обновить до CloudNotes Pro',
+                'upgradeSubtitle': 'Получите полный опыт CloudNotes v1!',
+                'upgradeTagline': 'Разблокируйте Pro-функции, сохраняя при этом **абсолютную конфиденциальность и простоту**.',
+                'pricingTitle': 'Простые и доступные цены',
+                'proMonthlyTitle': 'Pro Ежемесячно',
+                'proMonthlyPrice': '$3.49',
+                'proMonthlyDuration': 'в месяц',
+                'proMonthlyCancel': '*отмена в любое время',
+                'chooseMonthlyBtn': 'Выбрать ежемесячный',
+                'proAnnualTitle': 'Pro Годовой',
+                'saveBadge': '🔥 Сэкономьте 59%',
+                'proAnnualPrice': '$24.99',
+                'proAnnualDuration': 'в год (оплата раз в год)',
+                'chooseAnnualBtn': 'Выбрать годовой',
+                'comparisonTitle': 'Сравнение Free и Pro',
+                'featureCol': 'Функция',
+                'freePlanCol': 'План Free',
+                'proPlanCol': 'План Pro',
+                'maxFolders': 'Максимум папок',
+                'maxNotes': 'Максимум заметок в папке',
+                'geminiRequests': 'Запросы Gemini AI (в неделю)',
+                'customIcons': 'Пользовательские иконки',
+                'customBackgrounds': 'Пользовательские фоны',
+                'fileSupport': 'Поддержка файлов (.wav, .zip, и т.д.)',
+                'freeFolders': 'До 5 папок',
+                'proFolders': 'До 25 папок',
+                'freeNotes': 'Максимум 5 заметок',
+                'proNotes': 'Максимум 100 заметок',
+                'freeGemini': '3 запроса',
+                'proGemini': 'До 100 запросов',
+                'freeIcons': 'Нет пользовательских иконок',
+                'proIcons': '✅ Пользовательские иконки',
+                'freeBackgrounds': 'Нет пользовательских фонов',
+                'proBackgrounds': '✅ Пользовательские фоны',
+                'freeFiles': 'Файлы .waw не поддерживаются',
+                'proFiles': '✅ Поддерживаются почти все типы файлов',
+                'upgradeFooter': 'Обновитесь до Pro и сделайте CloudNotes v1 по-настоящему безлимитным.',
+            }
+        };
+
+        let currentLanguage = 'en'; // Default language
+
+        // Helper function to get translation from inside functions
+        function _T(key) {
+            return TRANSLATIONS[currentLanguage][key] || TRANSLATIONS['en'][key] || key;
+        }
+
+        function applyTranslations(lang) {
+            const translation = TRANSLATIONS[lang];
+            if (!translation) return;
+
+            // Static text elements
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translation[key]) {
+                    if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
+                        element.setAttribute('placeholder', translation[key]);
+                    } else if (element.tagName === 'TEXTAREA' && element.hasAttribute('placeholder')) {
+                        element.setAttribute('placeholder', translation[key]);
+                    } else if (element.tagName === 'DIV' && element.classList.contains('stat-label')) {
+                        element.textContent = translation[key]; // Use textContent for plain labels
+                    } else {
+                        // For rich content like titles and body text, use innerHTML
+                        element.innerHTML = translation[key];
+                    }
+                }
+            });
+            
+            // Update the dynamic editor label
+            document.querySelector('.canvas-toolbar label').textContent = _T('brushSizeLabel');
+        }
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+            
+            // Set the dropdown to the correct language (if it exists)
+            const langSelect = document.getElementById('langSelect');
+            if (langSelect) langSelect.value = lang;
+
+            applyTranslations(lang);
+            
+            // Save language setting
+            localStorage.setItem('cloudNotesLang', lang);
+
+            // Re-render notes/folders to update dynamic text like badges and empty states
+            renderFolders();
+            if (data.currentFolder) {
+                renderNotes(data.currentFolder);
+            } else {
+                // Ensure empty state is translated if no folder is selected
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <div class="empty-text">${_T('emptySelectFolder')}</div>
+                    </div>
+                `;
+            }
+        }
+        // --- END INTERNATIONALIZATION (I18N) ---
+        
         // Data structure
         let data = {
             folders: [
@@ -1290,6 +1579,10 @@
 
         // Initialize
         function init() {
+            // Load language preference first and apply translations
+            const savedLang = localStorage.getItem('cloudNotesLang') || 'en';
+            switchLanguage(savedLang); 
+            
             loadData();
             renderFolders();
             setupCanvas();
@@ -1306,7 +1599,7 @@
             saveData();
         }
         
-        // NEW FUNCTIONS: Why Us Modal
+        // Why Us Modal
         function openWhyUsModal() {
             document.getElementById('whyUsModal').classList.add('active');
         }
@@ -1314,9 +1607,8 @@
         function closeWhyUsModal() {
             document.getElementById('whyUsModal').classList.remove('active');
         }
-        // END NEW FUNCTIONS
 
-        // NEW FUNCTIONS: Upgrade Modal
+        // Upgrade Modal
         function openUpgradeModal() {
             document.getElementById('upgradeModal').classList.add('active');
         }
@@ -1324,7 +1616,6 @@
         function closeUpgradeModal() {
             document.getElementById('upgradeModal').classList.remove('active');
         }
-        // END NEW FUNCTIONS
 
         // Update total notes count
         function updateTotalNotes() {
@@ -1333,6 +1624,7 @@
                 total += folder.notes.length;
             });
             document.getElementById('totalNotes').textContent = total;
+            document.getElementById('totalNotesLabel').textContent = _T('totalNotesLabel'); // Ensure label is translated
         }
 
         // Clipboard functions
@@ -1344,10 +1636,10 @@
                     document.getElementById('clipboardSection').style.display = 'block';
                     document.getElementById('clipboardPreview').textContent = text.substring(0, 200) + (text.length > 200 ? '...' : '');
                 } else {
-                    alert('Clipboard is empty!');
+                    alert(_T('alertClipboardEmpty'));
                 }
             } catch (err) {
-                alert('Could not access clipboard. Please make sure you granted permission.');
+                alert(_T('alertClipboardError'));
             }
         }
 
@@ -1409,7 +1701,7 @@
         function saveFolderModal() {
             const name = document.getElementById('folderName').value.trim();
             if (!name) {
-                alert('Folder name cannot be empty!');
+                alert(_T('alertFolderEmpty'));
                 return;
             }
 
@@ -1435,7 +1727,7 @@
                 contentArea.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">⚠️</div>
-                        <div class="empty-text">Folder not found.</div>
+                        <div class="empty-text">${_T('noteNotFound')}</div>
                     </div>
                 `;
                 return;
@@ -1445,7 +1737,7 @@
                 contentArea.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">✨</div>
-                        <div class="empty-text">No notes yet. Create your first note!</div>
+                        <div class="empty-text">${_T('noNotesYet')}</div>
                     </div>
                 `;
                 return;
@@ -1460,6 +1752,8 @@
                 
                 // Add note ID for opening the modal
                 card.onclick = () => openNoteModal(note.id);
+                
+                const badgeText = note.isBookmarked ? _T('bookmarkedBadge') : _T('noteBadge');
 
                 card.innerHTML = `
                     ${note.isBookmarked ? '<button class="bookmark-btn bookmarked" onclick="event.stopPropagation();">🌟</button>' : ''}
@@ -1467,7 +1761,7 @@
                     <p class="note-preview">${note.content.substring(0, 100)}...</p>
                     <div class="note-meta">
                         <span>📅 ${new Date(note.updatedAt).toLocaleDateString()}</span>
-                        <span class="note-badge" style="background: ${folder.color}1A; color: ${folder.color};">${note.isBookmarked ? '⭐ Bookmarked' : 'Note'}</span>
+                        <span class="note-badge" style="background: ${folder.color}1A; color: ${folder.color};">${badgeText}</span>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -1479,7 +1773,7 @@
         
         function openNewNote() {
             data.currentNote = null;
-            document.getElementById('modalTitle').textContent = 'New Note';
+            document.getElementById('modalTitle').textContent = _T('newNoteTitle');
             document.getElementById('noteTitle').value = '';
             document.getElementById('noteContent').value = '';
             document.getElementById('fontFamily').value = 'Arial';
@@ -1505,7 +1799,7 @@
             document.getElementById('clipboardSection').style.display = 'none';
 
             if (!data.currentFolder) {
-                alert('Please select a folder first or create a new one!');
+                alert(_T('alertSelectFolder'));
                 return;
             }
 
@@ -1559,12 +1853,12 @@
             const folder = data.folders.find(f => f.id === data.currentFolder);
             
             if (!folder) {
-                alert('No folder selected!');
+                alert(_T('alertNoFolderSelected'));
                 return;
             }
 
             if (!title) {
-                alert('Title cannot be empty!');
+                alert(_T('alertTitleEmpty'));
                 return;
             }
 
@@ -1608,7 +1902,7 @@
             // Show save indicator
             const saveIndicator = document.createElement('div');
             saveIndicator.className = 'save-indicator';
-            saveIndicator.innerHTML = '✅ Saved!';
+            saveIndicator.innerHTML = _T('saveIndicator');
             document.body.appendChild(saveIndicator);
             setTimeout(() => saveIndicator.remove(), 1500);
 
@@ -1630,10 +1924,10 @@
             const btn = document.getElementById('bookmarkBtn');
             if (currentBookmark) {
                 btn.classList.add('bookmarked');
-                btn.innerHTML = '🌟 Bookmarked';
+                btn.innerHTML = '🌟 ' + _T('bookmarkedBtn');
             } else {
                 btn.classList.remove('bookmarked');
-                btn.innerHTML = '⭐ Bookmark';
+                btn.innerHTML = '⭐ ' + _T('bookmarkBtn');
             }
         }
 
@@ -1657,7 +1951,7 @@
                 grid.appendChild(item);
             });
         }
-
+        // (addImage, addFile, getFileType, getAttachmentIcon functions remain the same)
         function addImage() {
             const files = document.getElementById('imageUpload').files;
             const note = data.currentNote !== null ? data.folders.find(f => f.id === data.currentFolder).notes.find(n => n.id === data.currentNote) : { attachments: [] };
@@ -1713,7 +2007,7 @@
         }
 
         function deleteAttachment(index) {
-            if (!confirm('Are you sure you want to delete this attachment?')) return;
+            if (!confirm(_T('alertDeleteConfirm'))) return;
             const folder = data.folders.find(f => f.id === data.currentFolder);
             const note = folder.notes.find(n => n.id === data.currentNote);
             if (note && note.attachments) {
@@ -1793,13 +2087,13 @@
             isDrawing = true;
             ctx.beginPath();
             ctx.moveTo(e.offsetX || e.clientX - canvas.getBoundingClientRect().left, e.offsetY || e.clientY - canvas.getBoundingClientRect().top);
-            document.getElementById('drawingStatus').textContent = 'Drawing...';
+            document.getElementById('drawingStatus').textContent = _T('drawingStatusDrawing');
         }
 
         function stopDrawing() {
             isDrawing = false;
             ctx.closePath();
-            document.getElementById('drawingStatus').textContent = 'Ready';
+            document.getElementById('drawingStatus').textContent = _T('drawingStatusReady');
             // Auto-save the drawing data to state immediately after drawing stops
             drawingData = canvas.toDataURL(); 
         }
@@ -1825,7 +2119,7 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if (clearData) {
                 drawingData = null;
-                document.getElementById('drawingStatus').textContent = 'Cleared!';
+                document.getElementById('drawingStatus').textContent = _T('drawingStatusCleared');
             }
         }
 
@@ -1840,7 +2134,7 @@
                 // Clear and then draw the image
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                document.getElementById('drawingStatus').textContent = 'Drawing loaded.';
+                document.getElementById('drawingStatus').textContent = _T('drawingStatusLoaded');
             };
             img.src = dataUrl;
         }
@@ -1848,8 +2142,8 @@
         function saveDrawing(showIndicator = true) {
             drawingData = canvas.toDataURL();
             if (showIndicator) {
-                document.getElementById('drawingStatus').textContent = 'Drawing saved!';
-                setTimeout(() => document.getElementById('drawingStatus').textContent = 'Ready', 1500);
+                document.getElementById('drawingStatus').textContent = _T('drawingStatusSaved');
+                setTimeout(() => document.getElementById('drawingStatus').textContent = _T('drawingStatusReady'), 1500);
             }
         }
 
@@ -1879,7 +2173,7 @@
                     contentArea.innerHTML = `
                         <div class="empty-state">
                             <div class="empty-icon">📝</div>
-                            <div class="empty-text">Select a folder or create a new note</div>
+                            <div class="empty-text">${_T('emptySelectFolder')}</div>
                         </div>
                     `;
                 }
@@ -1890,24 +2184,27 @@
                 contentArea.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">🔍</div>
-                        <div class="empty-text">No notes found matching "${searchTerm}"</div>
+                        <div class="empty-text">${_T('searchEmpty')}"${searchTerm}"</div>
                     </div>
                 `;
                 return;
             }
 
             // Render search results
-            contentArea.innerHTML = `<div class="notes-grid">${filteredNotes.map(note => `
+            contentArea.innerHTML = `<div class="notes-grid">${filteredNotes.map(note => {
+                const badgeText = note.isBookmarked ? _T('bookmarkedBadge') : _T('noteBadge');
+                return `
                 <div class="note-card" onclick="selectFolder(${note.folderId}); openNoteModal(${note.id});">
                     ${note.isBookmarked ? '<button class="bookmark-btn bookmarked" onclick="event.stopPropagation();">🌟</button>' : ''}
                     <h3 class="note-title">${note.title}</h3>
                     <p class="note-preview">${note.content.substring(0, 100)}...</p>
                     <div class="note-meta">
                         <span>📅 ${new Date(note.updatedAt).toLocaleDateString()}</span>
-                        <span class="note-badge" style="background: ${note.folderColor}1A; color: ${note.folderColor};">${note.isBookmarked ? '⭐ Bookmarked' : 'Note'}</span>
+                        <span class="note-badge" style="background: ${note.folderColor}1A; color: ${note.folderColor};">${badgeText}</span>
                     </div>
                 </div>
-            `).join('')}</div>`;
+            `;
+            }).join('')}</div>`;
         }
 
         // Local Storage
@@ -1921,10 +2218,9 @@
                     theme: document.body.getAttribute('data-theme')
                 };
                 localStorage.setItem('cloudNotesData', JSON.stringify(dataToSave));
-                // console.log('✅ Data saved to storage!');
             } catch (e) {
-                console.error('Error saving data:', e);
-                alert('Could not save data to local storage. Your notes may be lost if you close the browser.');
+                // FIX: Removed the disruptive alert, now only logs to console
+                console.error('Error saving data to local storage. Data may be lost on browser refresh:', e);
             }
         }
 
@@ -1942,20 +2238,6 @@
                         document.body.setAttribute('data-theme', parsed.theme);
                         document.getElementById('themeToggle').textContent = 
                             parsed.theme === 'light' ? '🌙' : '☀️';
-                    }
-                    
-                    // console.log('✅ Data loaded from storage!');
-                } else if (window.appData) {
-                    // Fallback to window data (if any was defined)
-                    data.folders = window.appData.folders;
-                    data.currentFolder = window.appData.currentFolder;
-                    data.nextFolderId = window.appData.nextFolderId;
-                    data.nextNoteId = window.appData.nextNoteId;
-                    
-                    if (window.appData.theme) {
-                        document.body.setAttribute('data-theme', window.appData.theme);
-                        document.getElementById('themeToggle').textContent = 
-                            window.appData.theme === 'light' ? '🌙' : '☀️';
                     }
                 }
             } catch (e) {
