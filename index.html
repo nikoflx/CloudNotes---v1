@@ -124,6 +124,31 @@
         .why-us-btn:active {
             transform: translateY(0);
         }
+        
+        /* NEW: Upgrade Button Style */
+        .upgrade-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px var(--shadow-hover);
+            text-align: center;
+            margin-top: 12px; /* Add spacing */
+        }
+        
+        .upgrade-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow-hover);
+        }
+        /* End NEW */
 
         /* Toolbar in Sidebar */
         .toolbar {
@@ -1120,6 +1145,101 @@
         }
         /* END NEW: History Modal Styles */
         
+        /* NEW: Upgrade Modal Styles */
+        .pricing-section {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .pricing-card {
+            background: var(--bg-primary);
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            text-align: center;
+            position: relative;
+        }
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px var(--shadow-hover);
+        }
+        .pricing-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .pricing-card .price {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 10px 0;
+        }
+        .pricing-card .price-per {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+        .pricing-card .save-badge {
+            background: var(--warning);
+            color: #1a1a1a;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .pricing-card .cancel-note {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 15px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 16px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        .comparison-table th {
+            background: var(--bg-tertiary);
+            font-weight: 700;
+            text-align: center;
+        }
+        .comparison-table td:nth-child(2), .comparison-table td:nth-child(3) {
+            text-align: center;
+        }
+        .comparison-table th:first-child, .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+        .comparison-table .icon-check {
+            color: var(--success);
+            font-weight: 800;
+            font-size: 20px;
+        }
+        .comparison-table .icon-cross {
+            color: var(--danger);
+            font-weight: 800;
+            font-size: 20px;
+        }
+        /* END NEW: Upgrade Modal Styles */
+        
     </style>
 </head>
 <body data-theme="light">
@@ -1132,6 +1252,7 @@
                 <div class="app-title">CloudNotes v2.3</div>
                 <div class="app-author">by Niko (Improved Note Colors)</div>
                 <button class="why-us-btn" onclick="openWhyUsModal()">Why Us?</button>
+                <button class="upgrade-btn" onclick="openUpgradeModal()">🚀 Upgrade to Pro</button>
             </div>
             
             <div class="toolbar">
@@ -1347,6 +1468,93 @@
         </div>
     </div>
     
+    <div class="modal" id="upgradeModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <div class="modal-title">🚀 Upgrade to CloudNotes Pro</div>
+                <button class="close-btn" onclick="closeUpgradeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 30px; color: var(--accent);">Unlock Your Full Potential</h2>
+                
+                <div class="pricing-section">
+                    <div class="pricing-card">
+                        <h3>Monthly</h3>
+                        <div class="price">$3.49</div>
+                        <div class="price-per">per month</div>
+                        <button class="btn" style="width: 100%; font-size: 16px;">Choose Monthly</button>
+                        <p class="cancel-note">*Cancel anytime.</p>
+                    </div>
+                    
+                    <div class="pricing-card" style="border-color: var(--accent); border-width: 3px;">
+                        <span class="save-badge">Save 59%</span>
+                        <h3>Annual</h3>
+                        <div class="price">$24.99</div>
+                        <div class="price-per">per year</div>
+                        <button class="btn btn-success" style="width: 100%; font-size: 16px;">Choose Annual</button>
+                    </div>
+                </div>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Free</th>
+                            <th>Pro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Max Folders</td>
+                            <td>5</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>Max Notes per Folder</td>
+                            <td>5</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Gemini Requests</td>
+                            <td>3 per week</td>
+                            <td>100 per week</td>
+                        </tr>
+                        <tr>
+                            <td>Custom Icons & Backgrounds</td>
+                            <td><span class="icon-cross">✗</span></td>
+                            <td><span class="icon-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Advanced File Support (.waw, etc)</td>
+                            <td><span class="icon-cross">✗</span></td>
+                            <td><span class="icon-check">✓</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 20px;">All Plans Include These Core Features:</h3>
+                
+                <div class="why-us-section">
+                    <div class="why-us-card">
+                        <h4>🔒 Absolute Privacy</h4>
+                        <p>We <strong>don't track, collect, or sell any of your data</strong>. Everything you write or draw stays <strong>private</strong> on your device's local storage. This is a local-first application.</p>
+                    </div>
+                    <div class="why-us-card">
+                        <h4>🚫 Zero Accounts</h4>
+                        <p>No need for email, usernames, or passwords. <strong>No sign-ups</strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
+                    </div>
+                    <div class="why-us-card">
+                        <h4>⚡️ Fast & Reliable</h4>
+                        <p>Since your notes are stored <strong>locally</strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
+                    </div>
+                    <div class="why-us-card">
+                        <h4>📝 Feature-Rich Editor</h4>
+                        <p>Our editor includes <strong>rich text options</strong>, a full <strong>drawing canvas</strong>, and the ability to add <strong>attachments</strong>, all while keeping your data private and local.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         
         // --- DATA STRUCTURE ---
@@ -2502,6 +2710,16 @@
         function closeWhyUsModal() {
             document.getElementById('whyUsModal').classList.remove('active');
         }
+        
+        // --- NEW: UPGRADE MODAL FUNCTIONS ---
+        function openUpgradeModal() {
+            document.getElementById('upgradeModal').classList.add('active');
+        }
+
+        function closeUpgradeModal() {
+            document.getElementById('upgradeModal').classList.remove('active');
+        }
+        // --- END NEW ---
 
         // --- App Lifetime ---
         init();
