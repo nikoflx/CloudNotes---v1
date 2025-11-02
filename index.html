@@ -3,76 +3,208 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>License Lock — Client Only</title>
+<title>Licensed App — Drop-in</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#071021;color:#fff}
-#site-content{min-height:100vh;transition:filter .25s ease}
-.locked #site-content{filter:blur(6px);pointer-events:none;user-select:none}
-#license-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;background:rgba(0,0,0,0.7)}
-.card{background:#0f1720;padding:28px;border-radius:12px;width:360px;text-align:center}
-.input{width:100%;padding:12px;margin-bottom:12px;border-radius:6px;border:none;font-size:15px}
-.btn{padding:11px;width:100%;border:none;border-radius:8px;background:#22c55e;color:#062017;font-weight:600;cursor:pointer}
-.msg{margin-top:10px;height:20px;font-size:13px;color:#ff4c4c}
-.msg.success{color:#9be7b5}
+  :root{
+    --bg:#071021; --card:#0f1720; --muted:#9aa4b2; --accent:#22c55e;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:#fff}
+  #site-content{min-height:100vh;transition:filter .25s ease; padding:20px;}
+  .locked #site-content{filter:blur(6px) saturate(0.95) brightness(0.88); pointer-events:none; user-select:none; touch-action:none;}
+  /* Fullscreen modal overlay */
+  #license-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:99999;background:rgba(2,6,23,0.72);backdrop-filter:blur(4px)}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:28px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.6);width:450px;max-width:94%;border:1px solid rgba(255,255,255,0.04)}
+  .card h2{margin:0 0 6px;font-size:20px}
+  .card p{margin:0 0 14px;color:var(--muted);font-size:13px}
+  .row{display:flex;gap:10px}
+  .input{flex:1;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;font-size:15px}
+  .btn{padding:11px 14px;border-radius:9px;border:none;background:var(--accent);color:#062017;font-weight:700;cursor:pointer}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+  .msg{margin-top:12px;font-size:13px;height:18px}
+  .msg.success{color:#9be7b5}
+  /* Home menu */
+  #home-menu{display:none;background:linear-gradient(180deg,#07101a,#081226);padding:20px;border-radius:10px;max-width:960px;margin:20px auto}
+  #home-menu h2{margin:0 0 10px}
+  .menu-grid{display:flex;gap:12px;flex-wrap:wrap}
+  .menu-button{padding:12px 18px;border-radius:8px;border:none;background:#0ea5a3;color:#062017;font-weight:700;cursor:pointer}
+  @media (max-width:520px){ .card{width:92%} .row{flex-direction:column} .btn{width:100%} }
 </style>
 </head>
 <body>
-<div id="site-content">
-  <h1 style="padding:20px;">My App Content</h1>
-  <p style="padding:20px;">This is the site content. It’s blurred and blocked until a valid license key is entered.</p>
-</div>
+  <!-- Site content (everything inside this will be blurred & disabled while locked) -->
+  <div id="site-content">
+    <header style="display:flex;justify-content:space-between;align-items:center;">
+      <h1>My App</h1>
+      <div id="user-status" style="color:var(--muted)">Locked</div>
+    </header>
 
-<div id="license-modal">
-  <div class="card">
-    <h2>Enter License Key</h2>
-    <input id="licenseInput" class="input" placeholder="License Key" />
-    <button id="activateBtn" class="btn">Activate</button>
-    <div id="statusMsg" class="msg"></div>
+    <!-- Real app area (hidden until unlock) -->
+    <section id="home-menu" aria-hidden="true">
+      <h2>Welcome — App unlocked ✅</h2>
+      <p>Choose an action:</p>
+      <div class="menu-grid">
+        <button class="menu-button" onclick="openPage('dashboard')">Dashboard</button>
+        <button class="menu-button" onclick="openPage('notes')">Notes</button>
+        <button class="menu-button" onclick="openPage('settings')">Settings</button>
+        <button class="menu-button" onclick="logout()">Logout</button>
+      </div>
+      <div id="app-root" style="margin-top:18px;color:var(--muted)">App content will appear here.</div>
+    </section>
+
+    <!-- Fallback content visible before unlock if you want (kept minimal) -->
+    <main style="margin-top:20px;color:var(--muted);max-width:960px;">
+      <p>Protected content — the site will be available after entering a valid license key.</p>
+    </main>
   </div>
-</div>
+
+  <!-- License modal -->
+  <div id="license-modal" role="dialog" aria-modal="true" aria-labelledby="license-title">
+    <div class="card" role="document">
+      <h2 id="license-title">License required to continue</h2>
+      <p>Paste your license key and press <strong>Activate</strong>. You can also use the sample key button to autofill.</p>
+
+      <div class="row" style="margin-bottom:8px;">
+        <input id="licenseInput" class="input" placeholder="License Key (e.g. CloudNotesq3vhjkq8)" autocomplete="off" aria-label="License key" />
+        <button id="activateBtn" class="btn">Activate</button>
+      </div>
+
+      <div class="row" style="margin-bottom:6px;">
+        <button id="sampleKeyBtn" class="btn ghost">Use sample key</button>
+        <button id="clearBtn" class="btn ghost" title="Clear stored token">Clear saved token</button>
+      </div>
+
+      <div id="statusMsg" class="msg" aria-live="polite"></div>
+    </div>
+  </div>
 
 <script>
-const body = document.body;
-const modal = document.getElementById('license-modal');
-const input = document.getElementById('licenseInput');
-const btn = document.getElementById('activateBtn');
-const status = document.getElementById('statusMsg');
-
-body.classList.add('locked');
-
-// Plain valid keys
-const validKeys = [
+/* Drop-in license lock (client-only mode) */
+/* Valid keys list (plain) */
+const VALID_KEYS = [
   "CloudNotesq3vhjkq8",
   "Helloworldwgvjxs8",
   "Nikoflxrth9s8gyr01"
 ];
 
-btn.addEventListener('click', checkLicense);
-input.addEventListener('keydown', e=>{ if(e.key==='Enter') checkLicense(); });
+const TOKEN_KEY = 'app_license_token_v2';
+const body = document.body;
+const modal = document.getElementById('license-modal');
+const input = document.getElementById('licenseInput');
+const activateBtn = document.getElementById('activateBtn');
+const sampleBtn = document.getElementById('sampleKeyBtn');
+const clearBtn = document.getElementById('clearBtn');
+const statusMsg = document.getElementById('statusMsg');
+const homeMenu = document.getElementById('home-menu');
+const userStatus = document.getElementById('user-status');
 
-function checkLicense(){
-  const key = input.value.trim();
-  if(validKeys.includes(key)){
-    status.classList.add('success');
-    status.textContent = 'License valid! Unlocking... ✅';
-    setTimeout(()=>{ 
-      body.classList.remove('locked');
-      modal.style.display='none';
-      startYourApp();
-    }, 400);
-  } else {
-    status.classList.remove('success');
-    status.textContent = 'Invalid license key ❌';
+let lockActive = true;
+
+// UTIL
+function setStatus(text, ok=false){
+  statusMsg.textContent = text;
+  statusMsg.classList.toggle('success', !!ok);
+}
+
+// Focus trap and basic keyboard deterrent (deterrent only)
+modal.addEventListener('keydown', (e)=>{
+  if (e.key === 'Escape') { e.preventDefault(); return; } // block escape close
+  if (e.key === 'Tab') {
+    // simple trap: keep focus on input and activate btn
+    const focusables = [input, activateBtn, sampleBtn, clearBtn];
+    const idx = focusables.indexOf(document.activeElement);
+    if (e.shiftKey) {
+      if (idx <= 0) { e.preventDefault(); focusables[focusables.length - 1].focus(); }
+    } else {
+      if (idx === focusables.length - 1) { e.preventDefault(); focusables[0].focus(); }
+    }
   }
+  if (e.ctrlKey && (e.key === 'u' || e.key === 'i' || e.key === 's')) { e.preventDefault(); }
+});
+
+// Initialization
+(function init(){
+  body.classList.add('locked');
+  input.focus();
+
+  // If a token is stored, assume unlocked (fast path). You can change to verify server-side if you add a server.
+  const existing = localStorage.getItem(TOKEN_KEY);
+  if (existing) {
+    unlockFromToken(existing);
+  }
+})();
+
+// Events
+activateBtn.addEventListener('click', onActivate);
+input.addEventListener('keydown', e=>{ if (e.key === 'Enter') onActivate(); });
+sampleBtn.addEventListener('click', ()=>{
+  input.value = 'CloudNotesq3vhjkq8';
+  onActivate();
+});
+clearBtn.addEventListener('click', ()=>{
+  localStorage.removeItem(TOKEN_KEY);
+  setStatus('Saved token cleared.', false);
+  console.log('Token cleared (localStorage).');
+});
+
+// Activation flow
+function onActivate(){
+  const key = (input.value || '').trim();
+  if (!key) { setStatus('Enter a license key.', false); input.focus(); return; }
+  setStatus('Checking key...', false);
+  activateBtn.disabled = true;
+
+  // Client-only validation
+  setTimeout(()=>{ // simulate small delay for UX
+    if (VALID_KEYS.includes(key)) {
+      const token = 'client:' + btoa(key + '|' + Date.now());
+      localStorage.setItem(TOKEN_KEY, token);
+      setStatus('License valid — unlocking...', true);
+      console.log('Valid license:', key);
+      setTimeout(()=> unlockFromToken(token), 350);
+    } else {
+      setStatus('Invalid license key ❌', false);
+      console.log('Invalid key attempt:', key);
+    }
+    activateBtn.disabled = false;
+  }, 220);
 }
 
-function startYourApp(){
-  console.log('App started! License verified.');
-  // put your real website/app code here
+function unlockFromToken(token){
+  // Remove blur & modal, show app
+  lockActive = false;
+  body.classList.remove('locked');
+  modal.style.display = 'none';
+  userStatus.textContent = 'Unlocked';
+  homeMenu.style.display = 'block';
+  homeMenu.setAttribute('aria-hidden','false');
+  startYourApp(token);
 }
+
+// Placeholder app functions (replace or expand)
+function startYourApp(token){
+  console.log('App started — token:', token);
+  const root = document.getElementById('app-root');
+  root.innerHTML = '<strong>App is running.</strong><div style="margin-top:8px;color:var(--muted)">Token saved in localStorage — you stay unlocked on this browser.</div>';
+  // TODO: Put your real app initialization here (e.g. load notes, init UI, fetch from server)
+}
+
+// Example UI actions
+function openPage(name){
+  const root = document.getElementById('app-root');
+  root.innerHTML = '<h3>'+escapeHtml(name)+'</h3><p style="color:var(--muted)">Page content for '+escapeHtml(name)+'.</p>';
+}
+function logout(){
+  localStorage.removeItem(TOKEN_KEY);
+  location.reload();
+}
+
+// small helper to avoid inserting raw HTML accidentally
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 </script>
 </body>
 </html>
+
+
 
 
 
