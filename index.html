@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudNotes v2.2 - Ultimate Edition</title>
+    <title>CloudNotes v2.3 - Ultimate Edition</title>
     
     <style>
         /* CSS Reset and Box Model */
@@ -410,7 +410,7 @@
             gap: 24px;
         }
 
-        /* Note Card Styling */
+        /* Note Card Styling - MODIFIED FOR LEFT COLOR BAR */
         .note-card {
             background: var(--bg-secondary);
             border-radius: 16px;
@@ -426,34 +426,45 @@
             flex-direction: column;
         }
         
-        /* Note Color Overlay for soft background effect */
-        .note-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            pointer-events: none;
-            background: inherit;
-        }
-
+        /* NEW: Left Color Indicator Bar */
         .note-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), #8b5cf6);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            width: 5px; /* Width of the color bar */
+            height: 100%;
+            /* Use a custom CSS property to set the color dynamically */
+            background: var(--note-indicator-color, transparent); 
+            transition: background 0.3s ease;
+            z-index: 5;
+            box-shadow: 2px 0 6px var(--shadow); 
         }
 
-        .note-card:hover::before {
-            transform: scaleX(1);
+        .note-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px var(--shadow);
+            /* Border color now based on indicator color or accent */
+            border-color: var(--note-indicator-color, var(--accent)); 
         }
+        
+        /* NEW: Space Theme Style */
+        .note-card.space-bg {
+            background: #0D0F16 !important; 
+            color: #f5f5f5 !important;
+            border-color: #3b82f6 !important;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .note-card.space-bg .note-title,
+        .note-card.space-bg .note-meta {
+            color: #f5f5f5 !important;
+        }
+
+        .note-card.space-bg .note-preview {
+            color: #a0a0a0 !important;
+        }
+
 
         /* Animations */
         @keyframes fadeIn {
@@ -465,12 +476,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        .note-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 32px var(--shadow);
-            border-color: var(--accent);
         }
 
         .note-title {
@@ -608,7 +613,7 @@
             flex-direction: column;
             animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transition: background 0.4s; /* For note color change */
+            transition: background 0.4s, color 0.4s; /* For note color change */
         }
 
         @keyframes slideUp {
@@ -684,6 +689,11 @@
             margin-bottom: 16px;
             color: var(--text-primary);
         }
+        
+        .modal-content[style*="0D0F16"] .section-title {
+            color: #f5f5f5 !important;
+        }
+
 
         /* NEW: Note Color Picker */
         .note-color-picker {
@@ -807,6 +817,12 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
+        
+        .modal-content[style*="0D0F16"] .note-input {
+            background: #262626;
+            color: #f5f5f5;
+            border-color: #3b82f6;
+        }
 
         /* Content Editor */
         .note-editor {
@@ -822,6 +838,12 @@
             resize: vertical;
             font-family: inherit;
             transition: all 0.3s ease;
+        }
+        
+        .modal-content[style*="0D0F16"] .note-editor {
+            background: #262626;
+            color: #f5f5f5;
+            border-color: #3b82f6;
         }
 
         .note-editor:focus,
@@ -902,6 +924,13 @@
             border: 2px solid var(--border);
             position: relative;
         }
+        
+        .modal-content[style*="0D0F16"] .attachment-item {
+            background: #262626;
+            color: #f5f5f5;
+            border-color: #3b82f6;
+        }
+
 
         .attachment-item:hover {
             transform: translateY(-4px);
@@ -934,6 +963,11 @@
             border-radius: 12px;
             border: 2px solid var(--accent);
         }
+        
+        .modal-content[style*="0D0F16"] .clipboard-section {
+            background: #1e3a8a;
+            border-color: #3b82f6;
+        }
 
         .clipboard-preview {
             margin-top: 12px;
@@ -944,6 +978,11 @@
             color: var(--text-secondary);
             max-height: 100px;
             overflow-y: auto;
+        }
+        
+        .modal-content[style*="0D0F16"] .clipboard-preview {
+            background: #0f0f0f;
+            color: #9ca3af;
         }
         
         /* Folder Modal Color Picker */
@@ -1090,8 +1129,8 @@
         <div class="sidebar">
             
             <div class="sidebar-header">
-                <div class="app-title">CloudNotes v2.2</div>
-                <div class="app-author">by Niko (Restored to 2700 lines)</div>
+                <div class="app-title">CloudNotes v2.3</div>
+                <div class="app-author">by Niko (Improved Note Colors)</div>
                 <button class="why-us-btn" onclick="openWhyUsModal()">Why Us?</button>
             </div>
             
@@ -1159,16 +1198,11 @@
             <div class="modal-body">
                 <input type="text" class="note-input" id="noteTitle" placeholder="✨ Note title...">
                 
-                <h3 class="section-title" style="margin-top: 0;">🎨 Note Color</h3>
+                <h3 class="section-title" style="margin-top: 0;">🎨 Note Color Indicator</h3>
                 <div class="note-color-picker" id="noteColorPicker">
                     <div class="note-color-option selected" style="background: var(--bg-secondary);" data-color="transparent" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #fef9c3;" data-color="#fef9c3" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #dcfce7;" data-color="#dcfce7" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #fecaca;" data-color="#fecaca" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #ede9fe;" data-color="#ede9fe" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #d4e9ff;" data-color="#d4e9ff" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #e0f2fe;" data-color="#e0f2fe" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #ffe4e6;" data-color="#ffe4e6" onclick="selectNoteColor(this)"></div>
+                    
+                    <div class="note-color-option" style="background: #4ade80;" data-color="#4ade80" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #fb7185;" data-color="#fb7185" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #facc15;" data-color="#facc15" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #60a5fa;" data-color="#60a5fa" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #a855f7;" data-color="#a855f7" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #0D0F16; border: 2px solid #3b82f6;" data-color="space" onclick="selectNoteColor(this)"></div> 
                 </div>
                 
                 <h3 class="section-title">🏷️ Tags (comma separated)</h3>
@@ -1262,7 +1296,7 @@
     <div class="modal" id="whyUsModal">
         <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
-                <div class="modal-title">🌟 Why Choose CloudNotes v2.2?</div>
+                <div class="modal-title">🌟 Why Choose CloudNotes v2.3?</div>
                 <button class="close-btn" onclick="closeWhyUsModal()">×</button>
             </div>
             <div class="modal-body">
@@ -1292,7 +1326,7 @@
 
                 </div>
                 <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;">CloudNotes v2.2: Simple, powerful, and truly private note-taking.</p>
+                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;">CloudNotes v2.3: Simple, powerful, and truly private note-taking.</p>
                 </div>
             </div>
         </div>
@@ -1608,13 +1642,24 @@
             selectedColor = element.getAttribute('data-color');
         }
         
+        // MODIFIED: Logic for handling the 'space' theme preview
         function selectNoteColor(element) {
             document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
             element.classList.add('selected');
             selectedNoteColor = element.getAttribute('data-color');
             
-            // Apply the color immediately to the modal content (Note background)
-            document.getElementById('noteModal').querySelector('.modal-content').style.background = selectedNoteColor === 'transparent' ? 'var(--bg-secondary)' : selectedNoteColor;
+            // Apply the color immediately to the modal content
+            const modalContent = document.getElementById('noteModal').querySelector('.modal-content');
+            
+            if (selectedNoteColor === 'space') {
+                modalContent.style.background = '#0D0F16'; 
+                modalContent.style.color = '#f5f5f5'; // Change text color for dark background
+                document.querySelectorAll('.section-title').forEach(el => el.style.color = '#f5f5f5');
+            } else {
+                modalContent.style.background = 'var(--bg-secondary)'; 
+                modalContent.style.color = 'var(--text-primary)'; // Reset text color
+                document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
+            }
         }
 
         function saveFolderModal() {
@@ -1731,18 +1776,21 @@
                 const card = document.createElement('div');
                 card.className = 'note-card';
                 
-                // Apply note color
-                card.style.background = note.noteColor || 'var(--bg-secondary)';
-                
-                // Set a softer border for bright note colors to distinguish them
-                if (note.noteColor && note.noteColor !== 'transparent') {
-                    const rgb = hexToRgb(note.noteColor);
-                    const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
-                    if (brightness > 200) { 
-                        card.style.borderColor = 'rgba(0, 0, 0, 0.1)';
-                    }
+                // MODIFIED: Apply Note Color to Indicator Bar and Special Class
+                if (note.noteColor === 'space') {
+                    card.classList.add('space-bg');
+                    card.style.setProperty('--note-indicator-color', '#3b82f6'); // Bright blue indicator for space theme
+                } else if (note.noteColor && note.noteColor !== 'transparent') {
+                    // Set the CSS variable for the left color bar
+                    card.style.setProperty('--note-indicator-color', note.noteColor);
+                    // Ensure space-bg is removed if the color changes away from 'space'
+                    card.classList.remove('space-bg'); 
+                } else {
+                    card.style.setProperty('--note-indicator-color', 'transparent'); 
+                    card.classList.remove('space-bg'); 
                 }
-                
+                // END MODIFIED
+
                 card.innerHTML = `
                     ${note.isBookmarked && !isTrashView ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation(); toggleBookmarkInCard(${note.id}, ${folderId})">🌟</button>` : ''}
                     <h3 class="note-title">${note.title || 'Untitled'}</h3>
@@ -1917,9 +1965,12 @@
             updateBookmarkButton();
             updateEditorStyle();
             
+            // Reset modal background to default and select 'transparent'
             document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
             document.querySelector('#noteColorPicker div[data-color="transparent"]').classList.add('selected');
             document.getElementById('noteModal').querySelector('.modal-content').style.background = 'var(--bg-secondary)';
+            document.getElementById('noteModal').querySelector('.modal-content').style.color = 'var(--text-primary)';
+            document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
 
             document.getElementById('noteModal').classList.add('active');
         }
@@ -1940,7 +1991,18 @@
             document.getElementById('noteTags').value = (note.tags || []).join(', ');
             
             selectedNoteColor = note.noteColor || 'transparent';
-            document.getElementById('noteModal').querySelector('.modal-content').style.background = selectedNoteColor === 'transparent' ? 'var(--bg-secondary)' : selectedNoteColor;
+            
+            // MODIFIED: Apply correct theme to modal based on note color
+            const modalContent = document.getElementById('noteModal').querySelector('.modal-content');
+            if (selectedNoteColor === 'space') {
+                modalContent.style.background = '#0D0F16'; 
+                modalContent.style.color = '#f5f5f5';
+                document.querySelectorAll('.section-title').forEach(el => el.style.color = '#f5f5f5');
+            } else {
+                modalContent.style.background = 'var(--bg-secondary)'; 
+                modalContent.style.color = 'var(--text-primary)';
+                document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
+            }
             
             // Select the correct color circle
             document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
@@ -2377,16 +2439,6 @@
                 return;
             }
 
-            if (filteredNotes.length === 0) {
-                contentArea.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">🔍</div>
-                        <div class="empty-text">No notes found matching "${searchTerm}"</div>
-                    </div>
-                `;
-                return;
-            }
-
             // Render search results
             const grid = document.createElement('div');
             grid.className = 'notes-grid';
@@ -2394,7 +2446,17 @@
             filteredNotes.forEach(note => {
                 const card = document.createElement('div');
                 card.className = 'note-card';
-                card.style.background = note.noteColor || 'var(--bg-secondary)';
+                
+                // MODIFIED: Apply Note Color logic for search results
+                if (note.noteColor === 'space') {
+                    card.classList.add('space-bg');
+                    card.style.setProperty('--note-indicator-color', '#3b82f6');
+                } else if (note.noteColor && note.noteColor !== 'transparent') {
+                    card.style.setProperty('--note-indicator-color', note.noteColor);
+                } else {
+                    card.style.setProperty('--note-indicator-color', 'transparent'); 
+                }
+                // END MODIFIED
                 
                 card.innerHTML = `
                     ${note.isBookmarked ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation(); toggleBookmarkInCard(${note.id}, ${note.folderId})">🌟</button>` : ''}
@@ -2418,6 +2480,17 @@
                 };
                 grid.appendChild(card);
             });
+            
+            if (filteredNotes.length === 0) {
+                contentArea.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div class="empty-text">No notes found matching "${searchTerm}"</div>
+                    </div>
+                `;
+                return;
+            }
+            
             contentArea.appendChild(grid);
         }
         
