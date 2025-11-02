@@ -3,6 +3,1981 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudNotes v1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f0f0f5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-light: rgba(99, 102, 241, 0.1);
+            --border: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(99, 102, 241, 0.2);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #262626;
+            --text-primary: #f5f5f5;
+            --text-secondary: #9ca3af;
+            --accent: #818cf8;
+            --accent-hover: #6366f1;
+            --accent-light: rgba(129, 140, 248, 0.15);
+            --border: #2d2d2d;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --shadow-hover: rgba(129, 140, 248, 0.3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 2px 0 10px var(--shadow);
+        }
+
+        .sidebar-header {
+            padding: 30px 24px 20px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, var(--accent-light), transparent);
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .app-author {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 15px; /* Added margin for new button */
+        }
+        
+        /* New 'Why Us?' Button Style */
+        .why-us-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            background: var(--bg-primary);
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--accent);
+            box-shadow: 0 2px 8px var(--shadow-hover);
+            text-align: center;
+        }
+
+        .why-us-btn:hover {
+            background: var(--accent);
+            color: var(--bg-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow-hover);
+        }
+
+        .why-us-btn:active {
+            transform: translateY(0);
+        }
+        /* End New 'Why Us?' Button Style */
+
+        .toolbar {
+            padding: 20px;
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow-hover);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-icon {
+            padding: 10px 14px;
+            font-size: 18px;
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .folders-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .folders-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .folders-container::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        .folder-item {
+            padding: 14px 18px;
+            margin: 6px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .folder-item:hover {
+            background: var(--bg-tertiary);
+            transform: translateX(6px);
+            border-color: var(--accent-light);
+        }
+
+        .folder-item.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px var(--shadow-hover);
+            transform: translateX(6px);
+        }
+
+        .folder-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .folder-item:hover .folder-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .folder-name {
+            flex: 1;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .folder-count {
+            font-size: 13px;
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            padding: 20px 40px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        /* START New Language Switcher Style */
+        .language-switcher {
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px; 
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .language-switcher:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+        /* END New Language Switcher Style */
+
+        .theme-toggle {
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            cursor: pointer;
+            font-size: 22px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--accent);
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            background: var(--bg-primary);
+        }
+
+        .content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content-area::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .note-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--border);
+            animation: fadeIn 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .note-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .note-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .note-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .note-preview {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .note-meta {
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-badge {
+            background: var(--accent-light);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--accent-light);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        
+        /* Why Us Section Styles */
+        .why-us-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .why-us-card {
+            background: var(--bg-primary);
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .why-us-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .why-us-card h4 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .why-us-card p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        /* End Why Us Section Styles */
+
+
+        .editor-toolbar {
+            display: flex;
+            gap: 12px;
+            padding: 18px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            border: 2px solid var(--border);
+        }
+
+        .editor-toolbar select,
+        .editor-toolbar input[type="number"] {
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .editor-toolbar select:focus,
+        .editor-toolbar input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .editor-toolbar button {
+            padding: 10px 18px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .editor-toolbar button:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .editor-toolbar button:active {
+             transform: translateY(0);
+        }
+
+        .note-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .note-editor {
+            width: 100%;
+            min-height: 350px;
+            padding: 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 16px;
+            line-height: 1.7;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .note-editor:focus,
+        .note-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+
+        .canvas-container {
+            margin: 24px 0;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px var(--shadow);
+        }
+
+        #drawingCanvas {
+            display: block;
+            width: 100%;
+            height: 400px;
+            cursor: crosshair;
+            background: white;
+        }
+
+        .canvas-toolbar {
+            padding: 16px;
+            background: var(--bg-tertiary);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border-top: 2px solid var(--border);
+        }
+
+        .canvas-toolbar button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .canvas-toolbar input[type="color"] {
+            width: 50px;
+            height: 40px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .canvas-toolbar input[type="range"] {
+            width: 120px;
+        }
+
+        .attachments-section {
+            margin-top: 28px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .attachments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .attachment-item {
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--border);
+        }
+
+        .attachment-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .attachment-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 4px var(--shadow));
+        }
+
+        .attachment-name {
+            font-size: 13px;
+            word-break: break-all;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            opacity: 0.6;
+            filter: drop-shadow(0 4px 8px var(--shadow));
+        }
+
+        .empty-text {
+            font-size: 20px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .color-picker-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .color-option:hover {
+            transform: scale(1.15);
+        }
+
+        .color-option.selected {
+            border-color: var(--text-primary);
+            box-shadow: 0 0 0 4px var(--accent-light);
+            transform: scale(1.15);
+        }
+
+        .stat-item {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .bookmark-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            filter: grayscale(1);
+        }
+
+        .bookmark-btn.bookmarked {
+            filter: grayscale(0);
+            transform: scale(1.2);
+        }
+
+        .save-indicator {
+            padding: 12px 20px;
+            background: var(--success);
+            color: white;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: fixed; /* Added to make it visible */
+            bottom: 20px; /* Added to make it visible */
+            right: 20px; /* Added to make it visible */
+            z-index: 1001; /* Added to make it visible */
+        }
+
+        .clipboard-section {
+            margin-top: 28px;
+            padding: 20px;
+            background: var(--accent-light);
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+        }
+
+        .clipboard-preview {
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            max-height: 100px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="app-title">CloudNotes v1</div>
+                <div class="app-author">by Niko</div>
+                <button class="why-us-btn" onclick="openWhyUsModal()" id="whyUsBtn">Why Us?</button>
+            </div>
+            
+            <div class="toolbar">
+                <button class="btn" onclick="createFolder()" id="newFolderBtn">+ Folder</button>
+                <button class="btn btn-icon" onclick="openNewNote()" id="newNoteIconBtn">📝</button>
+            </div>
+
+            <div class="folders-container" id="foldersContainer">
+                </div>
+        </div>
+
+        <div class="main-content">
+            <div class="topbar">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search notes..." id="searchInput" oninput="searchNotes()">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="topbar-actions">
+                    <select id="language-switcher" class="language-switcher" onchange="setLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalNotes">0</span>
+                        <div class="stat-label" id="totalNotesLabel">Total Notes</div>
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
+                </div>
+            </div>
+
+            <div class="content-area" id="contentArea">
+                <div class="empty-state">
+                    <div class="empty-icon">📝</div>
+                    <div class="empty-text" id="initialEmptyStateText">Select a folder or create a new note</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">New Note</div>
+                <button class="close-btn" onclick="closeNoteModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="note-input" id="noteTitle" placeholder="✨ Note title...">
+                
+                <div class="editor-toolbar">
+                    <select id="fontFamily" onchange="updateEditorStyle()">
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                        <option value="Brush Script MT">Brush Script</option>
+                        <option value="Trebuchet MS">Trebuchet</option>
+                    </select>
+                    
+                    <input type="number" id="fontSize" value="16" min="10" max="48" onchange="updateEditorStyle()" placeholder="Size">
+                    
+                    <button onclick="toggleDrawing()" id="drawBtn">🎨 Draw</button>
+                    <button onclick="document.getElementById('imageUpload').click()" id="imageBtn">🖼️ Image</button>
+                    <button onclick="document.getElementById('fileUpload').click()" id="fileBtn">📎 File</button>
+                    <button onclick="pasteFromClipboard()" class="btn-warning" id="pasteBtn">📋 Paste Clipboard</button>
+                    <button onclick="toggleBookmark()" id="bookmarkBtn">⭐ Bookmark</button>
+                    <button onclick="saveNote()" class="btn btn-success" id="saveNoteBtn">💾 Save Note</button>
+                </div>
+
+                <textarea class="note-editor" id="noteContent" placeholder="✍️ Start writing your amazing ideas..."></textarea>
+
+                <div class="canvas-container" id="canvasContainer" style="display: none;">
+                    <canvas id="drawingCanvas"></canvas>
+                    <div class="canvas-toolbar">
+                         <button onclick="clearCanvas()" style="background: var(--danger); color: white;" id="clearCanvasBtn">🗑️ Clear</button>
+                        <button onclick="saveDrawing()" class="btn-success" style="background: var(--success); color: white;" id="saveDrawingBtn">💾 Save Drawing</button>
+                        <input type="color" id="drawColor" value="#6366f1">
+                        <label style="color: var(--text-secondary); font-size: 13px; font-weight: 600;" id="brushSizeLabel">Brush Size:</label>
+                        <input type="range" id="drawSize" min="1" max="30" value="3">
+                        <span id="drawingStatus"></span>
+                    </div>
+                </div>
+
+                <div class="clipboard-section" id="clipboardSection" style="display: none;">
+                    <h3 class="section-title" id="clipboardTitle">📋 Clipboard Content</h3>
+                    <div class="clipboard-preview" id="clipboardPreview"></div>
+                    <button class="btn" style="margin-top: 12px;" onclick="insertClipboard()" id="insertClipboardBtn">✨ Insert into Note</button>
+                </div>
+
+                <div class="attachments-section">
+                    <h3 class="section-title" id="attachmentsTitle">📎 Attachments</h3>
+                    <div class="attachments-grid" id="attachmentsGrid"></div>
+                </div>
+
+                <input type="file" id="imageUpload" accept="image/*" onchange="addImage()" multiple>
+                <input type="file" id="fileUpload" onchange="addFile()" multiple>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="folderModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <div class="modal-title" id="newFolderTitle">✨ New Folder</div>
+                <button class="close-btn" onclick="closeFolderModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="note-input" id="folderName" placeholder="📁 Folder name...">
+                
+                 <h3 class="section-title" id="chooseColorTitle">🎨 Choose Icon Color</h3>
+                <div class="color-picker-container">
+                    <div class="color-option selected" style="background: #6366f1;" data-color="#6366f1" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #10b981;" data-color="#10b981" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #f59e0b;" data-color="#f59e0b" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #ef4444;" data-color="#ef4444" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #8b5cf6;" data-color="#8b5cf6" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #ec4899;" data-color="#ec4899" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #06b6d4;" data-color="#06b6d4" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #84cc16;" data-color="#84cc16" onclick="selectColor(this)"></div>
+                </div>
+
+                <button class="btn" style="margin-top: 28px; width: 100%;" onclick="saveFolderModal()" id="createFolderBtn">✨ Create Folder</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="whyUsModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <div class="modal-title" id="whyUsModalTitle">🌟 Why Choose CloudNotes v1?</div>
+                <button class="close-btn" onclick="closeWhyUsModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);" id="whyUsSubtitle">Your Data. Your Control. Always.</h2>
+                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);" id="whyUsIntro">We built CloudNotes v1 on a simple principle: <strong>ultimate privacy and simplicity<strong>.</p>
+                <div class="why-us-section">
+                    
+                    <div class="why-us-card">
+                        <h4 id="privacyTitle">🔒 Absolute Privacy</h4>
+                        <p id="privacyText">We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application.                                                                                                     Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> </p>
+                    </div>
+
+                    <div class="why-us-card">
+                        <h4 id="accountsTitle">🚫 Zero Accounts</h4>
+                        <p id="accountsText">No need for email, usernames, or passwords. <strong>No sign-ups<strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
+                    </div>
+
+                    <div class="why-us-card">
+                        <h4 id="fastTitle">⚡️ Fast & Reliable</h4>
+                        <p id="fastText">Since your notes are stored <strong>locally<strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
+                    </div>
+
+                    <div class="why-us-card">
+                        <h4 id="featuresTitle">📝 Feature-Rich Editor</h4>
+                        <p id="featuresText">Our editor includes <strong>rich text options<strong>, a full <strong>drawing canvas<strong>, and the ability to add <strong>attachments<strong>, all while keeping your data private and local.</p>
+                    </div>
+
+                </div>
+                <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;" id="whyUsFooter">CloudNotes v1: Simple, powerful, and truly private note-taking.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Data structure
+        let data = {
+            folders: [
+                { id: 1, name: 'Work', color: '#6366f1', notes: [] },
+                { id: 2, name: 'Home', color: '#10b981', notes: [] },
+                { id: 3, name: 'Fun Projects :)', color: '#f59e0b', notes: [] }
+            ],
+            currentFolder: null,
+            currentNote: null,
+            nextFolderId: 4,
+            nextNoteId: 1
+        };
+
+        let canvas, ctx, isDrawing = false;
+        let selectedColor = '#6366f1';
+        let drawingData = null;
+        let currentBookmark = false;
+        let clipboardContent = '';
+        let currentLang = 'en'; // NEW: Default language is English
+
+        // NEW: Translation Data
+        const translations = {
+            en: {
+                // UI Elements
+                whyUsBtn: "Why Us?",
+                newFolder: "+ Folder",
+                newNoteIcon: "📝",
+                searchPlaceholder: "Search notes...",
+                totalNotes: "Total Notes",
+                brushSize: "Brush Size:",
+                saveNote: "💾 Save Note",
+                
+                // Note Modal
+                newNoteTitle: "New Note",
+                noteTitlePlaceholder: "✨ Note title...",
+                editorPlaceholder: "✍️ Start writing your amazing ideas...",
+                drawBtn: "🎨 Draw",
+                imageBtn: "🖼️ Image",
+                fileBtn: "📎 File",
+                pasteBtn: "📋 Paste Clipboard",
+                bookmarkBtn: "⭐ Bookmark",
+                bookmarkedBtn: "🌟 Bookmarked",
+                canvasClear: "🗑️ Clear",
+                canvasSave: "💾 Save Drawing",
+                clipboardTitle: "📋 Clipboard Content",
+                clipboardInsert: "✨ Insert into Note",
+                attachmentsTitle: "📎 Attachments",
+                
+                // Folder Modal
+                newFolderTitle: "✨ New Folder",
+                folderNamePlaceholder: "📁 Folder name...",
+                chooseColor: "🎨 Choose Icon Color",
+                createFolder: "✨ Create Folder",
+                
+                // Why Us Modal
+                whyUsModalTitle: "🌟 Why Choose CloudNotes v1?",
+                whyUsSubtitle: "Your Data. Your Control. Always.",
+                whyUsIntro: "We built CloudNotes v1 on a simple principle: <strong>ultimate privacy and simplicity<strong>.",
+                privacyTitle: "🔒 Absolute Privacy",
+                privacyText: "We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application. Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> ",
+                accountsTitle: "🚫 Zero Accounts",
+                accountsText: "No need for email, usernames, or passwords. <strong>No sign-ups<strong>, no log-ins, and no cloud storage required. Just open the app and start noting.",
+                fastTitle: "⚡️ Fast & Reliable",
+                fastText: "Since your notes are stored <strong>locally<strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.",
+                featuresTitle: "📝 Feature-Rich Editor",
+                featuresText: "Our editor includes <strong>rich text options<strong>, a full <strong>drawing canvas<strong>, and the ability to add <strong>attachments<strong>, all while keeping your data private and local.",
+                whyUsFooter: "CloudNotes v1: Simple, powerful, and truly private note-taking.",
+
+                // Dynamic/Alerts
+                emptyState: "Select a folder or create a new note",
+                noNotes: "No notes yet. Create your first note!",
+                folderNotFound: "Folder not found.",
+                noNotesFound: (term) => `No notes found matching "${term}"`,
+                noteBadge: "Note",
+                bookmarkedBadge: "⭐ Bookmarked",
+                alertEmptyFolder: "Folder name cannot be empty!",
+                alertEmptyTitle: "Title cannot be empty!",
+                alertNoFolder: "No folder selected!",
+                alertClipboard: "Could not access clipboard. Please make sure you granted permission.",
+                alertEmptyClipboard: "Clipboard is empty!",
+                alertDeleteAttachment: "Are you sure you want to delete this attachment?",
+                alertLoadingData: "✅ Data loaded from storage!",
+                alertSaving: "✅ Saved!",
+            },
+            ru: {
+                // UI Elements
+                whyUsBtn: "Почему мы?",
+                newFolder: "+ Папка",
+                newNoteIcon: "📝",
+                searchPlaceholder: "Поиск заметок...",
+                totalNotes: "Всего заметок",
+                brushSize: "Размер кисти:",
+                saveNote: "💾 Сохранить",
+
+                // Note Modal
+                newNoteTitle: "Новая заметка",
+                noteTitlePlaceholder: "✨ Заголовок заметки...",
+                editorPlaceholder: "✍️ Начните писать свои потрясающие идеи...",
+                drawBtn: "🎨 Рисовать",
+                imageBtn: "🖼️ Изображение",
+                fileBtn: "📎 Файл",
+                pasteBtn: "📋 Вставить из буфера",
+                bookmarkBtn: "⭐ В закладки",
+                bookmarkedBtn: "🌟 В закладках",
+                canvasClear: "🗑️ Очистить",
+                canvasSave: "💾 Сохранить рисунок",
+                clipboardTitle: "📋 Содержимое буфера",
+                clipboardInsert: "✨ Вставить в заметку",
+                attachmentsTitle: "📎 Вложения",
+                
+                // Folder Modal
+                newFolderTitle: "✨ Новая папка",
+                folderNamePlaceholder: "📁 Имя папки...",
+                chooseColor: "🎨 Выберите цвет значка",
+                createFolder: "✨ Создать папку",
+
+                // Why Us Modal
+                whyUsModalTitle: "🌟 Почему CloudNotes v1?",
+                whyUsSubtitle: "Ваши данные. Ваш контроль. Всегда.",
+                whyUsIntro: "Мы создали CloudNotes v1 на основе простого принципа: <strong>максимальная конфиденциальность и простота<strong>.",
+                privacyTitle: "🔒 Абсолютная конфиденциальность",
+                privacyText: "Мы <strong>не отслеживаем, не собираем и не продаем ваши данные<strong>. Все, что вы пишете или рисуете, остается <strong>приватным<strong> в локальном хранилище вашего устройства. Это приложение, ориентированное на локальное использование. Крупные компании (Гиганты) <strong>продают хранилище и интеграцию. (Ваши данные тоже!).<strong> <strong>Мы (CloudNotes) продаем конфиденциальность, простоту и атмосферу.<strong> Наши цены доступны для <strong>Всех<strong> ",
+                accountsTitle: "🚫 Ноль учетных записей",
+                accountsText: "Не нужны электронная почта, имена пользователей или пароли. <strong>Никакой регистрации<strong>, входа и облачного хранилища. Просто откройте приложение и начните делать заметки.",
+                fastTitle: "⚡️ Быстро и надежно",
+                fastText: "Поскольку ваши заметки хранятся <strong>локально<strong> в вашем браузере, загрузка происходит мгновенно. Вы никогда не зависите от сетевого подключения или статуса сервера.",
+                featuresTitle: "📝 Богатый возможностями редактор",
+                featuresText: "Наш редактор включает <strong>расширенные текстовые опции<strong>, полноценный <strong>холст для рисования<strong> и возможность добавления <strong>вложений<strong>, сохраняя при этом ваши данные приватными и локальными.",
+                whyUsFooter: "CloudNotes v1: Простое, мощное и по-настоящему приватное создание заметок.",
+                
+                // Dynamic/Alerts
+                emptyState: "Выберите папку или создайте новую заметку",
+                noNotes: "Заметок пока нет. Создайте свою первую заметку!",
+                folderNotFound: "Папка не найдена.",
+                noNotesFound: (term) => `Заметки, соответствующие "${term}", не найдены`,
+                noteBadge: "Заметка",
+                bookmarkedBadge: "⭐ В закладках",
+                alertEmptyFolder: "Имя папки не может быть пустым!",
+                alertEmptyTitle: "Заголовок не может быть пустым!",
+                alertNoFolder: "Папка не выбрана!",
+                alertClipboard: "Не удалось получить доступ к буферу обмена. Убедитесь, что вы предоставили разрешение.",
+                alertEmptyClipboard: "Буфер обмена пуст!",
+                alertDeleteAttachment: "Вы уверены, что хотите удалить это вложение?",
+                alertLoadingData: "✅ Данные загружены из хранилища!",
+                alertSaving: "✅ Сохранено!",
+            }
+        };
+
+        // NEW: Translation helper function
+        function getTranslation(key, ...args) {
+            const lang = translations[currentLang] || translations['en'];
+            const text = lang[key] || translations['en'][key];
+            if (typeof text === 'function') {
+                return text(...args);
+            }
+            return text;
+        }
+
+        // Initialize
+        function init() {
+            loadData();
+            setLanguage(currentLang, false); // Initialize UI with currentLang
+            renderFolders();
+            updateTotalNotes();
+        }
+
+        // NEW: Function to update all static UI text
+        function updateStaticUI() {
+            // Sidebar Header
+            document.getElementById('whyUsBtn').textContent = getTranslation('whyUsBtn');
+            // Toolbar
+            document.getElementById('newFolderBtn').textContent = getTranslation('newFolder');
+            document.getElementById('newNoteIconBtn').textContent = getTranslation('newNoteIcon');
+            // Topbar
+            document.getElementById('searchInput').placeholder = getTranslation('searchPlaceholder');
+            document.getElementById('totalNotesLabel').textContent = getTranslation('totalNotes');
+            // Initial Empty State
+            document.getElementById('initialEmptyStateText').textContent = getTranslation('emptyState');
+            
+            // Note Modal
+            document.getElementById('modalTitle').textContent = getTranslation('newNoteTitle');
+            document.getElementById('noteTitle').placeholder = getTranslation('noteTitlePlaceholder');
+            document.getElementById('noteContent').placeholder = getTranslation('editorPlaceholder');
+            document.getElementById('drawBtn').textContent = getTranslation('drawBtn');
+            document.getElementById('imageBtn').textContent = getTranslation('imageBtn');
+            document.getElementById('fileBtn').textContent = getTranslation('fileBtn');
+            document.getElementById('pasteBtn').textContent = getTranslation('pasteBtn');
+            document.getElementById('saveNoteBtn').textContent = getTranslation('saveNote');
+            document.getElementById('clearCanvasBtn').textContent = getTranslation('canvasClear');
+            document.getElementById('saveDrawingBtn').textContent = getTranslation('canvasSave');
+            document.getElementById('brushSizeLabel').textContent = getTranslation('brushSize');
+            document.getElementById('clipboardTitle').textContent = getTranslation('clipboardTitle');
+            document.getElementById('insertClipboardBtn').textContent = getTranslation('clipboardInsert');
+            document.getElementById('attachmentsTitle').textContent = getTranslation('attachmentsTitle');
+            
+            // Folder Modal
+            document.getElementById('newFolderTitle').textContent = getTranslation('newFolderTitle');
+            document.getElementById('folderName').placeholder = getTranslation('folderNamePlaceholder');
+            document.getElementById('chooseColorTitle').textContent = getTranslation('chooseColor');
+            document.getElementById('createFolderBtn').textContent = getTranslation('createFolder');
+
+            // Why Us Modal
+            document.getElementById('whyUsModalTitle').textContent = getTranslation('whyUsModalTitle');
+            document.getElementById('whyUsSubtitle').textContent = getTranslation('whyUsSubtitle');
+            document.getElementById('whyUsIntro').innerHTML = getTranslation('whyUsIntro');
+            document.getElementById('privacyTitle').textContent = getTranslation('privacyTitle');
+            document.getElementById('privacyText').innerHTML = getTranslation('privacyText');
+            document.getElementById('accountsTitle').textContent = getTranslation('accountsTitle');
+            document.getElementById('accountsText').textContent = getTranslation('accountsText');
+            document.getElementById('fastTitle').textContent = getTranslation('fastTitle');
+            document.getElementById('fastText').textContent = getTranslation('fastText');
+            document.getElementById('featuresTitle').textContent = getTranslation('featuresTitle');
+            document.getElementById('featuresText').textContent = getTranslation('featuresText');
+            document.getElementById('whyUsFooter').textContent = getTranslation('whyUsFooter');
+
+            // Set switcher value
+            document.getElementById('language-switcher').value = currentLang;
+        }
+
+        // NEW: Function to set and apply language
+        function setLanguage(langCode, shouldSave = true) {
+            currentLang = langCode;
+            updateStaticUI();
+            
+            // Re-render dynamic elements
+            renderFolders();
+            if (data.currentFolder) {
+                renderNotes(data.currentFolder);
+            } else {
+                // Re-render the initial empty state (handled by updateStaticUI, but keep this for clarity)
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <div class="empty-text">${getTranslation('emptyState')}</div>
+                    </div>
+                `;
+            }
+
+            if (shouldSave) {
+                saveData(); 
+            }
+        }
+
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            document.getElementById('themeToggle').textContent = newTheme === 'light' ? '🌙' : '☀️';
+            saveData();
+        }
+        
+        // NEW FUNCTIONS: Why Us Modal
+        function openWhyUsModal() {
+            updateStaticUI(); // Ensure translations are fresh when opening
+            document.getElementById('whyUsModal').classList.add('active');
+        }
+
+        function closeWhyUsModal() {
+            document.getElementById('whyUsModal').classList.remove('active');
+        }
+        // END NEW FUNCTIONS
+
+        // Update total notes count
+        function updateTotalNotes() {
+            let total = 0;
+            data.folders.forEach(folder => {
+                total += folder.notes.length;
+            });
+            document.getElementById('totalNotes').textContent = total;
+        }
+
+        // Clipboard functions
+        async function pasteFromClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    clipboardContent = text;
+                    document.getElementById('clipboardSection').style.display = 'block';
+                    document.getElementById('clipboardPreview').textContent = text.substring(0, 200) + (text.length > 200 ? '...' : '');
+                } else {
+                    alert(getTranslation('alertEmptyClipboard')); // Translated alert
+                }
+            } catch (err) {
+                alert(getTranslation('alertClipboard')); // Translated alert
+            }
+        }
+
+        function insertClipboard() {
+            const editor = document.getElementById('noteContent');
+            const currentContent = editor.value;
+            editor.value = currentContent + (currentContent ? '\n\n' : '') + clipboardContent;
+            document.getElementById('clipboardSection').style.display = 'none';
+        }
+
+        // Folders
+        function renderFolders() {
+            const container = document.getElementById('foldersContainer');
+            container.innerHTML = '';
+            
+            data.folders.forEach(folder => {
+                const item = document.createElement('div');
+                item.className = 'folder-item';
+                if (data.currentFolder === folder.id) item.classList.add('active');
+                item.innerHTML = `
+                    <div class="folder-icon" style="background: ${folder.color};">📁</div>
+                    <div class="folder-name">${folder.name}</div>
+                    <div class="folder-count">${folder.notes.length}</div>
+                `;
+                item.onclick = () => selectFolder(folder.id);
+                container.appendChild(item);
+            });
+        }
+
+        function selectFolder(id) {
+            data.currentFolder = id;
+            data.currentNote = null;
+            renderFolders();
+            renderNotes(id);
+            saveData();
+        }
+
+        function createFolder() {
+            document.getElementById('folderName').value = '';
+            // Reset color selection
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            const defaultColor = document.querySelector('.color-picker-container div');
+            defaultColor.classList.add('selected');
+            selectedColor = defaultColor.getAttribute('data-color');
+            
+            updateStaticUI(); // Ensure translations are fresh before opening
+            document.getElementById('folderModal').classList.add('active');
+        }
+
+        function closeFolderModal() {
+            document.getElementById('folderModal').classList.remove('active');
+        }
+
+        function selectColor(element) {
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedColor = element.getAttribute('data-color');
+        }
+
+        function saveFolderModal() {
+            const name = document.getElementById('folderName').value.trim();
+            if (!name) {
+                alert(getTranslation('alertEmptyFolder')); // Translated alert
+                return;
+            }
+
+            const newFolder = {
+                id: data.nextFolderId++,
+                name: name,
+                color: selectedColor,
+                notes: []
+            };
+
+            data.folders.push(newFolder);
+            closeFolderModal();
+            renderFolders();
+            saveData();
+        }
+
+        // Notes
+        function renderNotes(folderId) {
+            const contentArea = document.getElementById('contentArea');
+            const folder = data.folders.find(f => f.id === folderId);
+
+            if (!folder) {
+                contentArea.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <div class="empty-text">${getTranslation('folderNotFound')}</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (folder.notes.length === 0) {
+                contentArea.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">✨</div>
+                        <div class="empty-text">${getTranslation('noNotes')}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const grid = document.createElement('div');
+            grid.className = 'notes-grid';
+
+            folder.notes.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'note-card';
+                
+                const noteTitle = note.title || getTranslation('newNoteTitle');
+                const noteContent = note.content || getTranslation('editorPlaceholder');
+
+                card.innerHTML = `
+                    ${note.isBookmarked ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation();">⭐</button>` : ''}
+                    <h3 class="note-title">${noteTitle}</h3>
+                    <p class="note-preview">${noteContent.substring(0, 100)}...</p>
+                    <div class="note-meta">
+                        <span>📅 ${new Date(note.updatedAt).toLocaleDateString()}</span>
+                        <span class="note-badge" style="background: ${folder.color}1A; color: ${folder.color};">
+                            ${note.isBookmarked ? getTranslation('bookmarkedBadge') : getTranslation('noteBadge')}
+                        </span>
+                    </div>
+                `;
+                card.onclick = () => openNoteModal(note.id);
+                grid.appendChild(card);
+            });
+
+            contentArea.innerHTML = '';
+            contentArea.appendChild(grid);
+        }
+
+        function openNewNote() {
+            data.currentNote = null;
+            openNoteModal();
+        }
+
+        function openNoteModal(noteId = null) {
+            if (data.currentFolder === null) {
+                alert(getTranslation('alertNoFolder')); // Translated alert
+                return;
+            }
+
+            const isNew = noteId === null;
+            data.currentNote = noteId;
+
+            updateStaticUI(); // Ensure all static text is translated
+
+            let note = {
+                title: '',
+                content: '',
+                fontFamily: 'Arial',
+                fontSize: 16,
+                isBookmarked: false,
+                drawing: null,
+                attachments: []
+            };
+
+            if (!isNew) {
+                const folder = data.folders.find(f => f.id === data.currentFolder);
+                note = folder.notes.find(n => n.id === noteId);
+                if (!note) return; // Should not happen
+            }
+
+            document.getElementById('modalTitle').textContent = isNew ? getTranslation('newNoteTitle') : note.title || getTranslation('newNoteTitle');
+            document.getElementById('noteTitle').value = note.title;
+            document.getElementById('noteContent').value = note.content;
+            document.getElementById('fontFamily').value = note.fontFamily;
+            document.getElementById('fontSize').value = note.fontSize;
+            drawingData = note.drawing || null;
+            currentBookmark = note.isBookmarked || false;
+            
+            updateBookmarkButton();
+            renderAttachments(note.attachments);
+            
+            document.getElementById('canvasContainer').style.display = drawingData ? 'block' : 'none';
+            if (drawingData) {
+                setTimeout(() => loadDrawing(drawingData), 50); // Small delay for canvas to be visible
+            }
+            document.getElementById('clipboardSection').style.display = 'none';
+            document.getElementById('noteModal').classList.add('active');
+            updateEditorStyle(); // Apply font styles
+        }
+
+        function closeNoteModal() {
+            document.getElementById('noteModal').classList.remove('active');
+            // Re-render notes to show changes if any (e.g., if a note was saved)
+            if (data.currentFolder) {
+                renderNotes(data.currentFolder);
+            }
+            data.currentNote = null;
+        }
+
+        function updateEditorStyle() {
+            const editor = document.getElementById('noteContent');
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = document.getElementById('fontSize').value + 'px';
+            
+            editor.style.fontFamily = fontFamily;
+            editor.style.fontSize = fontSize;
+        }
+
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const content = document.getElementById('noteContent').value.trim();
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = parseInt(document.getElementById('fontSize').value);
+            const folder = data.folders.find(f => f.id === data.currentFolder);
+
+            if (!folder) {
+                alert(getTranslation('alertNoFolder')); // Translated alert
+                return;
+            }
+            if (!title) {
+                alert(getTranslation('alertEmptyTitle')); // Translated alert
+                return;
+            }
+
+            // Get current attachments from the grid (they might have been added in the modal)
+            const attachmentsGrid = document.getElementById('attachmentsGrid');
+            const currentAttachments = Array.from(attachmentsGrid.children).map(item => ({
+                name: item.querySelector('.attachment-name').textContent,
+                type: item.dataset.type,
+                dataUrl: item.dataset.data
+            }));
+
+
+            const newNoteData = {
+                title,
+                content,
+                fontFamily,
+                fontSize,
+                drawing: drawingData,
+                isBookmarked: currentBookmark,
+                attachments: currentAttachments, // Use the gathered attachments
+                updatedAt: new Date().toISOString()
+            };
+
+            if (data.currentNote === null) {
+                // New note
+                newNoteData.id = data.nextNoteId++;
+                newNoteData.createdAt = newNoteData.updatedAt;
+                folder.notes.push(newNoteData);
+            } else {
+                // Edit existing note
+                const noteIndex = folder.notes.findIndex(n => n.id === data.currentNote);
+                if (noteIndex !== -1) {
+                    folder.notes[noteIndex] = { ...folder.notes[noteIndex], ...newNoteData };
+                }
+            }
+            
+            saveData();
+            updateTotalNotes();
+
+            // Show save indicator (using translated text)
+            const saveIndicator = document.createElement('div');
+            saveIndicator.className = 'save-indicator';
+            saveIndicator.innerHTML = `✅ ${getTranslation('alertSaving')}`;
+            document.body.appendChild(saveIndicator);
+            setTimeout(() => saveIndicator.remove(), 1500);
+
+            closeNoteModal();
+        }
+
+        // Bookmark function
+        function toggleBookmark() {
+            currentBookmark = !currentBookmark;
+            updateBookmarkButton();
+        }
+
+        function updateBookmarkButton() {
+            const btn = document.getElementById('bookmarkBtn');
+            if (currentBookmark) {
+                btn.classList.add('bookmarked');
+                btn.innerHTML = getTranslation('bookmarkedBtn'); // Translated
+            } else {
+                btn.classList.remove('bookmarked');
+                btn.innerHTML = getTranslation('bookmarkBtn'); // Translated
+            }
+        }
+
+        // Attachments
+        function addImage() {
+            const files = document.getElementById('imageUpload').files;
+            const note = data.currentNote !== null ? 
+                data.folders.find(f => f.id === data.currentFolder).notes.find(n => n.id === data.currentNote) :
+                { attachments: [] }; // Mock note for a new note, attachments will be saved on saveNote
+
+            if (!note) return;
+
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    addAttachment(file.name, 'image', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addFile() {
+            const files = document.getElementById('fileUpload').files;
+            const note = data.currentNote !== null ? 
+                data.folders.find(f => f.id === data.currentFolder).notes.find(n => n.id === data.currentNote) :
+                { attachments: [] }; // Mock note for a new note, attachments will be saved on saveNote
+
+            if (!note) return;
+
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    addAttachment(file.name, getFileType(file.name), e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'].includes(ext)) return 'image';
+            if (['mp3', 'wav', 'ogg', 'm4a'].includes(ext)) return 'audio';
+            if (['mp4', 'avi', 'mov', 'webm', 'mkv'].includes(ext)) return 'video';
+            if (['exe', 'msi', 'app'].includes(ext)) return 'executable';
+            if (['pdf', 'doc', 'docx', 'txt', 'rtf'].includes(ext)) return 'document';
+            if (['zip', 'rar', '7z', 'tar'].includes(ext)) return 'archive';
+            return 'file';
+        }
+
+        function getAttachmentIcon(type) {
+            const icons = {
+                image: '🖼️',
+                audio: '🎵',
+                video: '🎬',
+                document: '📄',
+                archive: '📦',
+                executable: '⚙️',
+                file: '📎'
+            };
+            return icons[type] || '📎';
+        }
+
+
+        function addAttachment(name, type, dataUrl) {
+            const grid = document.getElementById('attachmentsGrid');
+
+            const item = document.createElement('div');
+            item.className = 'attachment-item';
+            item.dataset.type = type;
+            item.dataset.data = dataUrl;
+            
+            const icon = getAttachmentIcon(type);
+            
+            // Allow deletion directly in the modal for unsaved/new notes as well
+            item.innerHTML = `
+                <div style="position: relative;">
+                    <button onclick="event.stopPropagation(); deleteAttachmentElement(this)" style="position: absolute; top: -10px; right: -10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">×</button>
+                    <div class="attachment-icon">${icon}</div>
+                </div>
+                <div class="attachment-name">${name}</div>
+            `;
+            item.onclick = () => viewAttachment(dataUrl, name, type);
+            grid.appendChild(item);
+
+            // If the note is already saved, update the in-memory data immediately
+            if (data.currentNote !== null) {
+                const folder = data.folders.find(f => f.id === data.currentFolder);
+                const note = folder.notes.find(n => n.id === data.currentNote);
+                if (note) {
+                    note.attachments.push({ name, type, dataUrl });
+                    saveData();
+                }
+            }
+        }
+
+        function deleteAttachmentElement(button) {
+            if (!confirm(getTranslation('alertDeleteAttachment'))) return; // Translated confirm
+            const item = button.closest('.attachment-item');
+            const grid = item.parentNode;
+            const index = Array.from(grid.children).indexOf(item);
+
+            // Remove from the DOM
+            item.remove();
+
+            // If the note is already saved, also remove from the in-memory data
+            if (data.currentNote !== null) {
+                const folder = data.folders.find(f => f.id === data.currentFolder);
+                const note = folder.notes.find(n => n.id === data.currentNote);
+                if (note && note.attachments) {
+                    note.attachments.splice(index, 1);
+                    saveData();
+                }
+            }
+        }
+
+
+        function renderAttachments(attachments) {
+            const grid = document.getElementById('attachmentsGrid');
+            grid.innerHTML = attachments.map((att, index) => `
+                <div class="attachment-item" data-type="${att.type}" data-data="${att.dataUrl}" onclick="viewAttachment('${att.dataUrl}', '${att.name}', '${att.type}')">
+                    <div style="position: relative;">
+                        <button onclick="event.stopPropagation(); deleteAttachmentElement(this)" style="position: absolute; top: -10px; right: -10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">×</button>
+                        <div class="attachment-icon">${getAttachmentIcon(att.type)}</div>
+                    </div>
+                    <div class="attachment-name">${att.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function viewAttachment(dataUrl, name, type) {
+            if (type.startsWith('image')) {
+                const newWindow = window.open();
+                newWindow.document.write(`<img src="${dataUrl}" alt="${name}" style="max-width: 100%; display: block;">`);
+            } else {
+                // For other files, you can just download them
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Drawing Canvas functions (no translation needed here except for the status/toolbar)
+        function setupCanvas() {
+            canvas = document.getElementById('drawingCanvas');
+            ctx = canvas.getContext('2d');
+            // Set initial canvas dimensions
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            // Event listeners
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mousemove', draw);
+            // Touch events
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
+            canvas.addEventListener('touchend', stopDrawing);
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
+            
+            // Color and Size listeners
+            document.getElementById('drawColor').addEventListener('input', (e) => ctx.strokeStyle = e.target.value);
+            document.getElementById('drawSize').addEventListener('input', (e) => ctx.lineWidth = e.target.value);
+        }
+
+        function toggleDrawing() {
+            const container = document.getElementById('canvasContainer');
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+                drawingData = canvas.toDataURL(); // Save before hiding
+            } else {
+                container.style.display = 'block';
+                // Need to resize canvas on display if it was hidden
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                loadDrawing(drawingData); // Load previous drawing if available
+            }
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX || e.clientX - canvas.getBoundingClientRect().left, e.offsetY || e.clientY - canvas.getBoundingClientRect().top);
+            ctx.strokeStyle = document.getElementById('drawColor').value;
+            ctx.lineWidth = document.getElementById('drawSize').value;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            ctx.lineTo(e.offsetX || e.clientX - canvas.getBoundingClientRect().left, e.offsetY || e.clientY - canvas.getBoundingClientRect().top);
+            ctx.stroke();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawingData = null;
+        }
+
+        function loadDrawing(dataUrl) {
+            if (dataUrl) {
+                const img = new Image();
+                img.onload = function() {
+                    // Temporarily set canvas size to image size to avoid distortion during load
+                    const originalWidth = canvas.width;
+                    const originalHeight = canvas.height;
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Resize canvas back to its original responsive size
+                    canvas.width = originalWidth;
+                    canvas.height = originalHeight;
+                    // Redraw the image scaled to fit the new canvas size
+                    ctx.drawImage(img, 0, 0, originalWidth, originalHeight);
+
+                    // Re-apply drawing styles
+                    ctx.strokeStyle = document.getElementById('drawColor').value;
+                    ctx.lineWidth = document.getElementById('drawSize').value;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                };
+                img.src = dataUrl;
+            } else {
+                clearCanvas();
+            }
+        }
+
+        function saveDrawing() {
+            drawingData = canvas.toDataURL();
+            document.getElementById('drawingStatus').textContent = `(${getTranslation('alertSaving')}!)`; // Translated status
+            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1500);
+        }
+
+        // Search function
+        function searchNotes() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const contentArea = document.getElementById('contentArea');
+            let allNotes = [];
+            // Collect all notes from all folders
+            data.folders.forEach(folder => {
+                folder.notes.forEach(note => {
+                    allNotes.push({ ...note, folderColor: folder.color, folderId: folder.id });
+                });
+            });
+
+            const filteredNotes = allNotes.filter(note => 
+                note.title.toLowerCase().includes(searchTerm) || 
+                note.content.toLowerCase().includes(searchTerm)
+            );
+
+            if (searchTerm === '') {
+                // If search is empty, show the current folder or empty state
+                if (data.currentFolder) {
+                    renderNotes(data.currentFolder);
+                } else {
+                     document.getElementById('contentArea').innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📝</div>
+                            <div class="empty-text">${getTranslation('emptyState')}</div>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            if (filteredNotes.length === 0) {
+                contentArea.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div class="empty-text">${getTranslation('noNotesFound', searchTerm)}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Render search results
+            contentArea.innerHTML = `<div class="notes-grid">${filteredNotes.map(note => `
+                <div class="note-card" onclick="selectFolder(${note.folderId}); openNoteModal(${note.id});">
+                    ${note.isBookmarked ? '<button class="bookmark-btn bookmarked" onclick="event.stopPropagation();">⭐</button>' : ''}
+                    <h3 class="note-title">${note.title}</h3>
+                    <p class="note-preview">${note.content.substring(0, 100)}...</p>
+                    <div class="note-meta">
+                        <span>📅 ${new Date(note.updatedAt).toLocaleDateString()}</span>
+                        <span class="note-badge" style="background: ${note.folderColor}1A; color: ${note.folderColor};">
+                            ${note.isBookmarked ? getTranslation('bookmarkedBadge') : getTranslation('noteBadge')}
+                        </span>
+                    </div>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        // Local Storage
+        function saveData() {
+            const saveObject = {
+                folders: data.folders,
+                currentFolder: data.currentFolder,
+                nextFolderId: data.nextFolderId,
+                nextNoteId: data.nextNoteId,
+                theme: document.body.getAttribute('data-theme'),
+                language: currentLang // NEW: Save current language
+            };
+            localStorage.setItem('cloudNotesData', JSON.stringify(saveObject));
+        }
+
+        function loadData() {
+            try {
+                const storedData = localStorage.getItem('cloudNotesData');
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    data.folders = parsed.folders;
+                    data.currentFolder = parsed.currentFolder;
+                    data.nextFolderId = parsed.nextFolderId;
+                    data.nextNoteId = parsed.nextNoteId;
+                    
+                    if (parsed.theme) {
+                        document.body.setAttribute('data-theme', parsed.theme);
+                        document.getElementById('themeToggle').textContent = 
+                            parsed.theme === 'light' ? '🌙' : '☀️';
+                    }
+                    
+                    // NEW: Load and set language
+                    if (parsed.language) {
+                        currentLang = parsed.language;
+                    }
+
+                    console.log(getTranslation('alertLoadingData')); // Translated console message
+                } else if (window.appData) {
+                    // Fallback to window data
+                    data.folders = window.appData.folders;
+                    data.currentFolder = window.appData.currentFolder;
+                    data.nextFolderId = window.appData.nextFolderId;
+                    data.nextNoteId = window.appData.nextNoteId;
+                    
+                    if (window.appData.theme) {
+                        document.body.setAttribute('data-theme', window.appData.theme);
+                        document.getElementById('themeToggle').textContent = 
+                            window.appData.theme === 'light' ? '🌙' : '☀️';
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+            }
+        }
+
+        // Initialize app
+        init();
+    </script>
+</body>
+</html>
+                            
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CloudNotes v2.3 - Ultimate Edition</title>
     
     <style>
