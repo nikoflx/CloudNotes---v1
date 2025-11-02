@@ -1555,6 +1555,19 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="licenseModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <div class="modal-title">🔑 Enter License Key</div>
+                </div>
+            <div class="modal-body" style="text-align: center;">
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Please enter your license key to unlock CloudeNotes v2.2</p>
+                <input type="password" class="note-input" id="licenseInput" placeholder="Enter key...">
+                
+                <button class="btn btn-success" style="margin-top: 20px; width: 100%; font-size: 16px;" onclick="checkLicense()">Activate License</button>
+            </div>
+        </div>
+    </div>
     <script>
         
         // --- DATA STRUCTURE ---
@@ -1592,6 +1605,9 @@
             // Set initial sort order on load
             document.getElementById('sortSelect').value = data.sortOrder;
             
+            // NEW: Check license status on load
+            checkLicenseStatus();
+            
             // Auto-select first folder if none is selected
             if (!data.currentFolder && data.folders.length > 0) {
                  selectFolder(data.folders[0].id);
@@ -1608,6 +1624,7 @@
                 localStorage.setItem('cloudNotesData', JSON.stringify(data));
                 // Save the current theme preference
                 localStorage.setItem('theme', document.body.getAttribute('data-theme'));
+                // Note: License key is saved separately, not part of the 'data' blob
             } catch (e) {
                 console.error("Error saving data to localStorage:", e);
                 alert("Error saving data. Your browser storage may be full or disabled.");
@@ -1649,6 +1666,50 @@
                 console.error('Error loading data:', e);
             }
         }
+        
+        // --- NEW: LICENSE FUNCTIONS ---
+        function checkLicenseStatus() {
+            const isRedeemed = localStorage.getItem('cloudNotesLicenseRedeemed') === 'true';
+            if (!isRedeemed) {
+                // If key is not redeemed, show the license modal
+                document.getElementById('licenseModal').classList.add('active');
+            }
+        }
+
+        function checkLicense() {
+            const inputKey = document.getElementById('licenseInput').value;
+            const correctKey = 'CloudNotesq3vhjkq8';
+
+            if (inputKey === correctKey) {
+                // 1. Set the flag in localStorage so it doesn't ask again
+                localStorage.setItem('cloudNotesLicenseRedeemed', 'true');
+                
+                // 2. Close the modal
+                document.getElementById('licenseModal').classList.remove('active');
+                
+                // 3. Show the "Redeemed" message (big, in the center)
+                const indicator = document.createElement('div');
+                indicator.className = 'save-indicator';
+                indicator.style.background = 'var(--success)';
+                indicator.style.fontSize = '24px'; // Make it "big"
+                indicator.style.padding = '30px';
+                indicator.style.top = '50%';
+                indicator.style.right = '50%';
+                indicator.style.transform = 'translate(50%, -50%)'; // Center it
+                indicator.style.zIndex = '20000'; // Ensure it's on top
+                indicator.innerHTML = `✅ License Key Redeemed!`;
+                document.body.appendChild(indicator);
+                
+                // Remove the message after a few seconds
+                setTimeout(() => indicator.remove(), 3000);
+
+            } else {
+                // Show an error
+                alert('Invalid License Key. Please try again.');
+                document.getElementById('licenseInput').value = ''; // Clear input
+            }
+        }
+        // --- END NEW: LICENSE FUNCTIONS ---
         
         // --- RESTORED: EXPORT/IMPORT FUNCTIONS ---
         function exportData() {
@@ -2488,6 +2549,7 @@
         // --- RESTORED: DRAWING CANVAS ---
         function setupCanvas() {
             canvas = document.getElementById('drawingCanvas');
+            if (!canvas) return; // Exit if canvas not found
             ctx = canvas.getContext('2d');
             
             // Set initial dimensions based on CSS size
@@ -2512,13 +2574,15 @@
             const container = document.getElementById('canvasContainer');
             if (container.style.display === 'block') {
                 container.style.display = 'none';
-                drawingData = canvas.toDataURL(); // Save drawing when closing canvas UI
+                if(canvas) drawingData = canvas.toDataURL(); // Save drawing when closing canvas UI
             } else {
                 container.style.display = 'block';
                 // Reset canvas size before loading to ensure correct dimensions
-                canvas.width = canvas.offsetWidth;
-                canvas.height = 400; 
-                loadDrawing(drawingData);
+                if(canvas) {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = 400; 
+                    loadDrawing(drawingData);
+                }
             }
         }
 
@@ -2557,7 +2621,7 @@
         function clearCanvas(confirmPrompt = true) {
             if (confirmPrompt && !confirm('Are you sure you want to clear the drawing?')) return;
             
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if(ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawingData = null;
             document.getElementById('drawingStatus').textContent = 'Cleared!';
             setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1000);
@@ -2565,7 +2629,7 @@
         
         function saveDrawing() {
             // This is just a temporary save to the current session variable
-            drawingData = canvas.toDataURL();
+            if(canvas) drawingData = canvas.toDataURL();
             document.getElementById('drawingStatus').textContent = 'Drawing Saved to Note!';
             setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1500);
             // Actual save to localStorage happens in saveNote()
@@ -2573,6 +2637,7 @@
 
         function loadDrawing(dataUrl) {
             // Reload the drawing onto the canvas
+            if (!ctx) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if (dataUrl) {
                 const img = new Image();
