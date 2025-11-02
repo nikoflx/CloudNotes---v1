@@ -3,226 +3,79 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>License Lock — Test</title>
+<title>License Lock — Client Only</title>
 <style>
-  :root{--bg:#071021;--card:#0f1720;--muted:#9aa4b2;--accent:#22c55e}
-  html,body{height:100%;margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:#fff}
-  #site-content{min-height:100vh;transition:filter .25s ease}
-  .locked #site-content{filter:blur(6px) saturate(0.9) brightness(0.85);pointer-events:none;user-select:none;touch-action:none}
-  #license-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:99999;background:rgba(2,6,23,0.72);backdrop-filter:blur(4px)}
-  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:28px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.6);width:420px;max-width:92%;border:1px solid rgba(255,255,255,0.04)}
-  .card h2{margin:0 0 6px;font-size:20px}
-  .card p{margin:0 0 14px;color:var(--muted);font-size:13px}
-  .input{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-bottom:12px;font-size:15px}
-  .btn{display:inline-block;width:100%;padding:11px;border-radius:9px;border:none;background:var(--accent);color:#062017;font-weight:600;cursor:pointer}
-  .msg{margin-top:10px;font-size:13px;height:20px}
-  pre.debug{background:#0b1220;color:#9aa4b2;padding:10px;border-radius:8px;margin-top:12px;max-height:120px;overflow:auto;font-size:12px}
+body{margin:0;font-family:Arial,sans-serif;background:#071021;color:#fff}
+#site-content{min-height:100vh;transition:filter .25s ease}
+.locked #site-content{filter:blur(6px);pointer-events:none;user-select:none}
+#license-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;background:rgba(0,0,0,0.7)}
+.card{background:#0f1720;padding:28px;border-radius:12px;width:360px;text-align:center}
+.input{width:100%;padding:12px;margin-bottom:12px;border-radius:6px;border:none;font-size:15px}
+.btn{padding:11px;width:100%;border:none;border-radius:8px;background:#22c55e;color:#062017;font-weight:600;cursor:pointer}
+.msg{margin-top:10px;height:20px;font-size:13px;color:#ff4c4c}
+.msg.success{color:#9be7b5}
 </style>
 </head>
 <body>
 <div id="site-content">
-  <header style="padding:20px;"><h1>My Awesome App — Protected</h1></header>
-  <main style="padding:20px;">
-    <p>This content will be blurred & blocked until you unlock the page with a valid license key.</p>
-    <button onclick="alert('This button works only when unlocked')">Test Button</button>
-  </main>
+  <h1 style="padding:20px;">My App Content</h1>
+  <p style="padding:20px;">This is the site content. It’s blurred and blocked until a valid license key is entered.</p>
 </div>
 
-<div id="license-modal" role="dialog" aria-modal="true" aria-labelledby="license-title">
-  <div class="card" role="document">
-    <h2 id="license-title">Enter license key to unlock</h2>
-    <p>Paste your license key. If you want server validation, set <code>API</code> below to your license server URL.</p>
-    <input id="licenseInput" class="input" placeholder="License Key" autocomplete="off" aria-label="License key" />
+<div id="license-modal">
+  <div class="card">
+    <h2>Enter License Key</h2>
+    <input id="licenseInput" class="input" placeholder="License Key" />
     <button id="activateBtn" class="btn">Activate</button>
-    <div id="statusMsg" class="msg" aria-live="polite"></div>
-
-    <details style="margin-top:12px;color:var(--muted)">
-      <summary>Debug / advanced</summary>
-      <div style="font-size:13px;margin-top:8px;color:var(--muted)">
-        Server API: <code id="apiUrl"></code><br>
-        Try keys: <code>CloudNotesq3vhjkq8</code> / <code>Helloworldwgvjxs8</code> / <code>Nikoflxrth9s8gyr01</code>
-      </div>
-      <pre id="debug" class="debug"></pre>
-    </details>
+    <div id="statusMsg" class="msg"></div>
   </div>
 </div>
 
 <script>
-/*
-  HOW TO USE:
-  - To use server validation, set API to your full endpoint, e.g.
-      const API = 'https://yourdomain.com/api/validate-key';
-    Make sure your server:
-      * is running
-      * returns JSON { ok:true, token: "..." } on success
-      * allows CORS from your site (or use same origin)
-  - If API is empty or null, client-only fallback will validate locally using the three keys.
-*/
+const body = document.body;
+const modal = document.getElementById('license-modal');
+const input = document.getElementById('licenseInput');
+const btn = document.getElementById('activateBtn');
+const status = document.getElementById('statusMsg');
 
-(async function(){
-  // ========== CONFIG ==========
-  // If empty string or null -> client-only fallback (works offline).
-  // If you set to a URL, the script will try server validation.
-  const API = ''; // <-- EMPTY => client-only. Put your server URL string to enable server mode.
-  const TOKEN_KEY = 'my_app_license_token_v1';
+body.classList.add('locked');
 
-  // elements
-  const body = document.body;
-  const modal = document.getElementById('license-modal');
-  const input = document.getElementById('licenseInput');
-  const btn = document.getElementById('activateBtn');
-  const status = document.getElementById('statusMsg');
-  const debug = document.getElementById('debug');
-  const apiUrlEl = document.getElementById('apiUrl');
+// Plain valid keys
+const validKeys = [
+  "CloudNotesq3vhjkq8",
+  "Helloworldwgvjxs8",
+  "Nikoflxrth9s8gyr01"
+];
 
-  apiUrlEl.innerText = API || '(client-only fallback)';
+btn.addEventListener('click', checkLicense);
+input.addEventListener('keydown', e=>{ if(e.key==='Enter') checkLicense(); });
 
-  // client-side valid keys (obfuscated base64 for casual concealment, but working here)
-  const obfKeys = [
-    'Q2xvdURvdGVzcTN2aGprcTh=', // CloudNotesq3vhjkq8
-    'SGVsbG93b3JsZHdndmp4czg=', // Helloworldwgvjxs8
-    'Tmlrb2ZseHJ0aDlzOHnyeTAx'  // Nikoflxrth9s8gyr01
-  ];
-  const validKeys = obfKeys.map(s => atob(s));
-
-  // helper log
-  function dlog(...args){
-    console.log(...args);
-    try {
-      debug.innerText += args.map(a => (typeof a === 'string' ? a : JSON.stringify(a, null, 2))).join(' ') + '\n';
-      debug.scrollTop = debug.scrollHeight;
-    } catch(e){}
+function checkLicense(){
+  const key = input.value.trim();
+  if(validKeys.includes(key)){
+    status.classList.add('success');
+    status.textContent = 'License valid! Unlocking... ✅';
+    setTimeout(()=>{ 
+      body.classList.remove('locked');
+      modal.style.display='none';
+      startYourApp();
+    }, 400);
+  } else {
+    status.classList.remove('success');
+    status.textContent = 'Invalid license key ❌';
   }
+}
 
-  // Lock page visually
-  body.classList.add('locked');
-
-  // focus trap & keyboard protections (deterrent only)
-  input.focus();
-  modal.addEventListener('keydown', e => {
-    if (e.key === 'Tab') {
-      // simple trap: keep focus on input and button only
-      const focusables = [input, btn];
-      const idx = focusables.indexOf(document.activeElement);
-      if (e.shiftKey) {
-        if (idx <= 0) { e.preventDefault(); focusables[focusables.length-1].focus(); }
-      } else {
-        if (idx === focusables.length-1) { e.preventDefault(); focusables[0].focus(); }
-      }
-    }
-    // deter common shortcuts
-    if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i')) {
-      e.preventDefault();
-      dlog('Blocked shortcut:', e.key);
-    }
-  });
-
-  // Try existing token (fast path)
-  const existing = localStorage.getItem(TOKEN_KEY);
-  if (existing) {
-    dlog('Found token in localStorage:', existing);
-    // If you use server tokens, you should verify them with /verify-token.
-    // For convenience we assume it's fine here.
-    unlockApp();
-    return;
-  }
-
-  // wire up
-  btn.addEventListener('click', tryActivate);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') tryActivate(); });
-
-  async function tryActivate(){
-    status.style.color = '';
-    status.textContent = '';
-    const key = input.value.trim();
-    if (!key) { status.style.color = '#ffb4b4'; status.textContent = 'Enter a license key.'; input.focus(); return; }
-
-    btn.disabled = true;
-    btn.textContent = 'Checking...';
-    dlog('Attempting activation for key:', key);
-
-    // If API set -> try server validation
-    if (API) {
-      try {
-        dlog('Calling server API:', API);
-        const resp = await fetch(API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key })
-        });
-        dlog('Network response status:', resp.status);
-        const data = await resp.json().catch((err)=>{ dlog('Invalid JSON response', err); return null; });
-        dlog('Server response:', data);
-
-        if (!resp.ok) {
-          // Provide more helpful messaging for common problems
-          if (resp.status === 0) {
-            status.textContent = 'Network error (status 0). Server unreachable or CORS blocked.';
-            dlog('Status 0: likely server not running or blocked by CORS.');
-          } else if (resp.status === 401 || resp.status === 400) {
-            status.textContent = data?.msg || 'Invalid key';
-          } else {
-            status.textContent = data?.msg || 'Server error: ' + resp.status;
-          }
-          status.style.color = '#ffb4b4';
-        } else if (data && data.ok && data.token) {
-          localStorage.setItem(TOKEN_KEY, data.token);
-          status.style.color = '#9be7b5';
-          status.textContent = 'License valid — unlocking...';
-          dlog('Stored token, unlocking.');
-          setTimeout(unlockApp, 650);
-        } else {
-          status.style.color = '#ffb4b4';
-          status.textContent = data?.msg || 'Invalid response from server.';
-        }
-      } catch (err) {
-        dlog('Fetch error:', err);
-        status.style.color = '#ffb4b4';
-        status.textContent = 'Network error. Check console for details.';
-        // Common causes: server down, wrong URL, CORS blocked, HTTP->HTTPS mixed content, blocked by browser extension
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Activate';
-      }
-      return;
-    }
-
-    // CLIENT-ONLY fallback: validate locally with provided keys (works offline)
-    try {
-      if (validKeys.includes(key)) {
-        localStorage.setItem(TOKEN_KEY, 'client-only-' + Date.now());
-        status.style.color = '#9be7b5';
-        status.textContent = 'Valid key (client-only) — unlocking...';
-        dlog('Client-only unlocked with key:', key);
-        setTimeout(unlockApp, 450);
-      } else {
-        status.style.color = '#ffb4b4';
-        status.textContent = 'Invalid license key';
-        dlog('Client-only invalid key:', key);
-      }
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Activate';
-    }
-  }
-
-  function unlockApp(){
-    body.classList.remove('locked');
-    modal.style.display = 'none';
-    startYourApp();
-  }
-
-  function startYourApp(){
-    dlog('App started (licensed). Put your app init code here.');
-    // YOUR APP: initialize here or call your functions that were previously blocked
-  }
-
-  // quick user tips in debug panel
-  dlog('Debug ready. If you set API, make sure: server running, URL correct, CORS allows this origin, endpoint responds with JSON {ok:true,token:"..."} on success.');
-})();
+function startYourApp(){
+  console.log('App started! License verified.');
+  // put your real website/app code here
+}
 </script>
 </body>
 </html>
+
+
+
 
 
 
