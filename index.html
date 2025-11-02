@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudNotes v2.3 - Ultimate Edition</title>
-    
+    <title>CloudNotes v1</title>
     <style>
-        /* CSS Reset and Box Model */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Color Variables (Light & Dark Theme) */
         :root {
             --bg-primary: #fafafa;
             --bg-secondary: #ffffff;
@@ -45,7 +42,6 @@
             --shadow-hover: rgba(129, 140, 248, 0.3);
         }
 
-        /* Base Body Styling */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
             background: var(--bg-primary);
@@ -60,9 +56,7 @@
             height: 100vh;
         }
 
-        /* ===================================== */
-        /* SIDEBAR STYLES            */
-        /* ===================================== */
+        /* Sidebar */
         .sidebar {
             width: 300px;
             background: var(--bg-secondary);
@@ -71,7 +65,6 @@
             flex-direction: column;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 2px 0 10px var(--shadow);
-            flex-shrink: 0;
         }
 
         .sidebar-header {
@@ -94,10 +87,19 @@
             font-size: 13px;
             color: var(--text-secondary);
             font-weight: 500;
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* Adjusted margin */
         }
         
-        .why-us-btn {
+        /* New Action Group for buttons */
+        .sidebar-actions-group {
+            display: flex;
+            gap: 10px; /* Space between the two buttons */
+            margin-bottom: 15px; /* Margin below the group */
+        }
+
+        /* New 'Why Us?' and 'Pricing' Button Style */
+        .why-us-btn, .pricing-btn {
+            flex: 1; /* Make both buttons take equal space */
             display: block;
             width: 100%;
             padding: 10px 18px;
@@ -114,27 +116,25 @@
             text-align: center;
         }
 
-        .why-us-btn:hover {
+        .why-us-btn:hover, .pricing-btn:hover {
             background: var(--accent);
             color: var(--bg-secondary);
             transform: translateY(-2px);
             box-shadow: 0 4px 16px var(--shadow-hover);
         }
 
-        .why-us-btn:active {
+        .why-us-btn:active, .pricing-btn:active {
             transform: translateY(0);
         }
+        /* End New Button Styles */
 
-        /* Toolbar in Sidebar */
         .toolbar {
             padding: 20px;
             display: flex;
             gap: 12px;
             border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
         }
 
-        /* General Button Styles */
         .btn {
             padding: 10px 18px;
             border: none;
@@ -146,7 +146,6 @@
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px var(--shadow);
-            flex-shrink: 0;
         }
 
         .btn:hover {
@@ -179,37 +178,11 @@
         .btn-warning:hover {
             background: #d97706;
         }
-        
-        /* NEW: Trash Folder Styles */
-        .folder-item.trash-item {
-            border: 2px solid var(--danger) !important;
-            background: var(--danger) !important;
-            color: white !important;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
-        }
-        
-        .folder-item.trash-item:hover {
-            background: #cc3333 !important;
-        }
-        
-        .folder-item.trash-item .folder-icon {
-            background: white !important;
-            color: var(--danger) !important;
-        }
-        /* End NEW: Trash Folder Styles */
 
-
-        /* Folders Container and Scrollbar */
         .folders-container {
             flex: 1;
             overflow-y: auto;
             padding: 12px;
-        }
-        
-        .system-folders {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 12px;
-            margin-bottom: 12px;
         }
 
         .folders-container::-webkit-scrollbar {
@@ -221,7 +194,6 @@
             border-radius: 10px;
         }
 
-        /* Folder Item Styling */
         .folder-item {
             padding: 14px 18px;
             margin: 6px 0;
@@ -246,12 +218,6 @@
             color: white;
             box-shadow: 0 4px 12px var(--shadow-hover);
             transform: translateX(6px);
-            border-color: var(--accent);
-        }
-        
-        .folder-item.active:not(.trash-item) .folder-icon {
-            background: white !important;
-            color: var(--accent) !important;
         }
 
         .folder-icon {
@@ -264,7 +230,6 @@
             font-size: 20px;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
         }
 
         .folder-item:hover .folder-icon {
@@ -275,9 +240,6 @@
             flex: 1;
             font-weight: 600;
             font-size: 15px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .folder-count {
@@ -287,19 +249,15 @@
             padding: 4px 10px;
             border-radius: 12px;
             font-weight: 600;
-            flex-shrink: 0;
         }
 
-        /* ===================================== */
-        /* MAIN CONTENT               */
-        /* ===================================== */
+        /* Main Content */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Bar (Search, Stats, Theme Toggle) */
         .topbar {
             padding: 20px 40px;
             background: var(--bg-secondary);
@@ -308,13 +266,10 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px var(--shadow);
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
         .search-bar {
             flex: 1;
-            min-width: 250px;
             max-width: 500px;
             position: relative;
         }
@@ -344,33 +299,33 @@
             font-size: 18px;
             color: var(--text-secondary);
         }
-        
-        /* NEW: Sort Bar Style */
-        .sort-bar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-        
-        .sort-bar select {
-            padding: 10px 14px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        /* End NEW: Sort Bar Style */
 
         .topbar-actions {
             display: flex;
             gap: 12px;
             align-items: center;
-            flex-shrink: 0;
         }
+        
+        /* START Language Switcher Style */
+        .language-switcher {
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px; 
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .language-switcher:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+        /* END Language Switcher Style */
 
         .theme-toggle {
             padding: 12px 16px;
@@ -387,7 +342,6 @@
             border-color: var(--accent);
         }
 
-        /* Content Area and Note Grid */
         .content-area {
             flex: 1;
             overflow-y: auto;
@@ -410,7 +364,6 @@
             gap: 24px;
         }
 
-        /* Note Card Styling - MODIFIED FOR LEFT COLOR BAR */
         .note-card {
             background: var(--bg-secondary);
             border-radius: 16px;
@@ -421,52 +374,24 @@
             animation: fadeIn 0.4s ease;
             position: relative;
             overflow: hidden;
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
         }
-        
-        /* NEW: Left Color Indicator Bar */
+
         .note-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 5px; /* Width of the color bar */
-            height: 100%;
-            /* Use a custom CSS property to set the color dynamically */
-            background: var(--note-indicator-color, transparent); 
-            transition: background 0.3s ease;
-            z-index: 5;
-            box-shadow: 2px 0 6px var(--shadow); 
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-        .note-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 32px var(--shadow);
-            /* Border color now based on indicator color or accent */
-            border-color: var(--note-indicator-color, var(--accent)); 
-        }
-        
-        /* NEW: Space Theme Style */
-        .note-card.space-bg {
-            background: #0D0F16 !important; 
-            color: #f5f5f5 !important;
-            border-color: #3b82f6 !important;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        .note-card:hover::before {
+            transform: scaleX(1);
         }
 
-        .note-card.space-bg .note-title,
-        .note-card.space-bg .note-meta {
-            color: #f5f5f5 !important;
-        }
-
-        .note-card.space-bg .note-preview {
-            color: #a0a0a0 !important;
-        }
-
-
-        /* Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -478,10 +403,16 @@
             }
         }
 
+        .note-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px var(--shadow);
+            border-color: var(--accent);
+        }
+
         .note-title {
             font-size: 20px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--text-primary);
         }
 
@@ -493,42 +424,17 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 12px;
-            flex-grow: 1;
+            margin-bottom: 16px;
         }
-        
-        /* NEW: Tags Display on Card */
-        .note-tags-display {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-        
-        .note-tag-display {
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        /* End NEW: Tags Display */
 
         .note-meta {
-            padding-top: 10px;
+            padding-top: 16px;
             border-top: 1px solid var(--border);
             font-size: 13px;
             color: var(--text-secondary);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: auto;
-        }
-        
-        .trash-note-meta {
-            justify-content: flex-start;
-            gap: 15px;
         }
 
         .note-badge {
@@ -538,51 +444,9 @@
             border-radius: 8px;
             font-weight: 600;
             font-size: 12px;
-            flex-shrink: 0;
-        }
-        
-        /* Bookmark Button on Card */
-        .bookmark-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            filter: grayscale(1);
-            z-index: 10;
         }
 
-        .bookmark-btn.bookmarked {
-            filter: grayscale(0);
-            transform: scale(1.2);
-            color: var(--warning);
-        }
-        
-        /* Save/Action Indicator */
-        .save-indicator {
-            padding: 12px 20px;
-            background: var(--success);
-            color: white;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            animation: fadeIn 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-        }
-
-
-        /* ===================================== */
-        /* MODAL STYLES             */
-        /* ===================================== */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -613,7 +477,6 @@
             flex-direction: column;
             animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transition: background 0.4s, color 0.4s; /* For note color change */
         }
 
         @keyframes slideUp {
@@ -634,7 +497,6 @@
             justify-content: space-between;
             align-items: center;
             background: var(--accent-light);
-            flex-shrink: 0;
         }
 
         .modal-title {
@@ -655,7 +517,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
         }
 
         .close-btn:hover {
@@ -679,82 +540,148 @@
             border-radius: 10px;
         }
         
-        /* ===================================== */
-        /* NOTE EDITOR STYLES         */
-        /* ===================================== */
-        
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-        }
-        
-        .modal-content[style*="0D0F16"] .section-title {
-            color: #f5f5f5 !important;
+        /* Why Us Section Styles */
+        .why-us-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
         }
 
-
-        /* NEW: Note Color Picker */
-        .note-color-picker {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-        
-        .note-color-option {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 4px var(--shadow);
-        }
-        
-        .note-color-option.selected {
-            border-color: var(--accent);
-            transform: scale(1.1);
-            box-shadow: 0 0 0 4px var(--accent-light);
-        }
-        
-        /* NEW: Tags Input & History/Delete Buttons */
-        .note-tags-input-container {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .note-tags-input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 16px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
+        .why-us-card {
             background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 16px;
-            font-family: inherit;
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: transform 0.3s;
         }
-        
-        .note-tags-input:focus {
-            outline: none;
+
+        .why-us-card:hover {
+            transform: translateY(-5px);
             border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-light);
         }
-        
-        .history-btn-group {
+
+        .why-us-card h4 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
             display: flex;
-            gap: 12px;
-            flex-shrink: 0;
+            align-items: center;
+            gap: 10px;
         }
-        /* End NEW: Tags Input & History/Delete Buttons */
+
+        .why-us-card p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        /* End Why Us Section Styles */
+        
+        /* Pricing Section Styles - NEW */
+        .pricing-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .pricing-card {
+            background: var(--bg-primary);
+            padding: 40px;
+            border-radius: 20px;
+            border: 3px solid var(--border);
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px var(--shadow-hover);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent);
+            background: linear-gradient(145deg, var(--bg-secondary), var(--accent-light));
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .pricing-header {
+            margin-bottom: 25px;
+        }
+
+        .pricing-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .pricing-price {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .pricing-price small {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .pricing-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            font-size: 16px;
+            color: var(--text-primary);
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features .check {
+            color: var(--success);
+            font-size: 20px;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .pricing-card.featured .btn {
+            background: var(--success);
+        }
+        /* End Pricing Section Styles */
 
 
-        /* Editor Toolbar */
         .editor-toolbar {
             display: flex;
             gap: 12px;
@@ -803,7 +730,10 @@
             transform: translateY(-2px);
         }
 
-        /* Title Input */
+        .editor-toolbar button:active {
+             transform: translateY(0);
+        }
+
         .note-input {
             width: 100%;
             padding: 16px;
@@ -817,14 +747,7 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
-        
-        .modal-content[style*="0D0F16"] .note-input {
-            background: #262626;
-            color: #f5f5f5;
-            border-color: #3b82f6;
-        }
 
-        /* Content Editor */
         .note-editor {
             width: 100%;
             min-height: 350px;
@@ -839,12 +762,6 @@
             font-family: inherit;
             transition: all 0.3s ease;
         }
-        
-        .modal-content[style*="0D0F16"] .note-editor {
-            background: #262626;
-            color: #f5f5f5;
-            border-color: #3b82f6;
-        }
 
         .note-editor:focus,
         .note-input:focus {
@@ -853,7 +770,6 @@
             box-shadow: 0 0 0 4px var(--accent-light);
         }
 
-        /* Canvas (Drawing) Section */
         .canvas-container {
             margin: 24px 0;
             border: 2px solid var(--border);
@@ -877,7 +793,6 @@
             gap: 12px;
             align-items: center;
             border-top: 2px solid var(--border);
-            flex-wrap: wrap;
         }
 
         .canvas-toolbar button {
@@ -902,9 +817,15 @@
             width: 120px;
         }
 
-        /* Attachments Section */
         .attachments-section {
             margin-top: 28px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
         }
 
         .attachments-grid {
@@ -922,15 +843,7 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid var(--border);
-            position: relative;
         }
-        
-        .modal-content[style*="0D0F16"] .attachment-item {
-            background: #262626;
-            color: #f5f5f5;
-            border-color: #3b82f6;
-        }
-
 
         .attachment-item:hover {
             transform: translateY(-4px);
@@ -951,41 +864,28 @@
             font-weight: 500;
         }
 
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            opacity: 0.6;
+            filter: drop-shadow(0 4px 8px var(--shadow));
+        }
+
+        .empty-text {
+            font-size: 20px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
         input[type="file"] {
             display: none;
         }
-        
-        /* Clipboard Section */
-        .clipboard-section {
-            margin-top: 28px;
-            padding: 20px;
-            background: var(--accent-light);
-            border-radius: 12px;
-            border: 2px solid var(--accent);
-        }
-        
-        .modal-content[style*="0D0F16"] .clipboard-section {
-            background: #1e3a8a;
-            border-color: #3b82f6;
-        }
 
-        .clipboard-preview {
-            margin-top: 12px;
-            padding: 12px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            font-size: 14px;
-            color: var(--text-secondary);
-            max-height: 100px;
-            overflow-y: auto;
-        }
-        
-        .modal-content[style*="0D0F16"] .clipboard-preview {
-            background: #0f0f0f;
-            color: #9ca3af;
-        }
-        
-        /* Folder Modal Color Picker */
         .color-picker-container {
             display: flex;
             gap: 10px;
@@ -1012,7 +912,6 @@
             transform: scale(1.15);
         }
 
-        /* Stats in Topbar */
         .stat-item {
             padding: 8px 16px;
             background: var(--bg-secondary);
@@ -1033,162 +932,110 @@
             margin-top: 4px;
             font-weight: 600;
         }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 80px 20px;
+
+        .bookmark-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            filter: grayscale(1);
         }
 
-        .empty-icon {
-            font-size: 80px;
-            margin-bottom: 24px;
-            opacity: 0.6;
-            filter: drop-shadow(0 4px 8px var(--shadow));
+        .bookmark-btn.bookmarked {
+            filter: grayscale(0);
+            transform: scale(1.2);
         }
 
-        .empty-text {
-            font-size: 20px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        /* Why Us Section Styles */
-        .why-us-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 30px;
-        }
-
-        .why-us-card {
-            background: var(--bg-primary);
-            padding: 30px;
-            border-radius: 16px;
-            border: 2px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
-            transition: transform 0.3s;
-        }
-
-        .why-us-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        .why-us-card h4 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .why-us-card p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: var(--text-secondary);
-        }
-        /* End Why Us Section Styles */
-
-        /* NEW: History Modal Styles */
-        .history-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .history-item {
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border);
+        .save-indicator {
+            padding: 12px 20px;
+            background: var(--success);
+            color: white;
             border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: var(--bg-tertiary);
+            gap: 8px;
+            position: fixed; /* Added to make it visible */
+            bottom: 20px; /* Added to make it visible */
+            right: 20px; /* Added to make it visible */
+            z-index: 1001; /* Added to make it visible */
         }
-        
-        .history-item-meta {
+
+        .clipboard-section {
+            margin-top: 28px;
+            padding: 20px;
+            background: var(--accent-light);
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+        }
+
+        .clipboard-preview {
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
             font-size: 14px;
             color: var(--text-secondary);
-            flex-grow: 1;
+            max-height: 100px;
+            overflow-y: auto;
         }
-        
-        .history-item button {
-            margin-left: 15px;
-        }
-        /* END NEW: History Modal Styles */
-        
     </style>
 </head>
 <body data-theme="light">
-    
     <div class="app-container">
-        
         <div class="sidebar">
-            
             <div class="sidebar-header">
-                <div class="app-title">CloudNotes v2.3</div>
-                <div class="app-author">by Niko (Improved Note Colors)</div>
-                <button class="why-us-btn" onclick="openWhyUsModal()">Why Us?</button>
-            </div>
+                <div class="app-title">CloudNotes v1</div>
+                <div class="app-author">by Niko</div>
+                <div class="sidebar-actions-group">
+                    <button class="why-us-btn" onclick="openWhyUsModal()" id="whyUsBtn">Why Us?</button>
+                    <button class="pricing-btn" onclick="openPricingModal()" id="pricingBtn">Pricing</button>
+                </div>
+                </div>
             
             <div class="toolbar">
-                <button class="btn" onclick="createFolder()">+ Folder</button>
-                <button class="btn btn-icon" onclick="openNewNote()">📝</button>
-                <button class="btn btn-warning" onclick="exportData()">⬇️ Export Data</button>
-                <button class="btn btn-success" onclick="document.getElementById('importFile').click()">⬆️ Import Data</button>
-                <input type="file" id="importFile" accept="application/json" onchange="importData(event)" style="display: none;">
+                <button class="btn" onclick="createFolder()" id="newFolderBtn">+ Folder</button>
+                <button class="btn btn-icon" onclick="openNewNote()" id="newNoteIconBtn">📝</button>
             </div>
 
             <div class="folders-container" id="foldersContainer">
                 </div>
-            
         </div>
 
         <div class="main-content">
-            
             <div class="topbar">
-                
                 <div class="search-bar">
                     <input type="text" placeholder="Search notes..." id="searchInput" oninput="searchNotes()">
                     <span class="search-icon">🔍</span>
                 </div>
-                
-                <div class="sort-bar">
-                    <label style="font-size: 14px; color: var(--text-secondary); font-weight: 600; white-space: nowrap;">Sort by:</label>
-                    <select id="sortSelect" onchange="data.sortOrder = this.value; renderNotes(data.currentFolder); saveData();">
-                        <option value="updatedDesc">Last Updated (Newest)</option>
-                        <option value="updatedAsc">Last Updated (Oldest)</option>
-                        <option value="createdDesc">Date Created (Newest)</option>
-                        <option value="titleAsc">Title (A-Z)</option>
-                        <option value="bookmarked">Bookmarked First</option>
-                    </select>
-                </div>
-                
                 <div class="topbar-actions">
+                    <select id="language-switcher" class="language-switcher" onchange="setLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="ru">Русский</option>
+                    </select>
                     <div class="stat-item">
                         <span class="stat-value" id="totalNotes">0</span>
-                        <div class="stat-label">Total Notes</div>
+                        <div class="stat-label" id="totalNotesLabel">Total Notes</div>
                     </div>
                     <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
                 </div>
-                
             </div>
 
             <div class="content-area" id="contentArea">
                 <div class="empty-state">
                     <div class="empty-icon">📝</div>
-                    <div class="empty-text">Select a folder or create a new note</div>
+                    <div class="empty-text" id="initialEmptyStateText">Select a folder or create a new note</div>
                 </div>
             </div>
-            
         </div>
-        
     </div>
 
-    
     <div class="modal" id="noteModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1197,22 +1044,6 @@
             </div>
             <div class="modal-body">
                 <input type="text" class="note-input" id="noteTitle" placeholder="✨ Note title...">
-                
-                <h3 class="section-title" style="margin-top: 0;">🎨 Note Color Indicator</h3>
-                <div class="note-color-picker" id="noteColorPicker">
-                    <div class="note-color-option selected" style="background: var(--bg-secondary);" data-color="transparent" onclick="selectNoteColor(this)"></div>
-                    
-                    <div class="note-color-option" style="background: #4ade80;" data-color="#4ade80" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #fb7185;" data-color="#fb7185" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #facc15;" data-color="#facc15" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #60a5fa;" data-color="#60a5fa" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #a855f7;" data-color="#a855f7" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #0D0F16; border: 2px solid #3b82f6;" data-color="space" onclick="selectNoteColor(this)"></div> 
-                </div>
-                
-                <h3 class="section-title">🏷️ Tags (comma separated)</h3>
-                <div class="note-tags-input-container">
-                    <input type="text" class="note-tags-input" id="noteTags" placeholder="e.g., important, idea, v1-bug">
-                    <div class="history-btn-group">
-                        <button class="btn btn-warning" onclick="openHistoryModal()" id="historyBtn" style="display: none;">⏳ History</button>
-                        <button class="btn btn-warning" onclick="deleteNote()" id="noteDeleteBtn" style="background: var(--danger); color: white;">🗑️ Delete</button>
-                    </div>
-                </div>
                 
                 <div class="editor-toolbar">
                     <select id="fontFamily" onchange="updateEditorStyle()">
@@ -1228,12 +1059,12 @@
                     
                     <input type="number" id="fontSize" value="16" min="10" max="48" onchange="updateEditorStyle()" placeholder="Size">
                     
-                    <button onclick="toggleDrawing()">🎨 Draw</button>
-                    <button onclick="document.getElementById('imageUpload').click()">🖼️ Image</button>
-                    <button onclick="document.getElementById('fileUpload').click()">📎 File</button>
-                    <button onclick="pasteFromClipboard()" class="btn-warning">📋 Paste Clipboard</button>
+                    <button onclick="toggleDrawing()" id="drawBtn">🎨 Draw</button>
+                    <button onclick="document.getElementById('imageUpload').click()" id="imageBtn">🖼️ Image</button>
+                    <button onclick="document.getElementById('fileUpload').click()" id="fileBtn">📎 File</button>
+                    <button onclick="pasteFromClipboard()" class="btn-warning" id="pasteBtn">📋 Paste Clipboard</button>
                     <button onclick="toggleBookmark()" id="bookmarkBtn">⭐ Bookmark</button>
-                    <button onclick="saveNote()" class="btn btn-success">💾 Save Note</button>
+                    <button onclick="saveNote()" class="btn btn-success" id="saveNoteBtn">💾 Save Note</button>
                 </div>
 
                 <textarea class="note-editor" id="noteContent" placeholder="✍️ Start writing your amazing ideas..."></textarea>
@@ -1241,23 +1072,23 @@
                 <div class="canvas-container" id="canvasContainer" style="display: none;">
                     <canvas id="drawingCanvas"></canvas>
                     <div class="canvas-toolbar">
-                        <button onclick="clearCanvas()" style="background: var(--danger); color: white;">🗑️ Clear</button>
-                        <button onclick="saveDrawing()" class="btn-success" style="background: var(--success); color: white;">💾 Save Drawing</button>
+                         <button onclick="clearCanvas()" style="background: var(--danger); color: white;" id="clearCanvasBtn">🗑️ Clear</button>
+                        <button onclick="saveDrawing()" class="btn-success" style="background: var(--success); color: white;" id="saveDrawingBtn">💾 Save Drawing</button>
                         <input type="color" id="drawColor" value="#6366f1">
-                        <label style="color: var(--text-secondary); font-size: 13px; font-weight: 600;">Brush Size:</label>
+                        <label style="color: var(--text-secondary); font-size: 13px; font-weight: 600;" id="brushSizeLabel">Brush Size:</label>
                         <input type="range" id="drawSize" min="1" max="30" value="3">
                         <span id="drawingStatus"></span>
                     </div>
                 </div>
 
                 <div class="clipboard-section" id="clipboardSection" style="display: none;">
-                    <h3 class="section-title">📋 Clipboard Content</h3>
+                    <h3 class="section-title" id="clipboardTitle">📋 Clipboard Content</h3>
                     <div class="clipboard-preview" id="clipboardPreview"></div>
-                    <button class="btn" style="margin-top: 12px;" onclick="insertClipboard()">✨ Insert into Note</button>
+                    <button class="btn" style="margin-top: 12px;" onclick="insertClipboard()" id="insertClipboardBtn">✨ Insert into Note</button>
                 </div>
 
                 <div class="attachments-section">
-                    <h3 class="section-title">📎 Attachments</h3>
+                    <h3 class="section-title" id="attachmentsTitle">📎 Attachments</h3>
                     <div class="attachments-grid" id="attachmentsGrid"></div>
                 </div>
 
@@ -1270,13 +1101,13 @@
     <div class="modal" id="folderModal">
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
-                <div class="modal-title">✨ New Folder</div>
+                <div class="modal-title" id="newFolderTitle">✨ New Folder</div>
                 <button class="close-btn" onclick="closeFolderModal()">×</button>
             </div>
             <div class="modal-body">
                 <input type="text" class="note-input" id="folderName" placeholder="📁 Folder name...">
                 
-                <h3 class="section-title">🎨 Choose Icon Color</h3>
+                 <h3 class="section-title" id="chooseColorTitle">🎨 Choose Icon Color</h3>
                 <div class="color-picker-container">
                     <div class="color-option selected" style="background: #6366f1;" data-color="#6366f1" onclick="selectColor(this)"></div>
                     <div class="color-option" style="background: #10b981;" data-color="#10b981" onclick="selectColor(this)"></div>
@@ -1288,7 +1119,7 @@
                     <div class="color-option" style="background: #84cc16;" data-color="#84cc16" onclick="selectColor(this)"></div>
                 </div>
 
-                <button class="btn" style="margin-top: 28px; width: 100%;" onclick="saveFolderModal()">✨ Create Folder</button>
+                <button class="btn" style="margin-top: 28px; width: 100%;" onclick="saveFolderModal()" id="createFolderBtn">✨ Create Folder</button>
             </div>
         </div>
     </div>
@@ -1296,241 +1127,487 @@
     <div class="modal" id="whyUsModal">
         <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
-                <div class="modal-title">🌟 Why Choose CloudNotes v2.3?</div>
+                <div class="modal-title" id="whyUsModalTitle">🌟 Why Choose CloudNotes v1?</div>
                 <button class="close-btn" onclick="closeWhyUsModal()">×</button>
             </div>
             <div class="modal-body">
-                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);">Your Data. Your Control. Always.</h2>
-                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);">We built CloudNotes v1 on a simple principle: <strong>ultimate privacy and simplicity</strong>.</p>
+                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);" id="whyUsSubtitle">Your Data. Your Control. Always.</h2>
+                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);" id="whyUsIntro">We built CloudNotes v1 on a simple principle: <strong>ultimate privacy and simplicity<strong>.</p>
                 <div class="why-us-section">
                     
                     <div class="why-us-card">
-                        <h4>🔒 Absolute Privacy</h4>
-                        <p>We <strong>don't track, collect, or sell any of your data</strong>. Everything you write or draw stays <strong>private</strong> on your device's local storage. This is a local-first application. Big companies (Giants) <strong>sell storage and integration. (your data too!)</strong>. <strong>We (CloudeNotes) sell privacy, simplity, and vibe.</strong> Our prices are avalaible for <strong>Everyone</strong> </p>
+                        <h4 id="privacyTitle">🔒 Absolute Privacy</h4>
+                        <p id="privacyText">We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application.                                                                                                     Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> </p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>🚫 Zero Accounts</h4>
-                        <p>No need for email, usernames, or passwords. <strong>No sign-ups</strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
+                        <h4 id="accountsTitle">🚫 Zero Accounts</h4>
+                        <p id="accountsText">No need for email, usernames, or passwords. <strong>No sign-ups<strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>⚡️ Fast & Reliable</h4>
-                        <p>Since your notes are stored <strong>locally</strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
+                        <h4 id="fastTitle">⚡️ Fast & Reliable</h4>
+                        <p id="fastText">Since your notes are stored <strong>locally<strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4>📝 Feature-Rich Editor</h4>
-                        <p>Our editor includes <strong>rich text options</strong>, a full <strong>drawing canvas</strong>, and the ability to add <strong>attachments</strong>, all while keeping your data private and local.</p>
+                        <h4 id="featuresTitle">📝 Feature-Rich Editor</h4>
+                        <p id="featuresText">Our editor includes <strong>rich text options<strong>, a full <strong>drawing canvas<strong>, and the ability to add <strong>attachments<strong>, all while keeping your data private and local.</p>
                     </div>
 
                 </div>
                 <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;">CloudNotes v2.3: Simple, powerful, and truly private note-taking.</p>
+                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;" id="whyUsFooter">CloudNotes v1: Simple, powerful, and truly private note-taking.</p>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="modal" id="historyModal">
-        <div class="modal-content" style="max-width: 700px;">
+    <div class="modal" id="pricingModal">
+        <div class="modal-content" style="max-width: 1200px;">
             <div class="modal-header">
-                <div class="modal-title">⏳ Version History</div>
-                <button class="close-btn" onclick="closeHistoryModal()">×</button>
+                <div class="modal-title" id="pricingModalTitle">💰 CloudNotes v1 Pricing</div>
+                <button class="close-btn" onclick="closePricingModal()">×</button>
             </div>
             <div class="modal-body">
-                <ul class="history-list" id="historyList">
-                    <p style="text-align: center; color: var(--text-secondary);">Loading history...</p>
-                </ul>
-                <p style="margin-top: 20px; font-size: 14px; color: var(--danger);">*Restoring a version will overwrite the current note content.</p>
+                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 10px; color: var(--accent);" id="pricingSubtitle">Choose Your Private Plan</h2>
+                <p style="font-size: 16px; text-align: center; color: var(--text-secondary); margin-bottom: 30px;" id="pricingIntro">No monthly fees, just a one-time payment for **LIFETIME** use. Zero data collection, maximum privacy.</p>
+                
+                <div class="pricing-section">
+                    <div class="pricing-card" id="pricingFreeCard">
+                        <div class="pricing-header">
+                            <div class="pricing-title" id="freeTitle">Free (Trial)</div>
+                            <div class="pricing-price" id="freePrice">0<small>/lifetime</small></div>
+                        </div>
+                        <p class="pricing-description" id="freeDescription">Test the waters and see the power of local-first note-taking.</p>
+                        <ul class="pricing-features" id="freeFeatures">
+                            <li><span class="check">✓</span> <span id="freeF1">Full Note Editor Access</span></li>
+                            <li><span class="check">✓</span> <span id="freeF2">Drawing Canvas & Attachments</span></li>
+                            <li><span class="check">✓</span> <span id="freeF3">Full Local Storage</span></li>
+                            <li><span class="check">✓</span> <span id="freeF4">Absolute Privacy</span></li>
+                            <li style="color: var(--danger);"><span style="color: var(--danger);">✗</span> <span id="freeF5">Max 5 Notes Total</span></li>
+                            <li style="color: var(--danger);"><span style="color: var(--danger);">✗</span> <span id="freeF6">Max 2 Folders</span></li>
+                        </ul>
+                        <button class="btn" style="background: var(--text-secondary); cursor: default;" id="freeBtn">Current Plan</button>
+                    </div>
+                    
+                    <div class="pricing-card featured" id="pricingProCard">
+                        <div class="pricing-header">
+                            <div class="pricing-title" id="proTitle">CloudNotes Pro</div>
+                            <div class="pricing-price" id="proPrice">9.99$<small>/lifetime</small></div>
+                        </div>
+                        <p class="pricing-description" id="proDescription">Unlock the full potential with unlimited notes and folders.</p>
+                        <ul class="pricing-features" id="proFeatures">
+                            <li><span class="check">✓</span> <span id="proF1">Unlimited Notes & Folders</span></li>
+                            <li><span class="check">✓</span> <span id="proF2">Advanced Editor Features</span></li>
+                            <li><span class="check">✓</span> <span id="proF3">Dedicated Priority Support</span></li>
+                            <li><span class="check">✓</span> <span id="proF4">All Future v1 Updates</span></li>
+                            <li><span class="check">✓</span> <span id="proF5">Full Privacy Guarantee</span></li>
+                            <li><span class="check">✓</span> <span id="proF6">One-time Payment</span></li>
+                        </ul>
+                        <a href="https://example.com/checkout" target="_blank" class="btn" id="proBtn">Get Pro Now!</a>
+                    </div>
+
+                    <div class="pricing-card" id="pricingEnterpriseCard">
+                        <div class="pricing-header">
+                            <div class="pricing-title" id="enterpriseTitle">Enterprise</div>
+                            <div class="pricing-price" id="enterprisePrice">Custom<small>/contact</small></div>
+                        </div>
+                        <p class="pricing-description" id="enterpriseDescription">For teams requiring white-label and managed local deployment.</p>
+                        <ul class="pricing-features" id="enterpriseFeatures">
+                            <li><span class="check">✓</span> <span id="enterpriseF1">Dedicated Deployment</span></li>
+                            <li><span class="check">✓</span> <span id="enterpriseF2">White-Label Customization</span></li>
+                            <li><span class="check">✓</span> <span id="enterpriseF3">Managed Local Data</span></li>
+                            <li><span class="check">✓</span> <span id="enterpriseF4">Volume Licensing</span></li>
+                            <li><span class="check">✓</span> <span id="enterpriseF5">24/7 Premium Support</span></li>
+                            <li><span class="check">✓</span> <span id="enterpriseF6">Integration API Access</span></li>
+                        </ul>
+                        <a href="mailto:support@example.com" class="btn" id="enterpriseBtn">Contact Sales</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
     <script>
-        
-        // --- DATA STRUCTURE ---
+        // Data structure
         let data = {
             folders: [
                 { id: 1, name: 'Work', color: '#6366f1', notes: [] },
                 { id: 2, name: 'Home', color: '#10b981', notes: [] },
                 { id: 3, name: 'Fun Projects :)', color: '#f59e0b', notes: [] }
             ],
-            trash: [], // NEW: Recycling Bin
-            TRASH_ID: -1, 
-            sortOrder: 'updatedDesc', // NEW: Default sort order
             currentFolder: null,
             currentNote: null,
             nextFolderId: 4,
             nextNoteId: 1
         };
 
-        // --- GLOBAL STATE ---
         let canvas, ctx, isDrawing = false;
-        let selectedColor = '#6366f1'; // For folder creation
-        let selectedNoteColor = 'transparent'; // For note color
+        let selectedColor = '#6366f1';
         let drawingData = null;
         let currentBookmark = false;
         let clipboardContent = '';
+        let currentLang = 'en'; // NEW: Default language is English
 
-        
-        // --- INITIALIZATION ---
+        // NEW: Translation Data
+        const translations = {
+            en: {
+                // UI Elements
+                whyUsBtn: "Why Us?",
+                pricingBtn: "Pricing", // NEW
+                newFolder: "+ Folder",
+                newNoteIcon: "📝",
+                searchPlaceholder: "Search notes...",
+                totalNotes: "Total Notes",
+                brushSize: "Brush Size:",
+                saveNote: "💾 Save Note",
+                
+                // Note Modal
+                newNoteTitle: "New Note",
+                noteTitlePlaceholder: "✨ Note title...",
+                editorPlaceholder: "✍️ Start writing your amazing ideas...",
+                drawBtn: "🎨 Draw",
+                imageBtn: "🖼️ Image",
+                fileBtn: "📎 File",
+                pasteBtn: "📋 Paste Clipboard",
+                bookmarkBtn: "⭐ Bookmark",
+                bookmarkedBtn: "🌟 Bookmarked",
+                canvasClear: "🗑️ Clear",
+                canvasSave: "💾 Save Drawing",
+                clipboardTitle: "📋 Clipboard Content",
+                clipboardInsert: "✨ Insert into Note",
+                attachmentsTitle: "📎 Attachments",
+                
+                // Folder Modal
+                newFolderTitle: "✨ New Folder",
+                folderNamePlaceholder: "📁 Folder name...",
+                chooseColor: "🎨 Choose Icon Color",
+                createFolder: "✨ Create Folder",
+                
+                // Why Us Modal
+                whyUsModalTitle: "🌟 Why Choose CloudNotes v1?",
+                whyUsSubtitle: "Your Data. Your Control. Always.",
+                whyUsIntro: "We built CloudNotes v1 on a simple principle: <strong>ultimate privacy and simplicity<strong>.",
+                privacyTitle: "🔒 Absolute Privacy",
+                // Note on 2500/2300: The actual price for Pro is 9.99$. The 2500/2300 is likely a misunderstanding or a non-critical number in another context.
+                privacyText: "We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application.                                                                                                     Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> ",
+                accountsTitle: "🚫 Zero Accounts",
+                accountsText: "No need for email, usernames, or passwords. <strong>No sign-ups<strong>, no log-ins, and no cloud storage required. Just open the app and start noting.",
+                fastTitle: "⚡️ Fast & Reliable",
+                fastText: "Since your notes are stored <strong>locally<strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.",
+                featuresTitle: "📝 Feature-Rich Editor",
+                featuresText: "Our editor includes <strong>rich text options<strong>, a full <strong>drawing canvas<strong>, and the ability to add <strong>attachments<strong>, all while keeping your data private and local.",
+                whyUsFooter: "CloudNotes v1: Simple, powerful, and truly private note-taking.",
+
+                // NEW: Pricing Section
+                pricingModalTitle: "💰 CloudNotes v1 Pricing",
+                pricingSubtitle: "Choose Your Private Plan",
+                pricingIntro: "No monthly fees, just a one-time payment for **LIFETIME** use. Zero data collection, maximum privacy.",
+                
+                // Free Plan
+                freeTitle: "Free (Trial)",
+                freePriceSmall: "/lifetime",
+                freeDescription: "Test the waters and see the power of local-first note-taking.",
+                freeF1: "Full Note Editor Access",
+                freeF2: "Drawing Canvas & Attachments",
+                freeF3: "Full Local Storage",
+                freeF4: "Absolute Privacy",
+                freeF5: "Max 5 Notes Total",
+                freeF6: "Max 2 Folders",
+                freeBtn: "Current Plan",
+
+                // Pro Plan
+                proTitle: "CloudNotes Pro",
+                proPrice: "9.99$",
+                proPriceSmall: "/lifetime",
+                proDescription: "Unlock the full potential with unlimited notes and folders.",
+                proF1: "Unlimited Notes & Folders",
+                proF2: "Advanced Editor Features",
+                proF3: "Dedicated Priority Support",
+                proF4: "All Future v1 Updates",
+                proF5: "Full Privacy Guarantee",
+                proF6: "One-time Payment",
+                proBtn: "Get Pro Now!",
+
+                // Enterprise Plan
+                enterpriseTitle: "Enterprise",
+                enterprisePrice: "Custom",
+                enterprisePriceSmall: "/contact",
+                enterpriseDescription: "For teams requiring white-label and managed local deployment.",
+                enterpriseF1: "Dedicated Deployment",
+                enterpriseF2: "White-Label Customization",
+                enterpriseF3: "Managed Local Data",
+                enterpriseF4: "Volume Licensing",
+                enterpriseF5: "24/7 Premium Support",
+                enterpriseF6: "Integration API Access",
+                enterpriseBtn: "Contact Sales",
+
+
+                // Dynamic/Alerts
+                emptyState: "Select a folder or create a new note",
+                noNotes: "No notes yet. Create your first note!",
+                folderNotFound: "Folder not found.",
+                noNotesFound: (term) => `No notes found matching "${term}"`,
+                noteBadge: "Note",
+                bookmarkedBadge: "⭐ Bookmarked",
+                alertEmptyFolder: "Folder name cannot be empty!",
+                alertEmptyTitle: "Title cannot be empty!",
+                alertNoFolder: "No folder selected!",
+                alertClipboard: "Could not access clipboard. Please make sure you granted permission.",
+                alertEmptyClipboard: "Clipboard is empty!",
+                alertDeleteAttachment: "Are you sure you want to delete this attachment?",
+                alertLoadingData: "✅ Data loaded from storage!",
+                alertSaving: "✅ Saved!",
+            },
+            ru: {
+                // UI Elements
+                whyUsBtn: "Почему мы?",
+                pricingBtn: "Цены", // NEW
+                newFolder: "+ Папка",
+                newNoteIcon: "📝",
+                searchPlaceholder: "Поиск заметок...",
+                totalNotes: "Всего заметок",
+                brushSize: "Размер кисти:",
+                saveNote: "💾 Сохранить",
+
+                // Note Modal
+                newNoteTitle: "Новая заметка",
+                noteTitlePlaceholder: "✨ Заголовок заметки...",
+                editorPlaceholder: "✍️ Начните писать свои потрясающие идеи...",
+                drawBtn: "🎨 Рисовать",
+                imageBtn: "🖼️ Изображение",
+                fileBtn: "📎 Файл",
+                pasteBtn: "📋 Вставить из буфера",
+                bookmarkBtn: "⭐ В закладки",
+                bookmarkedBtn: "🌟 В закладках",
+                canvasClear: "🗑️ Очистить",
+                canvasSave: "💾 Сохранить рисунок",
+                clipboardTitle: "📋 Содержимое буфера",
+                clipboardInsert: "✨ Вставить в заметку",
+                attachmentsTitle: "📎 Вложения",
+                
+                // Folder Modal
+                newFolderTitle: "✨ Новая папка",
+                folderNamePlaceholder: "📁 Имя папки...",
+                chooseColor: "🎨 Выберите цвет значка",
+                createFolder: "✨ Создать папку",
+
+                // Why Us Modal
+                whyUsModalTitle: "🌟 Почему CloudNotes v1?",
+                whyUsSubtitle: "Ваши данные. Ваш контроль. Всегда.",
+                whyUsIntro: "Мы создали CloudNotes v1 на основе простого принципа: <strong>максимальная конфиденциальность и простота<strong>.",
+                privacyTitle: "🔒 Абсолютная конфиденциальность",
+                // Note on 2500/2300: The actual price for Pro is 9.99$. The 2500/2300 is likely a misunderstanding or a non-critical number in another context.
+                privacyText: "Мы <strong>не отслеживаем, не собираем и не продаем ваши данные<strong>. Все, что вы пишете или рисуете, остается <strong>приватным<strong> в локальном хранилище вашего устройства. Это приложение, ориентированное на локальное использование. Крупные компании (Гиганты) <strong>продают хранилище и интеграцию. (Ваши данные тоже!).<strong> <strong>Мы (CloudNotes) продаем конфиденциальность, простоту и атмосферу.<strong> Наши цены доступны для <strong>Всех<strong> ",
+                accountsTitle: "🚫 Ноль учетных записей",
+                accountsText: "Не нужны электронная почта, имена пользователей или пароли. <strong>Никакой регистрации<strong>, входа и облачного хранилища. Просто откройте приложение и начните делать заметки.",
+                fastTitle: "⚡️ Быстро и надежно",
+                fastText: "Поскольку ваши заметки хранятся <strong>локально<strong> в вашем браузере, загрузка происходит мгновенно. Вы никогда не зависите от сетевого подключения или статуса сервера.",
+                featuresTitle: "📝 Feature-Rich Editor",
+                featuresText: "Наш редактор включает <strong>расширенные текстовые опции<strong>, полноценный <strong>холст для рисования<strong> и возможность добавления <strong>вложений<strong>, сохраняя при этом ваши данные приватными и локальными.",
+                whyUsFooter: "CloudNotes v1: Простое, мощное и по-настоящему приватное создание заметок.",
+
+                // NEW: Pricing Section
+                pricingModalTitle: "💰 CloudNotes v1 Цены",
+                pricingSubtitle: "Выберите Свой Приватный План",
+                pricingIntro: "Никаких ежемесячных платежей, только единоразовая оплата за **ПОЖИЗНЕННОЕ** использование. Ноль сбора данных, максимальная конфиденциальность.",
+
+                // Free Plan
+                freeTitle: "Бесплатно (Пробный)",
+                freePriceSmall: "/пожизненно",
+                freeDescription: "Окунитесь в воду и оцените мощь заметок, ориентированных на локальное хранение.",
+                freeF1: "Полный доступ к редактору заметок",
+                freeF2: "Холст для рисования и вложения",
+                freeF3: "Полное локальное хранилище",
+                freeF4: "Абсолютная конфиденциальность",
+                freeF5: "Макс. 5 заметок всего",
+                freeF6: "Макс. 2 папки",
+                freeBtn: "Текущий план",
+
+                // Pro Plan
+                proTitle: "CloudNotes Pro",
+                proPrice: "9.99$",
+                proPriceSmall: "/пожизненно",
+                proDescription: "Раскройте весь потенциал с неограниченным количеством заметок и папок.",
+                proF1: "Неограниченное количество заметок и папок",
+                proF2: "Расширенные функции редактора",
+                proF3: "Выделенная приоритетная поддержка",
+                proF4: "Все будущие обновления v1",
+                proF5: "Полная гарантия конфиденциальности",
+                proF6: "Единоразовый платеж",
+                proBtn: "Получить Pro сейчас!",
+
+                // Enterprise Plan
+                enterpriseTitle: "Корпоративный",
+                enterprisePrice: "Индивидуально",
+                enterprisePriceSmall: "/запрос",
+                enterpriseDescription: "Для команд, требующих white-label и управляемого локального развертывания.",
+                enterpriseF1: "Выделенное развертывание",
+                enterpriseF2: "White-Label настройка",
+                enterpriseF3: "Управляемые локальные данные",
+                enterpriseF4: "Объемное лицензирование",
+                enterpriseF5: "Круглосуточная премиум-поддержка",
+                enterpriseF6: "Доступ к API интеграции",
+                enterpriseBtn: "Связаться с отделом продаж",
+
+
+                // Dynamic/Alerts
+                emptyState: "Выберите папку или создайте новую заметку",
+                noNotes: "Заметок пока нет. Создайте свою первую заметку!",
+                folderNotFound: "Папка не найдена.",
+                noNotesFound: (term) => `Заметки, соответствующие "${term}", не найдены`,
+                noteBadge: "Заметка",
+                bookmarkedBadge: "⭐ В закладках",
+                alertEmptyFolder: "Имя папки не может быть пустым!",
+                alertEmptyTitle: "Заголовок не может быть пустым!",
+                alertNoFolder: "Папка не выбрана!",
+                alertClipboard: "Не удалось получить доступ к буферу обмена. Убедитесь, что вы предоставили разрешение.",
+                alertEmptyClipboard: "Буфер обмена пуст!",
+                alertDeleteAttachment: "Вы уверены, что хотите удалить это вложение?",
+                alertLoadingData: "✅ Данные загружены из хранилища!",
+                alertSaving: "✅ Сохранено!",
+            }
+        };
+
+        // NEW: Translation helper function
+        function getTranslation(key, ...args) {
+            const lang = translations[currentLang] || translations['en'];
+            const text = lang[key] || translations['en'][key];
+            if (typeof text === 'function') {
+                return text(...args);
+            }
+            return text;
+        }
+
+        // Initialize
         function init() {
             loadData();
+            setLanguage(currentLang, false); // Initialize UI with currentLang
             renderFolders();
-            setupCanvas();
             updateTotalNotes();
+        }
+
+        // NEW: Function to update all static UI text
+        function updateStaticUI() {
+            // Sidebar Header
+            document.getElementById('whyUsBtn').textContent = getTranslation('whyUsBtn');
+            document.getElementById('pricingBtn').textContent = getTranslation('pricingBtn'); // NEW
+            // Toolbar
+            document.getElementById('newFolderBtn').textContent = getTranslation('newFolder');
+            document.getElementById('newNoteIconBtn').textContent = getTranslation('newNoteIcon');
+            // Topbar
+            document.getElementById('searchInput').placeholder = getTranslation('searchPlaceholder');
+            document.getElementById('totalNotesLabel').textContent = getTranslation('totalNotes');
+            // Initial Empty State
+            document.getElementById('initialEmptyStateText').textContent = getTranslation('emptyState');
             
-            // Set initial sort order on load
-            document.getElementById('sortSelect').value = data.sortOrder;
+            // Note Modal
+            document.getElementById('modalTitle').textContent = getTranslation('newNoteTitle');
+            document.getElementById('noteTitle').placeholder = getTranslation('noteTitlePlaceholder');
+            document.getElementById('noteContent').placeholder = getTranslation('editorPlaceholder');
+            document.getElementById('drawBtn').textContent = getTranslation('drawBtn');
+            document.getElementById('imageBtn').textContent = getTranslation('imageBtn');
+            document.getElementById('fileBtn').textContent = getTranslation('fileBtn');
+            document.getElementById('pasteBtn').textContent = getTranslation('pasteBtn');
+            document.getElementById('saveNoteBtn').textContent = getTranslation('saveNote');
+            document.getElementById('clearCanvasBtn').textContent = getTranslation('canvasClear');
+            document.getElementById('saveDrawingBtn').textContent = getTranslation('canvasSave');
+            document.getElementById('brushSizeLabel').textContent = getTranslation('brushSize');
+            document.getElementById('clipboardTitle').textContent = getTranslation('clipboardTitle');
+            document.getElementById('insertClipboardBtn').textContent = getTranslation('clipboardInsert');
+            document.getElementById('attachmentsTitle').textContent = getTranslation('attachmentsTitle');
             
-            // Auto-select first folder if none is selected
-            if (!data.currentFolder && data.folders.length > 0) {
-                 selectFolder(data.folders[0].id);
-            } else if (data.currentFolder) {
-                // Re-render notes for the last selected folder on load
-                selectFolder(data.currentFolder); 
+            // Folder Modal
+            document.getElementById('newFolderTitle').textContent = getTranslation('newFolderTitle');
+            document.getElementById('folderName').placeholder = getTranslation('folderNamePlaceholder');
+            document.getElementById('chooseColorTitle').textContent = getTranslation('chooseColor');
+            document.getElementById('createFolderBtn').textContent = getTranslation('createFolder');
+
+            // Why Us Modal
+            document.getElementById('whyUsModalTitle').textContent = getTranslation('whyUsModalTitle');
+            document.getElementById('whyUsSubtitle').textContent = getTranslation('whyUsSubtitle');
+            document.getElementById('whyUsIntro').innerHTML = getTranslation('whyUsIntro');
+            document.getElementById('privacyTitle').textContent = getTranslation('privacyTitle');
+            document.getElementById('privacyText').innerHTML = getTranslation('privacyText');
+            document.getElementById('accountsTitle').textContent = getTranslation('accountsTitle');
+            document.getElementById('accountsText').textContent = getTranslation('accountsText');
+            document.getElementById('fastTitle').textContent = getTranslation('fastTitle');
+            document.getElementById('fastText').textContent = getTranslation('fastText');
+            document.getElementById('featuresTitle').textContent = getTranslation('featuresTitle');
+            document.getElementById('featuresText').textContent = getTranslation('featuresText');
+            document.getElementById('whyUsFooter').textContent = getTranslation('whyUsFooter');
+            
+            // NEW: Pricing Modal
+            document.getElementById('pricingModalTitle').textContent = getTranslation('pricingModalTitle');
+            document.getElementById('pricingSubtitle').textContent = getTranslation('pricingSubtitle');
+            document.getElementById('pricingIntro').innerHTML = getTranslation('pricingIntro');
+
+            // Free Plan
+            document.getElementById('freeTitle').textContent = getTranslation('freeTitle');
+            document.getElementById('freePrice').innerHTML = `0<small>${getTranslation('freePriceSmall')}</small>`;
+            document.getElementById('freeDescription').textContent = getTranslation('freeDescription');
+            document.getElementById('freeF1').textContent = getTranslation('freeF1');
+            document.getElementById('freeF2').textContent = getTranslation('freeF2');
+            document.getElementById('freeF3').textContent = getTranslation('freeF3');
+            document.getElementById('freeF4').textContent = getTranslation('freeF4');
+            document.getElementById('freeF5').textContent = getTranslation('freeF5');
+            document.getElementById('freeF6').textContent = getTranslation('freeF6');
+            document.getElementById('freeBtn').textContent = getTranslation('freeBtn');
+
+            // Pro Plan
+            document.getElementById('proTitle').textContent = getTranslation('proTitle');
+            document.getElementById('proPrice').innerHTML = `${getTranslation('proPrice')}<small>${getTranslation('proPriceSmall')}</small>`;
+            document.getElementById('proDescription').textContent = getTranslation('proDescription');
+            document.getElementById('proF1').textContent = getTranslation('proF1');
+            document.getElementById('proF2').textContent = getTranslation('proF2');
+            document.getElementById('proF3').textContent = getTranslation('proF3');
+            document.getElementById('proF4').textContent = getTranslation('proF4');
+            document.getElementById('proF5').textContent = getTranslation('proF5');
+            document.getElementById('proF6').textContent = getTranslation('proF6');
+            document.getElementById('proBtn').textContent = getTranslation('proBtn');
+
+            // Enterprise Plan
+            document.getElementById('enterpriseTitle').textContent = getTranslation('enterpriseTitle');
+            document.getElementById('enterprisePrice').innerHTML = `${getTranslation('enterprisePrice')}<small>${getTranslation('enterprisePriceSmall')}</small>`;
+            document.getElementById('enterpriseDescription').textContent = getTranslation('enterpriseDescription');
+            document.getElementById('enterpriseF1').textContent = getTranslation('enterpriseF1');
+            document.getElementById('enterpriseF2').textContent = getTranslation('enterpriseF2');
+            document.getElementById('enterpriseF3').textContent = getTranslation('enterpriseF3');
+            document.getElementById('enterpriseF4').textContent = getTranslation('enterpriseF4');
+            document.getElementById('enterpriseF5').textContent = getTranslation('enterpriseF5');
+            document.getElementById('enterpriseF6').textContent = getTranslation('enterpriseF6');
+            document.getElementById('enterpriseBtn').textContent = getTranslation('enterpriseBtn');
+
+            // Set switcher value
+            document.getElementById('language-switcher').value = currentLang;
+        }
+
+        // NEW: Function to set and apply language
+        function setLanguage(langCode, shouldSave = true) {
+            currentLang = langCode;
+            updateStaticUI();
+            
+            // Re-render dynamic elements
+            renderFolders();
+            if (data.currentFolder) {
+                renderNotes(data.currentFolder);
+            } else {
+                // Re-render the initial empty state (handled by updateStaticUI, but keep this for clarity)
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <div class="empty-text">${getTranslation('emptyState')}</div>
+                    </div>
+                `;
+            }
+
+            if (shouldSave) {
+                saveData(); 
             }
         }
 
-        // --- CORE DATA FUNCTIONS (Save/Load) ---
-        function saveData() {
-            try {
-                // Save the main data structure
-                localStorage.setItem('cloudNotesData', JSON.stringify(data));
-                // Save the current theme preference
-                localStorage.setItem('theme', document.body.getAttribute('data-theme'));
-            } catch (e) {
-                console.error("Error saving data to localStorage:", e);
-                alert("Error saving data. Your browser storage may be full or disabled.");
-            }
-        }
 
-        function loadData() {
-            try {
-                const storedData = localStorage.getItem('cloudNotesData');
-                const storedTheme = localStorage.getItem('theme');
-                
-                if (storedData) {
-                    const parsed = JSON.parse(storedData);
-                    
-                    // Restore data object, providing defaults for new fields if they don't exist
-                    data.folders = parsed.folders || data.folders;
-                    data.trash = parsed.trash || [];
-                    data.TRASH_ID = parsed.TRASH_ID || -1;
-                    data.currentFolder = parsed.currentFolder;
-                    data.nextFolderId = parsed.nextFolderId || data.nextFolderId;
-                    data.nextNoteId = parsed.nextNoteId || data.nextNoteId;
-                    data.sortOrder = parsed.sortOrder || 'updatedDesc';
-                    
-                    // IMPORTANT: Ensure all notes have a history array (for new feature compatibility)
-                    data.folders.forEach(f => f.notes.forEach(n => n.history = n.history || []));
-                    data.trash.forEach(n => n.history = n.history || []);
-                    
-                    // Check for trash auto-delete on load
-                    checkAutoDelete();
-                }
-
-                if (storedTheme) {
-                    document.body.setAttribute('data-theme', storedTheme);
-                    document.getElementById('themeToggle').textContent = 
-                        storedTheme === 'light' ? '🌙' : '☀️';
-                }
-                
-            } catch (e) {
-                console.error('Error loading data:', e);
-            }
-        }
-        
-        // --- RESTORED: EXPORT/IMPORT FUNCTIONS ---
-        function exportData() {
-            const dataToExport = JSON.stringify(data, null, 2);
-            
-            const blob = new Blob([dataToExport], { type: 'application/json' });
-            
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `CloudNotes_Backup_${new Date().toISOString().substring(0, 10)}.json`;
-            
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url); 
-            
-            const indicator = document.createElement('div');
-            indicator.className = 'save-indicator';
-            indicator.style.background = 'var(--success)';
-            indicator.innerHTML = `⬇️ Data Exported Successfully!`;
-            document.body.appendChild(indicator);
-            setTimeout(() => indicator.remove(), 2500);
-        }
-
-        function importData(event) {
-            if (!confirm('WARNING: Importing data will OVERWRITE your current notes. Are you sure you want to proceed?')) {
-                event.target.value = null; 
-                return;
-            }
-            
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    if (!importedData.folders || !Array.isArray(importedData.folders)) {
-                        alert('Import Failed: The file does not appear to be a valid CloudNotes backup file.');
-                        return;
-                    }
-                    
-                    // Overwrite current data in localStorage
-                    localStorage.setItem('cloudNotesData', JSON.stringify(importedData));
-                    
-                    const indicator = document.createElement('div');
-                    indicator.className = 'save-indicator';
-                    indicator.style.background = 'var(--accent)';
-                    indicator.innerHTML = `⬆️ Data Imported! Reloading...`;
-                    document.body.appendChild(indicator);
-                    
-                    setTimeout(() => {
-                        location.reload(); 
-                    }, 2000);
-                    
-                } catch (error) {
-                    alert('Import Failed: Error parsing the JSON file. It may be corrupted.');
-                    console.error('Import Error:', error);
-                }
-            };
-            
-            reader.readAsText(file);
-        }
-        // --- END RESTORED: EXPORT/IMPORT FUNCTIONS ---
-        
-        // --- NEW: Trash Auto-Delete ---
-        function checkAutoDelete() {
-            const now = Date.now();
-            const thirtyDays = 30 * 24 * 60 * 60 * 1000; 
-
-            // Filter out notes in trash that are older than 30 days
-            const initialTrashCount = data.trash.length;
-            data.trash = data.trash.filter(note => {
-                // Keep notes without a deletedAt date for safety
-                if (!note.deletedAt) return true; 
-
-                const deletedTime = new Date(note.deletedAt).getTime();
-                return (now - deletedTime) < thirtyDays;
-            });
-
-            if (data.trash.length !== initialTrashCount) {
-                console.log(`🧹 Auto-deleted ${initialTrashCount - data.trash.length} notes from trash.`);
-                saveData();
-                renderFolders(); 
-            }
-        }
-        
-        // --- Theme and Stats ---
+        // Theme toggle
         function toggleTheme() {
             const body = document.body;
             const currentTheme = body.getAttribute('data-theme');
@@ -1540,6 +1617,29 @@
             saveData();
         }
         
+        // NEW FUNCTIONS: Why Us Modal
+        function openWhyUsModal() {
+            updateStaticUI(); // Ensure translations are fresh when opening
+            document.getElementById('whyUsModal').classList.add('active');
+        }
+
+        function closeWhyUsModal() {
+            document.getElementById('whyUsModal').classList.remove('active');
+        }
+        // END NEW FUNCTIONS
+        
+        // NEW FUNCTIONS: Pricing Modal
+        function openPricingModal() {
+            updateStaticUI(); // Ensure translations are fresh when opening
+            document.getElementById('pricingModal').classList.add('active');
+        }
+
+        function closePricingModal() {
+            document.getElementById('pricingModal').classList.remove('active');
+        }
+        // END NEW FUNCTIONS
+
+        // Update total notes count
         function updateTotalNotes() {
             let total = 0;
             data.folders.forEach(folder => {
@@ -1548,40 +1648,34 @@
             document.getElementById('totalNotes').textContent = total;
         }
 
-        // --- RESTORED: Clipboard functions ---
+        // Clipboard functions
         async function pasteFromClipboard() {
             try {
-                // Use the modern clipboard API
                 const text = await navigator.clipboard.readText();
                 if (text) {
                     clipboardContent = text;
                     document.getElementById('clipboardSection').style.display = 'block';
                     document.getElementById('clipboardPreview').textContent = text.substring(0, 200) + (text.length > 200 ? '...' : '');
                 } else {
-                    alert('Clipboard is empty or access denied!');
+                    alert(getTranslation('alertEmptyClipboard')); // Translated alert
                 }
             } catch (err) {
-                alert('Could not access clipboard. Please make sure you granted permission in browser settings.');
+                alert(getTranslation('alertClipboard')); // Translated alert
             }
         }
 
         function insertClipboard() {
             const editor = document.getElementById('noteContent');
             const currentContent = editor.value;
-            // Insert the clipboard content, adding newlines for separation
             editor.value = currentContent + (currentContent ? '\n\n' : '') + clipboardContent;
             document.getElementById('clipboardSection').style.display = 'none';
-            clipboardContent = ''; // Clear after insertion
         }
 
-        // --- FOLDERS ---
+        // Folders
         function renderFolders() {
             const container = document.getElementById('foldersContainer');
             container.innerHTML = '';
             
-            // Render main folders
-            const folderList = document.createElement('div');
-            folderList.className = 'main-folders';
             data.folders.forEach(folder => {
                 const item = document.createElement('div');
                 item.className = 'folder-item';
@@ -1592,25 +1686,8 @@
                     <div class="folder-count">${folder.notes.length}</div>
                 `;
                 item.onclick = () => selectFolder(folder.id);
-                folderList.appendChild(item);
+                container.appendChild(item);
             });
-            container.appendChild(folderList);
-            
-            // Render system folders (Trash)
-            const trashContainer = document.createElement('div');
-            trashContainer.className = 'system-folders';
-            
-            const trashItem = document.createElement('div');
-            trashItem.className = 'folder-item trash-item';
-            if (data.currentFolder === data.TRASH_ID) trashItem.classList.add('active');
-            trashItem.innerHTML = `
-                <div class="folder-icon">🗑️</div>
-                <div class="folder-name">Trash</div>
-                <div class="folder-count">${data.trash.length}</div>
-            `;
-            trashItem.onclick = () => selectFolder(data.TRASH_ID);
-            trashContainer.appendChild(trashItem);
-            container.appendChild(trashContainer);
         }
 
         function selectFolder(id) {
@@ -1622,13 +1699,14 @@
         }
 
         function createFolder() {
-            // Reset modal inputs and color selection
             document.getElementById('folderName').value = '';
+            // Reset color selection
             document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
             const defaultColor = document.querySelector('.color-picker-container div');
             defaultColor.classList.add('selected');
             selectedColor = defaultColor.getAttribute('data-color');
             
+            updateStaticUI(); // Ensure translations are fresh before opening
             document.getElementById('folderModal').classList.add('active');
         }
 
@@ -1641,31 +1719,11 @@
             element.classList.add('selected');
             selectedColor = element.getAttribute('data-color');
         }
-        
-        // MODIFIED: Logic for handling the 'space' theme preview
-        function selectNoteColor(element) {
-            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedNoteColor = element.getAttribute('data-color');
-            
-            // Apply the color immediately to the modal content
-            const modalContent = document.getElementById('noteModal').querySelector('.modal-content');
-            
-            if (selectedNoteColor === 'space') {
-                modalContent.style.background = '#0D0F16'; 
-                modalContent.style.color = '#f5f5f5'; // Change text color for dark background
-                document.querySelectorAll('.section-title').forEach(el => el.style.color = '#f5f5f5');
-            } else {
-                modalContent.style.background = 'var(--bg-secondary)'; 
-                modalContent.style.color = 'var(--text-primary)'; // Reset text color
-                document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
-            }
-        }
 
         function saveFolderModal() {
             const name = document.getElementById('folderName').value.trim();
             if (!name) {
-                alert('Folder name cannot be empty!');
+                alert(getTranslation('alertEmptyFolder')); // Translated alert
                 return;
             }
 
@@ -1681,89 +1739,27 @@
             renderFolders();
             saveData();
         }
-        
-        // --- NOTES RENDERING AND SORTING ---
-        function getNoteBadgeText(note) {
-            if (note.isBookmarked) return '⭐ Bookmarked';
-            if (note.attachments && note.attachments.length > 0) return `📎 ${note.attachments.length} files`;
-            if (note.tags && note.tags.length > 0) return `🏷️ ${note.tags[0]}`;
-            return 'Note';
-        }
-        
-        function sortNotes(notes) {
-            const sortOrder = data.sortOrder;
-            
-            return notes.sort((a, b) => {
-                // 1. Bookmarked first
-                if (sortOrder === 'bookmarked') {
-                    if (a.isBookmarked && !b.isBookmarked) return -1;
-                    if (!a.isBookmarked && b.isBookmarked) return 1;
-                }
-                
-                // 2. Title sorting
-                if (sortOrder === 'titleAsc') {
-                    return a.title.localeCompare(b.title);
-                }
-                
-                // 3. Date sorting (updatedAt is preferred for sorting)
-                const dateA = new Date(a[sortOrder.includes('created') ? 'createdAt' : 'updatedAt'] || a.createdAt).getTime();
-                const dateB = new Date(b[sortOrder.includes('created') ? 'createdAt' : 'updatedAt'] || b.createdAt).getTime();
-                
-                if (sortOrder.includes('Desc')) {
-                    return dateB - dateA;
-                }
-                
-                if (sortOrder.includes('Asc')) {
-                    return dateA - dateB;
-                }
-                
-                return 0;
-            });
-        }
 
+        // Notes
         function renderNotes(folderId) {
             const contentArea = document.getElementById('contentArea');
-            contentArea.innerHTML = '';
-            
-            let notes = [];
-            let folderColor = 'var(--accent)';
-            let isTrashView = false;
-            
-            // --- TRASH VIEW LOGIC ---
-            if (folderId === data.TRASH_ID) {
-                notes = data.trash;
-                folderColor = '#ef4444'; // Use danger color for trash
-                isTrashView = true;
-                contentArea.innerHTML = `
-                    <h2 style="color: var(--danger); margin-bottom: 20px;">🗑️ Trash / Recycling Bin</h2>
-                    <p style="color: var(--text-secondary); margin-bottom: 40px;">Notes here are automatically deleted after 30 days from their deletion date. Use the Restore/Delete Forever buttons below.</p>
-                `;
-            } else {
-                // --- REGULAR FOLDER VIEW LOGIC ---
-                const folder = data.folders.find(f => f.id === folderId);
-                if (!folder) {
-                    contentArea.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">⚠️</div>
-                            <div class="empty-text">Folder not found.</div>
-                        </div>
-                    `;
-                    return;
-                }
-                notes = folder.notes;
-                folderColor = folder.color;
-            }
-            
-            // Apply sorting to active folders only
-            if (!isTrashView) {
-                notes = sortNotes(notes);
-            }
+            const folder = data.folders.find(f => f.id === folderId);
 
-            if (notes.length === 0) {
-                contentArea.innerHTML += `
+            if (!folder) {
+                contentArea.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">${isTrashView ? '🗑️' : '✨'}</div>
-                        <div class="empty-text">${isTrashView ? 'Trash is empty.' : 'No notes yet. Create your first note!'}</div>
+                        <div class="empty-icon">⚠️</div>
+                        <div class="empty-text">${getTranslation('folderNotFound')}</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (folder.notes.length === 0) {
+                contentArea.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">✨</div>
+                        <div class="empty-text">${getTranslation('noNotes')}</div>
                     </div>
                 `;
                 return;
@@ -1772,615 +1768,165 @@
             const grid = document.createElement('div');
             grid.className = 'notes-grid';
 
-            notes.forEach(note => {
+            folder.notes.forEach(note => {
                 const card = document.createElement('div');
                 card.className = 'note-card';
                 
-                // MODIFIED: Apply Note Color to Indicator Bar and Special Class
-                if (note.noteColor === 'space') {
-                    card.classList.add('space-bg');
-                    card.style.setProperty('--note-indicator-color', '#3b82f6'); // Bright blue indicator for space theme
-                } else if (note.noteColor && note.noteColor !== 'transparent') {
-                    // Set the CSS variable for the left color bar
-                    card.style.setProperty('--note-indicator-color', note.noteColor);
-                    // Ensure space-bg is removed if the color changes away from 'space'
-                    card.classList.remove('space-bg'); 
-                } else {
-                    card.style.setProperty('--note-indicator-color', 'transparent'); 
-                    card.classList.remove('space-bg'); 
-                }
-                // END MODIFIED
+                const noteTitle = note.title || getTranslation('newNoteTitle');
+                const noteContent = note.content || getTranslation('editorPlaceholder');
 
                 card.innerHTML = `
-                    ${note.isBookmarked && !isTrashView ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation(); toggleBookmarkInCard(${note.id}, ${folderId})">🌟</button>` : ''}
-                    <h3 class="note-title">${note.title || 'Untitled'}</h3>
-                    
-                    ${note.tags && note.tags.length > 0 ? `
-                        <div class="note-tags-display">
-                            ${note.tags.map(tag => `<span class="note-tag-display">${tag}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                    
-                    <p class="note-preview">${note.content || 'No content'}</p>
-                    
-                    ${isTrashView ? `
-                        <div class="note-meta trash-note-meta">
-                            <span>📅 Deleted: ${new Date(note.deletedAt).toLocaleDateString()}</span>
-                            <button class="btn btn-success" onclick="event.stopPropagation(); restoreNote(${note.id})">↩️ Restore</button>
-                            <button class="btn" style="background: var(--danger); color: white;" onclick="event.stopPropagation(); permanentlyDeleteNote(${note.id})">❌ Delete Forever</button>
-                        </div>
-                    ` : `
-                        <div class="note-meta">
-                            <span>📅 Updated: ${new Date(note.updatedAt || note.createdAt).toLocaleDateString()}</span>
-                            <span class="note-badge" style="background: ${folderColor}1A; color: ${folderColor};">${getNoteBadgeText(note)}</span>
-                        </div>
-                    `}
+                    ${note.isBookmarked ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation();">⭐</button>` : ''}
+                    <h3 class="note-title">${noteTitle}</h3>
+                    <p class="note-preview">${noteContent.substring(0, 100)}...</p>
+                    <div class="note-meta">
+                        <span>📅 ${new Date(note.updatedAt).toLocaleDateString()}</span>
+                        <span class="note-badge" style="background: ${folder.color}1A; color: ${folder.color};">
+                            ${note.isBookmarked ? getTranslation('bookmarkedBadge') : getTranslation('noteBadge')}
+                        </span>
+                    </div>
                 `;
-                
-                if (isTrashView) {
-                    card.onclick = (e) => { e.stopPropagation(); };
-                    card.classList.add('trash-card');
-                } else {
-                    card.onclick = () => openNoteModal(note.id);
-                }
+                card.onclick = () => openNoteModal(note.id);
                 grid.appendChild(card);
             });
-            
+
+            contentArea.innerHTML = '';
             contentArea.appendChild(grid);
         }
-        
-        function hexToRgb(hex) {
-            var bigint = parseInt(hex.slice(1), 16);
-            var r = (bigint >> 16) & 255;
-            var g = (bigint >> 8) & 255;
-            var b = bigint & 255;
-            return { r: r, g: g, b: b };
+
+        function openNewNote() {
+            data.currentNote = null;
+            openNoteModal();
         }
 
-        // Quick bookmarking from card view
-        function toggleBookmarkInCard(noteId, folderId) {
-            const folder = data.folders.find(f => f.id === folderId);
-            const note = folder.notes.find(n => n.id === noteId);
-            if (note) {
-                note.isBookmarked = !note.isBookmarked;
-                note.updatedAt = new Date().toISOString();
-                saveData();
-                renderNotes(folderId);
-            }
-        }
-        
-        // --- TRASH MANAGEMENT FUNCTIONS ---
-        function deleteNote() {
-            if (!data.currentFolder || data.currentNote === null) return;
-            
-            if (data.currentFolder === data.TRASH_ID) {
+        function openNoteModal(noteId = null) {
+            if (data.currentFolder === null) {
+                alert(getTranslation('alertNoFolder')); // Translated alert
                 return;
             }
 
-            if (!confirm('Are you sure you want to move this note to Trash?')) return;
-
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const noteIndex = folder.notes.findIndex(n => n.id === data.currentNote);
-            
-            if (noteIndex !== -1) {
-                const noteToTrash = folder.notes.splice(noteIndex, 1)[0];
-                
-                noteToTrash.isTrashed = true;
-                noteToTrash.deletedAt = new Date().toISOString();
-                
-                data.trash.push(noteToTrash);
-                
-                saveData();
-                updateTotalNotes();
-                
-                const indicator = document.createElement('div');
-                indicator.className = 'save-indicator';
-                indicator.innerHTML = '🗑️ Moved to Trash!';
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 2000);
-                
-                closeNoteModal();
-            }
-        }
-        
-        function restoreNote(noteId) {
-            if (!confirm('Restore this note to its original folder?')) return;
-            
-            const noteIndex = data.trash.findIndex(n => n.id === noteId);
-            if (noteIndex === -1) return;
-            
-            const noteToRestore = data.trash.splice(noteIndex, 1)[0];
-            
-            // Restore to the first active folder if a default cannot be determined
-            const targetFolder = data.folders[0];
-            
-            if (targetFolder) {
-                noteToRestore.isTrashed = false;
-                noteToRestore.deletedAt = null;
-                noteToRestore.updatedAt = new Date().toISOString();
-                
-                targetFolder.notes.push(noteToRestore);
-                
-                saveData();
-                updateTotalNotes();
-                renderNotes(data.TRASH_ID); 
-                renderFolders(); // Update folder count in sidebar
-                
-                const indicator = document.createElement('div');
-                indicator.className = 'save-indicator';
-                indicator.style.background = 'var(--accent)';
-                indicator.innerHTML = `↩️ Restored to ${targetFolder.name}!`;
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 2000);
-            } else {
-                alert('Could not find a folder to restore to. Please create a folder first.');
-                data.trash.push(noteToRestore);
-            }
-        }
-        
-        function permanentlyDeleteNote(noteId) {
-            if (!confirm('DANGER: This action cannot be undone. Permanently delete this note?')) return;
-            
-            const noteIndex = data.trash.findIndex(n => n.id === noteId);
-            if (noteIndex !== -1) {
-                data.trash.splice(noteIndex, 1);
-                saveData();
-                renderNotes(data.TRASH_ID);
-                renderFolders(); // Update trash count in sidebar
-                
-                const indicator = document.createElement('div');
-                indicator.className = 'save-indicator';
-                indicator.style.background = 'var(--danger)';
-                indicator.innerHTML = `❌ Permanently Deleted!`;
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 2000);
-            }
-        }
-        
-        // --- NOTE MODAL MANAGEMENT ---
-        function openNewNote() {
-            if (!data.currentFolder || data.currentFolder === data.TRASH_ID) {
-                return alert('Please select an active folder first, or create a new one.');
-            }
-            data.currentNote = null;
-            currentBookmark = false;
-            drawingData = null;
-            selectedNoteColor = 'transparent';
-            clipboardContent = '';
-            
-            // Reset fields
-            document.getElementById('modalTitle').textContent = '✨ New Note';
-            document.getElementById('noteTitle').value = '';
-            document.getElementById('noteContent').value = '';
-            document.getElementById('noteTags').value = ''; 
-            document.getElementById('attachmentsGrid').innerHTML = '';
-            
-            // Hide specific sections for a clean start
-            document.getElementById('canvasContainer').style.display = 'none';
-            document.getElementById('clipboardSection').style.display = 'none';
-            document.getElementById('historyBtn').style.display = 'none'; 
-            document.getElementById('noteDeleteBtn').style.display = 'block'; 
-            
-            // Reset styles and bookmark state
-            updateBookmarkButton();
-            updateEditorStyle();
-            
-            // Reset modal background to default and select 'transparent'
-            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
-            document.querySelector('#noteColorPicker div[data-color="transparent"]').classList.add('selected');
-            document.getElementById('noteModal').querySelector('.modal-content').style.background = 'var(--bg-secondary)';
-            document.getElementById('noteModal').querySelector('.modal-content').style.color = 'var(--text-primary)';
-            document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
-
-            document.getElementById('noteModal').classList.add('active');
-        }
-
-        function openNoteModal(noteId) {
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === noteId);
-            if (!note) return;
-
+            const isNew = noteId === null;
             data.currentNote = noteId;
 
-            // Load all note properties
-            document.getElementById('modalTitle').textContent = note.title || 'Untitled';
-            document.getElementById('noteTitle').value = note.title || '';
-            document.getElementById('noteContent').value = note.content || '';
-            document.getElementById('fontFamily').value = note.fontFamily || 'Arial';
-            document.getElementById('fontSize').value = note.fontSize || '16';
-            document.getElementById('noteTags').value = (note.tags || []).join(', ');
-            
-            selectedNoteColor = note.noteColor || 'transparent';
-            
-            // MODIFIED: Apply correct theme to modal based on note color
-            const modalContent = document.getElementById('noteModal').querySelector('.modal-content');
-            if (selectedNoteColor === 'space') {
-                modalContent.style.background = '#0D0F16'; 
-                modalContent.style.color = '#f5f5f5';
-                document.querySelectorAll('.section-title').forEach(el => el.style.color = '#f5f5f5');
-            } else {
-                modalContent.style.background = 'var(--bg-secondary)'; 
-                modalContent.style.color = 'var(--text-primary)';
-                document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
+            updateStaticUI(); // Ensure all static text is translated
+
+            let note = {
+                title: '',
+                content: '',
+                fontFamily: 'Arial',
+                fontSize: 16,
+                isBookmarked: false,
+                drawing: null,
+                attachments: []
+            };
+
+            if (!isNew) {
+                const folder = data.folders.find(f => f.id === data.currentFolder);
+                note = folder.notes.find(n => n.id === noteId);
+                if (!note) return; // Should not happen
             }
-            
-            // Select the correct color circle
-            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
-            const colorOption = document.querySelector(`#noteColorPicker div[data-color="${selectedNoteColor}"]`);
-            if(colorOption) colorOption.classList.add('selected');
 
-
-            currentBookmark = note.isBookmarked || false;
+            document.getElementById('modalTitle').textContent = isNew ? getTranslation('newNoteTitle') : note.title || getTranslation('newNoteTitle');
+            document.getElementById('noteTitle').value = note.title;
+            document.getElementById('noteContent').value = note.content;
+            document.getElementById('fontFamily').value = note.fontFamily;
+            document.getElementById('fontSize').value = note.fontSize;
             drawingData = note.drawing || null;
+            currentBookmark = note.isBookmarked || false;
             
-            document.getElementById('historyBtn').style.display = (note.history && note.history.length > 0) ? 'block' : 'none';
-            document.getElementById('noteDeleteBtn').style.display = 'block';
-
             updateBookmarkButton();
-            updateEditorStyle();
+            renderAttachments(note.attachments);
             
-            renderAttachments(note.attachments || []);
-            
-            // Load canvas state
             document.getElementById('canvasContainer').style.display = drawingData ? 'block' : 'none';
             if (drawingData) {
-                setTimeout(() => loadDrawing(drawingData), 50); 
-            } else {
-                 clearCanvas(false); // Reset canvas on modal open if no drawing data
+                setTimeout(() => loadDrawing(drawingData), 50); // Small delay for canvas to be visible
             }
-            
             document.getElementById('clipboardSection').style.display = 'none';
             document.getElementById('noteModal').classList.add('active');
+            updateEditorStyle(); // Apply font styles
         }
 
         function closeNoteModal() {
             document.getElementById('noteModal').classList.remove('active');
+            // Re-render notes to show changes if any (e.g., if a note was saved)
             if (data.currentFolder) {
                 renderNotes(data.currentFolder);
             }
             data.currentNote = null;
         }
 
+        function updateEditorStyle() {
+            const editor = document.getElementById('noteContent');
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = document.getElementById('fontSize').value + 'px';
+            
+            editor.style.fontFamily = fontFamily;
+            editor.style.fontSize = fontSize;
+        }
+
         function saveNote() {
-            const title = document.getElementById('noteTitle').value.trim() || 'Untitled Note';
+            const title = document.getElementById('noteTitle').value.trim();
             const content = document.getElementById('noteContent').value.trim();
             const fontFamily = document.getElementById('fontFamily').value;
             const fontSize = parseInt(document.getElementById('fontSize').value);
-            const tags = document.getElementById('noteTags').value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-            
             const folder = data.folders.find(f => f.id === data.currentFolder);
+
             if (!folder) {
-                alert('No active folder selected!');
+                alert(getTranslation('alertNoFolder')); // Translated alert
                 return;
             }
-            
-            let currentNoteData = {
-                title, 
-                content, 
-                fontFamily, 
-                fontSize, 
-                drawing: drawingData, 
+            if (!title) {
+                alert(getTranslation('alertEmptyTitle')); // Translated alert
+                return;
+            }
+
+            // Get current attachments from the grid (they might have been added in the modal)
+            const attachmentsGrid = document.getElementById('attachmentsGrid');
+            const currentAttachments = Array.from(attachmentsGrid.children).map(item => ({
+                name: item.querySelector('.attachment-name').textContent,
+                type: item.dataset.type,
+                dataUrl: item.dataset.data
+            }));
+
+
+            const newNoteData = {
+                title,
+                content,
+                fontFamily,
+                fontSize,
+                drawing: drawingData,
                 isBookmarked: currentBookmark,
-                noteColor: selectedNoteColor,
-                tags: tags,
+                attachments: currentAttachments, // Use the gathered attachments
                 updatedAt: new Date().toISOString()
             };
 
             if (data.currentNote === null) {
                 // New note
-                currentNoteData.id = data.nextNoteId++;
-                currentNoteData.createdAt = currentNoteData.updatedAt;
-                currentNoteData.history = [];
-                currentNoteData.attachments = [];
-                folder.notes.push(currentNoteData);
+                newNoteData.id = data.nextNoteId++;
+                newNoteData.createdAt = newNoteData.updatedAt;
+                folder.notes.push(newNoteData);
             } else {
                 // Edit existing note
                 const noteIndex = folder.notes.findIndex(n => n.id === data.currentNote);
                 if (noteIndex !== -1) {
-                    const existingNote = folder.notes[noteIndex];
-                    
-                    // Save old version to history if content changed
-                    if (existingNote.content !== content) {
-                        const historyEntry = {
-                            content: existingNote.content,
-                            date: existingNote.updatedAt
-                        };
-                        
-                        existingNote.history = existingNote.history || [];
-                        // Limit history size to prevent excessive storage use (e.g., last 20 versions)
-                        if (existingNote.history.length >= 20) {
-                            existingNote.history.shift(); 
-                        }
-                        existingNote.history.push(historyEntry);
-                    }
-                    
-                    // Preserve attachments and history when spreading
-                    folder.notes[noteIndex] = { 
-                        ...existingNote, 
-                        ...currentNoteData,
-                        attachments: existingNote.attachments || [],
-                        history: existingNote.history || []
-                    };
+                    folder.notes[noteIndex] = { ...folder.notes[noteIndex], ...newNoteData };
                 }
             }
-
+            
             saveData();
             updateTotalNotes();
 
+            // Show save indicator (using translated text)
             const saveIndicator = document.createElement('div');
             saveIndicator.className = 'save-indicator';
-            saveIndicator.innerHTML = '✅ Note Saved!';
+            saveIndicator.innerHTML = `✅ ${getTranslation('alertSaving')}`;
             document.body.appendChild(saveIndicator);
             setTimeout(() => saveIndicator.remove(), 1500);
 
             closeNoteModal();
         }
-        
-        function updateEditorStyle() {
-            const editor = document.getElementById('noteContent');
-            editor.style.fontFamily = document.getElementById('fontFamily').value;
-            editor.style.fontSize = document.getElementById('fontSize').value + 'px';
-        }
 
-        // --- NEW: HISTORY MODAL FUNCTIONS ---
-        function openHistoryModal() {
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            if (!note || !note.history || note.history.length === 0) {
-                alert('No version history found for this note.');
-                return;
-            }
-            
-            const historyList = document.getElementById('historyList');
-            historyList.innerHTML = '';
-            
-            const sortedHistory = note.history.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            sortedHistory.forEach((version, index) => {
-                const item = document.createElement('li');
-                item.className = 'history-item';
-                
-                const preview = version.content.substring(0, 50) + (version.content.length > 50 ? '...' : '');
-                
-                item.innerHTML = `
-                    <div class="history-item-meta">
-                        <strong>Version ${sortedHistory.length - index}</strong> 
-                        <span style="display: block; font-size: 12px;">Saved: ${new Date(version.date).toLocaleString()}</span>
-                        <span style="font-style: italic;">Preview: "${preview}"</span>
-                    </div>
-                    <button class="btn btn-warning" onclick="restoreVersion('${version.date}')">Restore</button>
-                `;
-                historyList.appendChild(item);
-            });
-            
-            document.getElementById('historyModal').classList.add('active');
-        }
-
-        function closeHistoryModal() {
-            document.getElementById('historyModal').classList.remove('active');
-        }
-
-        function restoreVersion(versionDate) {
-            if (!confirm('Are you sure you want to restore this version? The current content will be saved to history before restoration.')) return;
-            
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            
-            const versionToRestore = note.history.find(v => v.date === versionDate);
-            
-            if (versionToRestore) {
-                // 1. Save current content to history first
-                const currentContent = document.getElementById('noteContent').value.trim();
-                const currentHistoryEntry = {
-                    content: currentContent,
-                    date: new Date().toISOString()
-                };
-                note.history.push(currentHistoryEntry);
-                
-                // 2. Overwrite editor content with restored version
-                document.getElementById('noteContent').value = versionToRestore.content;
-                
-                // 3. Update the note in memory (only content field)
-                note.content = versionToRestore.content;
-                
-                saveData();
-                closeHistoryModal();
-                
-                const indicator = document.createElement('div');
-                indicator.className = 'save-indicator';
-                indicator.style.background = 'var(--warning)';
-                indicator.innerHTML = `🔄 Restored! Click 'Save Note' to finalize.`;
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 2500);
-            } else {
-                alert('Version not found.');
-            }
-        }
-        
-        // --- RESTORED: ATTACHMENTS ---
-        function getAttachmentIcon(type) {
-            if (type.startsWith('image')) return '🖼️';
-            if (type.startsWith('audio')) return '🎵';
-            if (type.startsWith('video')) return '🎬';
-            if (type.includes('pdf')) return '📄';
-            if (type.includes('zip') || type.includes('rar')) return '📦';
-            if (type.includes('text') || type.includes('document')) return '📝';
-            return '📎';
-        }
-
-        function renderAttachments(attachments) {
-            const grid = document.getElementById('attachmentsGrid');
-            grid.innerHTML = attachments.map((att, index) => `
-                <div class="attachment-item" onclick="viewAttachment('${att.dataUrl}', '${att.name}', '${att.type}')" data-type="${att.type}" data-name="${att.name}" data-dataurl="${att.dataUrl}">
-                    <div class="attachment-icon">${getAttachmentIcon(att.type)}</div>
-                    <div class="attachment-name">${att.name}</div>
-                    <button class="close-btn" style="position: absolute; top: 0; right: 0; transform: scale(0.6); background: var(--danger); color: white; border: none;" onclick="event.stopPropagation(); deleteAttachment(${index})">×</button>
-                </div>
-            `).join('');
-        }
-
-        function addFileToNote(files) {
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            
-            if (!note) {
-                alert('Please save the note first or open an existing one before adding attachments.');
-                return;
-            }
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Initialize attachments array if it doesn't exist
-                    note.attachments = note.attachments || []; 
-                    note.attachments.push({ name: file.name, type: file.type, dataUrl: e.target.result });
-                    renderAttachments(note.attachments);
-                    saveData();
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-        
-        function addImage() {
-            const files = document.getElementById('imageUpload').files;
-            if (files.length) addFileToNote(files);
-        }
-        
-        function addFile() {
-            const files = document.getElementById('fileUpload').files;
-            if (files.length) addFileToNote(files);
-        }
-
-        function deleteAttachment(index) {
-            if (!confirm('Are you sure you want to delete this attachment?')) return;
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            if (note && note.attachments) {
-                note.attachments.splice(index, 1);
-                renderAttachments(note.attachments);
-                saveData();
-            }
-        }
-
-        function viewAttachment(dataUrl, name, type) {
-            if (type.startsWith('image')) {
-                const newWindow = window.open();
-                newWindow.document.write(`<img src="${dataUrl}" alt="${name}" style="max-width: 100%; display: block; margin: 20px;">`);
-            } else { 
-                // For other files, download them (simulating a download)
-                const link = document.createElement('a');
-                link.href = dataUrl;
-                link.download = name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-        
-        // --- RESTORED: DRAWING CANVAS ---
-        function setupCanvas() {
-            canvas = document.getElementById('drawingCanvas');
-            ctx = canvas.getContext('2d');
-            
-            // Set initial dimensions based on CSS size
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            // Event listeners
-            canvas.addEventListener('mousedown', startDrawing);
-            canvas.addEventListener('mouseup', stopDrawing);
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseout', stopDrawing);
-
-            // Touch events for mobile compatibility
-            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
-            canvas.addEventListener('touchend', stopDrawing);
-            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
-        }
-
-        function toggleDrawing() {
-            const container = document.getElementById('canvasContainer');
-            if (container.style.display === 'block') {
-                container.style.display = 'none';
-                drawingData = canvas.toDataURL(); // Save drawing when closing canvas UI
-            } else {
-                container.style.display = 'block';
-                // Reset canvas size before loading to ensure correct dimensions
-                canvas.width = canvas.offsetWidth;
-                canvas.height = 400; 
-                loadDrawing(drawingData);
-            }
-        }
-
-        function startDrawing(e) {
-            isDrawing = true;
-            ctx.beginPath();
-            
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            ctx.moveTo(x, y);
-            
-            ctx.strokeStyle = document.getElementById('drawColor').value;
-            ctx.lineWidth = document.getElementById('drawSize').value;
-        }
-
-        function draw(e) {
-            if (!isDrawing) return;
-            
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-        }
-
-        function stopDrawing() {
-            isDrawing = false;
-        }
-        
-        function clearCanvas(confirmPrompt = true) {
-            if (confirmPrompt && !confirm('Are you sure you want to clear the drawing?')) return;
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawingData = null;
-            document.getElementById('drawingStatus').textContent = 'Cleared!';
-            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1000);
-        }
-        
-        function saveDrawing() {
-            // This is just a temporary save to the current session variable
-            drawingData = canvas.toDataURL();
-            document.getElementById('drawingStatus').textContent = 'Drawing Saved to Note!';
-            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1500);
-            // Actual save to localStorage happens in saveNote()
-        }
-
-        function loadDrawing(dataUrl) {
-            // Reload the drawing onto the canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if (dataUrl) {
-                const img = new Image();
-                img.onload = function() {
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                };
-                img.src = dataUrl;
-                document.getElementById('drawingStatus').textContent = 'Drawing Loaded!';
-            } else {
-                document.getElementById('drawingStatus').textContent = 'New Drawing.';
-            }
-            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1000);
-        }
-
-
-        // --- BOOKMARKS ---
+        // Bookmark function
         function toggleBookmark() {
             currentBookmark = !currentBookmark;
             updateBookmarkButton();
@@ -2390,124 +1936,363 @@
             const btn = document.getElementById('bookmarkBtn');
             if (currentBookmark) {
                 btn.classList.add('bookmarked');
-                btn.innerHTML = '🌟 Bookmarked';
+                btn.innerHTML = getTranslation('bookmarkedBtn'); // Translated
             } else {
                 btn.classList.remove('bookmarked');
-                btn.innerHTML = '⭐ Bookmark';
+                btn.innerHTML = getTranslation('bookmarkBtn'); // Translated
             }
         }
 
-        // --- SEARCH ---
+        // Attachments
+        function addImage() {
+            const files = document.getElementById('imageUpload').files;
+            const note = data.currentNote !== null ? 
+                data.folders.find(f => f.id === data.currentFolder).notes.find(n => n.id === data.currentNote) :
+                { attachments: [] }; // Mock note for a new note, attachments will be saved on saveNote
+
+            if (!note) return;
+
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    addAttachment(file.name, 'image', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addFile() {
+            const files = document.getElementById('fileUpload').files;
+            const note = data.currentNote !== null ? 
+                data.folders.find(f => f.id === data.currentFolder).notes.find(n => n.id === data.currentNote) :
+                { attachments: [] }; // Mock note for a new note, attachments will be saved on saveNote
+
+            if (!note) return;
+
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    addAttachment(file.name, getFileType(file.name), e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'].includes(ext)) return 'image';
+            if (['mp3', 'wav', 'ogg', 'm4a'].includes(ext)) return 'audio';
+            if (['mp4', 'avi', 'mov', 'webm', 'mkv'].includes(ext)) return 'video';
+            if (['exe', 'msi', 'app'].includes(ext)) return 'executable';
+            if (['pdf', 'doc', 'docx', 'txt', 'rtf'].includes(ext)) return 'document';
+            if (['zip', 'rar', '7z', 'tar'].includes(ext)) return 'archive';
+            return 'file';
+        }
+
+        function getAttachmentIcon(type) {
+            const icons = {
+                image: '🖼️',
+                audio: '🎵',
+                video: '🎬',
+                document: '📄',
+                archive: '📦',
+                executable: '⚙️',
+                file: '📎'
+            };
+            return icons[type] || '📎';
+        }
+
+
+        function addAttachment(name, type, dataUrl) {
+            const grid = document.getElementById('attachmentsGrid');
+
+            const item = document.createElement('div');
+            item.className = 'attachment-item';
+            item.dataset.type = type;
+            item.dataset.data = dataUrl;
+            
+            const icon = getAttachmentIcon(type);
+            
+            // Allow deletion directly in the modal for unsaved/new notes as well
+            item.innerHTML = `
+                <div style="position: relative;">
+                    <button onclick="event.stopPropagation(); deleteAttachmentElement(this)" style="position: absolute; top: -10px; right: -10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">×</button>
+                    <div class="attachment-icon">${icon}</div>
+                </div>
+                <div class="attachment-name">${name}</div>
+            `;
+            item.onclick = () => viewAttachment(dataUrl, name, type);
+            grid.appendChild(item);
+
+            // If the note is already saved, update the in-memory data immediately
+            if (data.currentNote !== null) {
+                const folder = data.folders.find(f => f.id === data.currentFolder);
+                const note = folder.notes.find(n => n.id === data.currentNote);
+                if (note) {
+                    note.attachments.push({ name, type, dataUrl });
+                    saveData();
+                }
+            }
+        }
+
+        function deleteAttachmentElement(button) {
+            if (!confirm(getTranslation('alertDeleteAttachment'))) return; // Translated confirm
+            const item = button.closest('.attachment-item');
+            const grid = item.parentNode;
+            const index = Array.from(grid.children).indexOf(item);
+
+            // Remove from the DOM
+            item.remove();
+
+            // If the note is already saved, also remove from the in-memory data
+            if (data.currentNote !== null) {
+                const folder = data.folders.find(f => f.id === data.currentFolder);
+                const note = folder.notes.find(n => n.id === data.currentNote);
+                if (note && note.attachments) {
+                    note.attachments.splice(index, 1);
+                    saveData();
+                }
+            }
+        }
+
+
+        function renderAttachments(attachments) {
+            const grid = document.getElementById('attachmentsGrid');
+            grid.innerHTML = attachments.map((att, index) => `
+                <div class="attachment-item" data-type="${att.type}" data-data="${att.dataUrl}" onclick="viewAttachment('${att.dataUrl}', '${att.name}', '${att.type}')">
+                    <div style="position: relative;">
+                        <button onclick="event.stopPropagation(); deleteAttachmentElement(this)" style="position: absolute; top: -10px; right: -10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">×</button>
+                        <div class="attachment-icon">${getAttachmentIcon(att.type)}</div>
+                    </div>
+                    <div class="attachment-name">${att.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function viewAttachment(dataUrl, name, type) {
+            if (type.startsWith('image')) {
+                const newWindow = window.open();
+                newWindow.document.write(`<img src="${dataUrl}" alt="${name}" style="max-width: 100%; display: block;">`);
+            } else {
+                // For other files, you can just download them
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Drawing Canvas functions (no translation needed here except for the status/toolbar)
+        function setupCanvas() {
+            canvas = document.getElementById('drawingCanvas');
+            ctx = canvas.getContext('2d');
+            // Set initial canvas dimensions
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            // Event listeners
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mousemove', draw);
+            // Touch events
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
+            canvas.addEventListener('touchend', stopDrawing);
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
+            
+            // Color and Size listeners
+            document.getElementById('drawColor').addEventListener('input', (e) => ctx.strokeStyle = e.target.value);
+            document.getElementById('drawSize').addEventListener('input', (e) => ctx.lineWidth = e.target.value);
+        }
+
+        function toggleDrawing() {
+            const container = document.getElementById('canvasContainer');
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+                drawingData = canvas.toDataURL(); // Save before hiding
+            } else {
+                container.style.display = 'block';
+                // Need to resize canvas on display if it was hidden
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                loadDrawing(drawingData); // Load previous drawing if available
+            }
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX || e.clientX - canvas.getBoundingClientRect().left, e.offsetY || e.clientY - canvas.getBoundingClientRect().top);
+            ctx.strokeStyle = document.getElementById('drawColor').value;
+            ctx.lineWidth = document.getElementById('drawSize').value;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            ctx.lineTo(e.offsetX || e.clientX - canvas.getBoundingClientRect().left, e.offsetY || e.clientY - canvas.getBoundingClientRect().top);
+            ctx.stroke();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawingData = null;
+        }
+
+        function loadDrawing(dataUrl) {
+            if (dataUrl) {
+                const img = new Image();
+                img.onload = function() {
+                    // Temporarily set canvas size to image size to avoid distortion during load
+                    const originalWidth = canvas.width;
+                    const originalHeight = canvas.height;
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Resize canvas back to its original responsive size
+                    canvas.width = originalWidth;
+                    canvas.height = originalHeight;
+                    // Redraw the image scaled to fit the new canvas size
+                    ctx.drawImage(img, 0, 0, originalWidth, originalHeight);
+
+                    // Re-apply drawing styles
+                    ctx.strokeStyle = document.getElementById('drawColor').value;
+                    ctx.lineWidth = document.getElementById('drawSize').value;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                };
+                img.src = dataUrl;
+            } else {
+                clearCanvas();
+            }
+        }
+
+        function saveDrawing() {
+            drawingData = canvas.toDataURL();
+            document.getElementById('drawingStatus').textContent = `(${getTranslation('alertSaving')}!)`; // Translated status
+            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1500);
+        }
+
+        // Search function
         function searchNotes() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const contentArea = document.getElementById('contentArea');
-            contentArea.innerHTML = '';
-            
             let allNotes = [];
-            
-            // Collect all notes from all ACTIVE folders (excluding trash)
+            // Collect all notes from all folders
             data.folders.forEach(folder => {
                 folder.notes.forEach(note => {
-                    allNotes.push({ 
-                        ...note, 
-                        folderColor: folder.color,
-                        folderId: folder.id, // Store folder ID for opening
-                        folderName: folder.name
-                    });
+                    allNotes.push({ ...note, folderColor: folder.color, folderId: folder.id });
                 });
             });
 
             const filteredNotes = allNotes.filter(note => 
-                (note.title && note.title.toLowerCase().includes(searchTerm)) || 
-                (note.content && note.content.toLowerCase().includes(searchTerm)) ||
-                (note.tags && note.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+                note.title.toLowerCase().includes(searchTerm) || 
+                note.content.toLowerCase().includes(searchTerm)
             );
-            
-            // If search is empty, go back to the current folder view
+
             if (searchTerm === '') {
+                // If search is empty, show the current folder or empty state
                 if (data.currentFolder) {
                     renderNotes(data.currentFolder);
                 } else {
-                    // If no folder is selected and search is empty, show empty state
-                    contentArea.innerHTML = `
+                     document.getElementById('contentArea').innerHTML = `
                         <div class="empty-state">
                             <div class="empty-icon">📝</div>
-                            <div class="empty-text">Select a folder or create a new note</div>
+                            <div class="empty-text">${getTranslation('emptyState')}</div>
                         </div>
                     `;
                 }
                 return;
             }
 
-            // Render search results
-            const grid = document.createElement('div');
-            grid.className = 'notes-grid';
-
-            filteredNotes.forEach(note => {
-                const card = document.createElement('div');
-                card.className = 'note-card';
-                
-                // MODIFIED: Apply Note Color logic for search results
-                if (note.noteColor === 'space') {
-                    card.classList.add('space-bg');
-                    card.style.setProperty('--note-indicator-color', '#3b82f6');
-                } else if (note.noteColor && note.noteColor !== 'transparent') {
-                    card.style.setProperty('--note-indicator-color', note.noteColor);
-                } else {
-                    card.style.setProperty('--note-indicator-color', 'transparent'); 
-                }
-                // END MODIFIED
-                
-                card.innerHTML = `
-                    ${note.isBookmarked ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation(); toggleBookmarkInCard(${note.id}, ${note.folderId})">🌟</button>` : ''}
-                    <h3 class="note-title">${note.title}</h3>
-                    
-                    ${note.tags && note.tags.length > 0 ? `
-                        <div class="note-tags-display">
-                            ${note.tags.map(tag => `<span class="note-tag-display">${tag}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                    
-                    <p class="note-preview">${note.content.substring(0, 100)}...</p>
-                    <div class="note-meta">
-                        <span>📁 ${note.folderName}</span>
-                        <span class="note-badge" style="background: ${note.folderColor}1A; color: ${note.folderColor};">${getNoteBadgeText(note)}</span>
-                    </div>
-                `;
-                card.onclick = () => {
-                    selectFolder(note.folderId); // Select the folder
-                    openNoteModal(note.id); // Open the note
-                };
-                grid.appendChild(card);
-            });
-            
             if (filteredNotes.length === 0) {
                 contentArea.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">🔍</div>
-                        <div class="empty-text">No notes found matching "${searchTerm}"</div>
+                        <div class="empty-text">${getTranslation('noNotesFound', searchTerm)}</div>
                     </div>
                 `;
                 return;
             }
-            
-            contentArea.appendChild(grid);
-        }
-        
-        // --- WHY US MODAL ---
-        function openWhyUsModal() {
-            document.getElementById('whyUsModal').classList.add('active');
+
+            // Render search results
+            contentArea.innerHTML = `<div class="notes-grid">${filteredNotes.map(note => `
+                <div class="note-card" onclick="selectFolder(${note.folderId}); openNoteModal(${note.id});">
+                    ${note.isBookmarked ? '<button class="bookmark-btn bookmarked" onclick="event.stopPropagation();">⭐</button>' : ''}
+                    <h3 class="note-title">${note.title}</h3>
+                    <p class="note-preview">${note.content.substring(0, 100)}...</p>
+                    <div class="note-meta">
+                        <span>📅 ${new Date(note.updatedAt).toLocaleDateString()}</span>
+                        <span class="note-badge" style="background: ${note.folderColor}1A; color: ${note.folderColor};">
+                            ${note.isBookmarked ? getTranslation('bookmarkedBadge') : getTranslation('noteBadge')}
+                        </span>
+                    </div>
+                </div>
+            `).join('')}</div>`;
         }
 
-        function closeWhyUsModal() {
-            document.getElementById('whyUsModal').classList.remove('active');
+        // Local Storage
+        function saveData() {
+            const saveObject = {
+                folders: data.folders,
+                currentFolder: data.currentFolder,
+                nextFolderId: data.nextFolderId,
+                nextNoteId: data.nextNoteId,
+                theme: document.body.getAttribute('data-theme'),
+                language: currentLang // NEW: Save current language
+            };
+            localStorage.setItem('cloudNotesData', JSON.stringify(saveObject));
         }
 
-        // --- App Lifetime ---
+        function loadData() {
+            try {
+                const storedData = localStorage.getItem('cloudNotesData');
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    data.folders = parsed.folders;
+                    data.currentFolder = parsed.currentFolder;
+                    data.nextFolderId = parsed.nextFolderId;
+                    data.nextNoteId = parsed.nextNoteId;
+                    
+                    if (parsed.theme) {
+                        document.body.setAttribute('data-theme', parsed.theme);
+                        document.getElementById('themeToggle').textContent = 
+                            parsed.theme === 'light' ? '🌙' : '☀️';
+                    }
+                    
+                    // NEW: Load and set language
+                    if (parsed.language) {
+                        currentLang = parsed.language;
+                    }
+
+                    console.log(getTranslation('alertLoadingData')); // Translated console message
+                } else if (window.appData) {
+                    // Fallback to window data
+                    data.folders = window.appData.folders;
+                    data.currentFolder = window.appData.currentFolder;
+                    data.nextFolderId = window.appData.nextFolderId;
+                    data.nextNoteId = window.appData.nextNoteId;
+                    
+                    if (window.appData.theme) {
+                        document.body.setAttribute('data-theme', window.appData.theme);
+                        document.getElementById('themeToggle').textContent = 
+                            window.appData.theme === 'light' ? '🌙' : '☀️';
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+            }
+        }
+
+        // Initialize app
         init();
-        
-        // Timer to check auto-delete every hour (60 minutes)
-        setInterval(checkAutoDelete, 60 * 60 * 1000); 
     </script>
 </body>
 </html>
