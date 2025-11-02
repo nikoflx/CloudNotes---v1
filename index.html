@@ -1,59 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure License</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>App with Blurred Lock Screen</title>
 <style>
-  body { font-family: Arial,sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; background:#111; color:#fff;}
-  #license-container{background:#222;padding:40px;border-radius:12px;text-align:center;width:300px;box-shadow:0 0 20px rgba(0,0,0,0.5);}
-  input{padding:10px;width:100%;border-radius:6px;border:none;margin-bottom:15px;font-size:16px;}
-  button{padding:10px 20px;border:none;border-radius:6px;background:#4caf50;color:white;font-size:16px;cursor:pointer;width:100%;}
-  button:hover{background:#45a049;}
-  #error{margin-top:10px;}
+  :root{
+    --bg:#071021; --card:#0f1720; --muted:#9aa4b2; --accent:#22c55e;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:#fff}
+  /* Site content wrapper — everything that should be blurred goes inside #site-content */
+  #site-content { min-height:100vh; transition:filter .25s ease, pointer-events .25s ease, user-select .25s ease; }
+
+  /* When locked, blur and disable interaction on the site content */
+  .locked #site-content {
+    filter: blur(6px) saturate(0.9) brightness(0.85);
+    pointer-events: none;        /* disable clicks */
+    user-select: none;           /* disable selections */
+    touch-action: none;          /* disable touch */
+  }
+
+  /* Fullscreen modal overlay */
+  #license-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    background: rgba(2,6,23,0.72);
+    /* backdrop blur for supporting browsers */
+    backdrop-filter: blur(4px);
+  }
+
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:28px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.6);width:420px;max-width:92%;
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .card h2{margin:0 0 6px;font-size:20px}
+  .card p{margin:0 0 14px;color:var(--muted);font-size:13px}
+  .input{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-bottom:12px;font-size:15px}
+  .btn{display:inline-block;width:100%;padding:11px;border-radius:9px;border:none;background:var(--accent);color:#062017;font-weight:600;cursor:pointer}
+  .msg{margin-top:10px;font-size:13px;height:18px}
+
+  /* small screens */
+  @media (max-width:420px){
+    .card{padding:18px}
+    .input{padding:10px}
+  }
 </style>
 </head>
 <body>
-<div id="license-container">
-  <h2>Enter License Key</h2>
-  <input type="text" id="license-input" placeholder="License Key">
-  <button onclick="checkLicense()">Activate</button>
-  <div id="error"></div>
+
+<!-- Wrap your entire site in #site-content so blur/disable works -->
+<div id="site-content">
+  <!-- Example site content -->
+  <header style="padding:20px;">
+    <h1>My Awesome App</h1>
+  </header>
+  <main style="padding:20px;">
+    <p>This is the main app content. It will be blurred & blocked until license unlocks.</p>
+    <button onclick="alert('You clicked a button — but you can’t before unlocking!')">Test button</button>
+  </main>
+</div>
+
+<!-- License modal (locks page) -->
+<div id="license-modal" role="dialog" aria-modal="true" aria-labelledby="license-title">
+  <div class="card" role="document">
+    <h2 id="license-title">Enter license key to unlock</h2>
+    <p>Paste your license key. The page is blocked until a valid key is provided.</p>
+    <input id="licenseInput" class="input" placeholder="License Key" autocomplete="off" aria-label="License key" />
+    <button id="activateBtn" class="btn">Activate</button>
+    <div id="statusMsg" class="msg" aria-live="polite"></div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">If you have a problem, contact admin.</div>
+  </div>
 </div>
 
 <script>
-  // Obfuscated keys & simple scramble
-  const keys = ["QzNodWRld05vdGVzcTN2aGprcTh=", "SGVsbG93b3JsZHdndmp4czg=", "Tmlrb2ZseHJ0aDlzOHnyeTAx"];
-  
-  function decode(str){ return atob(str); } // decode base64
+/*
+  Behavior:
+  - Adds `.locked` to <body> while modal is shown (applies blur & disables site clicks)
+  - Traps focus inside the modal (tab cycling)
+  - Stores token (if server returns one) in localStorage
+  - Replace API with your server or comment fetch out if using client-only check.
+*/
 
-  function checkLicense() {
-    const input = document.getElementById('license-input').value.trim();
-    const errorDiv = document.getElementById('error');
-    let valid=false;
+(async function(){
+  const API = 'https://your-license-server.example.com/api/validate-key'; // replace if using server
+  const TOKEN_KEY = 'my_app_license_token';
+  const body = document.body;
+  const modal = document.getElementById('license-modal');
+  const input = document.getElementById('licenseInput');
+  const btn = document.getElementById('activateBtn');
+  const status = document.getElementById('statusMsg');
 
-    for(let k of keys){ if(input===decode(k)){ valid=true; break; } }
+  // Lock page initially
+  body.classList.add('locked');
 
-    if(valid){
-      errorDiv.style.color="#4caf50"; errorDiv.innerText="License valid! ✅";
-      document.getElementById('license-container').style.display='none';
-      startYourApp();
-    } else {
-      errorDiv.style.color="#ff4c4c"; errorDiv.innerText="Invalid license key ❌";
+  // Focus management / trap
+  const focusableSelectors = 'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])';
+  let focusableInModal = null;
+  function updateFocusable() {
+    focusableInModal = Array.from(modal.querySelectorAll(focusableSelectors)).filter(el => !el.hasAttribute('disabled'));
+  }
+
+  // attempt existing token (optional)
+  const existing = localStorage.getItem(TOKEN_KEY);
+  if (existing) {
+    // (Optional) verify token on server here. For speed we assume valid. If you want robust flow, call /verify-token.
+    unlockApp();
+    return;
+  }
+
+  // Protect against accidental page tabbing out: trap focus
+  updateFocusable();
+  (function initFocus(){
+    input.focus();
+    // on tab, keep focus inside modal
+    modal.addEventListener('keydown', function(e){
+      if (e.key === 'Tab') {
+        updateFocusable();
+        if (!focusableInModal || focusableInModal.length === 0) return;
+        const first = focusableInModal[0];
+        const last = focusableInModal[focusableInModal.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+      // extra: block common devtools shortcuts (not foolproof)
+      if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i' || e.key === 'Shift')) {
+        e.preventDefault();
+      }
+    });
+  })();
+
+  // click or Enter to activate
+  btn.addEventListener('click', tryActivate);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') tryActivate(); });
+
+  async function tryActivate(){
+    const key = input.value.trim();
+    status.style.color = '';
+    if (!key) { status.style.color = '#ffb4b4'; status.textContent = 'Enter a license key.'; input.focus(); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Checking...';
+    status.textContent = '';
+
+    try {
+      // If you don't have a server and want client-only check, UNCOMMENT the next lines and put base64/obf logic:
+      // const validKeys = ["CloudNotesq3vhjkq8","Helloworldwgvjxs8","Nikoflxrth9s8gyr01"];
+      // if (validKeys.includes(key)) { localStorage.setItem(TOKEN_KEY,'client-only'); status.style.color='#9be7b5'; status.textContent='Valid — unlocking...'; return unlockApp(); }
+      // else { status.style.color='#ffb4b4'; status.textContent='Invalid license key'; return; }
+
+      // Server call flow (recommended)
+      const resp = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key })
+      });
+      const data = await resp.json();
+      if (resp.ok && data.ok && data.token) {
+        localStorage.setItem(TOKEN_KEY, data.token);
+        status.style.color = '#9be7b5';
+        status.textContent = 'License valid — unlocking...';
+        setTimeout(unlockApp, 500);
+      } else {
+        status.style.color = '#ffb4b4';
+        status.textContent = data.msg || 'Invalid license key';
+      }
+    } catch (err) {
+      console.error(err);
+      status.style.color = '#ffb4b4';
+      status.textContent = 'Network error. Try again.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Activate';
     }
   }
 
-  function startYourApp(){
-    // Original website code here
-    alert(" Your License Key was accepted. Enjoy! :D");
+  function unlockApp(){
+    // remove locked class so interactions resume, hide modal
+    body.classList.remove('locked');
+    modal.style.display = 'none';
+    // Initialize your app here
+    startYourApp();
   }
 
-  // Optional: disable right-click & keyboard shortcuts to slow down Inspect
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.addEventListener('keydown', e => { if(e.ctrlKey && ["u","s","i","c"].includes(e.key.toLowerCase())) e.preventDefault(); });
+  // Example placeholder - replace with your real startup code
+  function startYourApp(){
+    console.log('App started — licensed.');
+    // Put your original site script here
+  }
+
+  // Extra: prevent right-click (optional; deterrent only)
+  document.addEventListener('contextmenu', e => { if (body.classList.contains('locked')) e.preventDefault(); });
+
+})();
 </script>
 </body>
 </html>
+
+
 
 
 <!DOCTYPE html>
