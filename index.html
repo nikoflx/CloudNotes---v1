@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudNotes v2</title>
+    <title>CloudNotes v1 (Ultimate)</title>
     <style>
         * {
             margin: 0;
@@ -65,7 +65,6 @@
             flex-direction: column;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 2px 0 10px var(--shadow);
-            flex-shrink: 0; /* Prevents sidebar from shrinking */
         }
 
         .sidebar-header {
@@ -91,6 +90,7 @@
             margin-bottom: 15px;
         }
         
+        /* New 'Why Us?' Button Style */
         .why-us-btn {
             display: block;
             width: 100%;
@@ -118,13 +118,13 @@
         .why-us-btn:active {
             transform: translateY(0);
         }
+        /* End New 'Why Us?' Button Style */
 
         .toolbar {
             padding: 20px;
             display: flex;
             gap: 12px;
             border-bottom: 1px solid var(--border);
-            flex-wrap: wrap; /* Added for responsiveness */
         }
 
         .btn {
@@ -138,7 +138,6 @@
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px var(--shadow);
-            flex-shrink: 0;
         }
 
         .btn:hover {
@@ -171,36 +170,11 @@
         .btn-warning:hover {
             background: #d97706;
         }
-        
-        /* --- NEW: Trash Icon Style --- */
-        .folder-item.trash-item {
-            border: 2px solid var(--danger) !important;
-            background: var(--danger) !important;
-            color: white !important;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
-        }
-        
-        .folder-item.trash-item:hover {
-            background: #cc3333 !important;
-        }
-        
-        .folder-item.trash-item .folder-icon {
-            background: white !important;
-            color: var(--danger) !important;
-        }
-        /* --- END NEW: Trash Icon Style --- */
-
 
         .folders-container {
             flex: 1;
             overflow-y: auto;
             padding: 12px;
-        }
-        
-        .system-folders {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 12px;
-            margin-bottom: 12px;
         }
 
         .folders-container::-webkit-scrollbar {
@@ -236,12 +210,6 @@
             color: white;
             box-shadow: 0 4px 12px var(--shadow-hover);
             transform: translateX(6px);
-            border-color: var(--accent);
-        }
-        
-        .folder-item.active:not(.trash-item) .folder-icon {
-            background: white !important;
-            color: var(--accent) !important;
         }
 
         .folder-icon {
@@ -254,7 +222,6 @@
             font-size: 20px;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
         }
 
         .folder-item:hover .folder-icon {
@@ -265,9 +232,6 @@
             flex: 1;
             font-weight: 600;
             font-size: 15px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .folder-count {
@@ -277,7 +241,6 @@
             padding: 4px 10px;
             border-radius: 12px;
             font-weight: 600;
-            flex-shrink: 0;
         }
 
         /* Main Content */
@@ -295,14 +258,11 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px var(--shadow);
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
         .search-bar {
             flex: 1;
-            min-width: 250px;
-            max-width: 500px;
+            max-width: 400px;
             position: relative;
         }
 
@@ -331,16 +291,21 @@
             font-size: 18px;
             color: var(--text-secondary);
         }
+
+        .topbar-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
         
-        /* --- NEW: Sort Bar Style --- */
-        .sort-bar {
+        .sort-filter-actions {
             display: flex;
             gap: 10px;
             align-items: center;
-            flex-shrink: 0;
+            margin: 0 20px;
         }
         
-        .sort-bar select {
+        .sort-filter-actions select {
             padding: 10px 14px;
             border: 2px solid var(--border);
             border-radius: 10px;
@@ -348,15 +313,6 @@
             color: var(--text-primary);
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        /* --- END NEW: Sort Bar Style --- */
-
-        .topbar-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-shrink: 0;
         }
 
         .theme-toggle {
@@ -406,43 +362,27 @@
             animation: fadeIn 0.4s ease;
             position: relative;
             overflow: hidden;
-            min-height: 180px; /* Ensures better grid alignment */
-            display: flex;
-            flex-direction: column;
+            
+            /* НОВОЕ: Для ЦВЕТОВОГО КОДИРОВАНИЯ */
+            border-left: 8px solid var(--border); 
+            padding-left: 20px;
         }
         
-        .note-card[data-color]:not([data-color="#ffffff"]):not([data-color="transparent"]) {
-            border-color: var(--border); /* Overridden by JS */
-        }
-        
-        /* --- NEW: Note Color Overlay --- */
-        .note-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            pointer-events: none;
-            background: inherit;
-        }
-        /* --- END NEW: Note Color Overlay --- */
+        /* НОВОЕ: Стили для полоски цвета заметки */
+        .note-card[data-color] { border-left-color: var(--border); }
+        .note-card[data-color="#6366f1"] { border-left-color: #6366f1; }
+        .note-card[data-color="#10b981"] { border-left-color: #10b981; }
+        .note-card[data-color="#f59e0b"] { border-left-color: #f59e0b; }
+        .note-card[data-color="#ef4444"] { border-left-color: #ef4444; }
+        .note-card[data-color="#8b5cf6"] { border-left-color: #8b5cf6; }
+        .note-card[data-color="#ec4899"] { border-left-color: #ec4899; }
+        .note-card[data-color="#06b6d4"] { border-left-color: #06b6d4; }
+        .note-card[data-color="#84cc16"] { border-left-color: #84cc16; }
 
-        .note-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), #8b5cf6);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .note-card:hover::before {
-            transform: scaleX(1);
+        .note-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px var(--shadow);
+            border-color: var(--accent);
         }
 
         @keyframes fadeIn {
@@ -456,16 +396,10 @@
             }
         }
 
-        .note-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 32px var(--shadow);
-            border-color: var(--accent);
-        }
-
         .note-title {
             font-size: 20px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--text-primary);
         }
 
@@ -477,43 +411,44 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 12px;
-            flex-grow: 1; /* Pushes meta to the bottom */
+            margin-bottom: 16px;
         }
-        
-        /* --- NEW: Tags Display --- */
-        .note-tags-display {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-        
-        .note-tag-display {
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        /* --- END NEW: Tags Display --- */
 
         .note-meta {
-            padding-top: 10px;
+            padding-top: 16px;
             border-top: 1px solid var(--border);
             font-size: 13px;
             color: var(--text-secondary);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: auto;
         }
         
-        .trash-note-meta {
-            justify-content: flex-start;
-            gap: 15px;
+        /* НОВОЕ: Стили для тегов */
+        .note-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
+
+        .tag-pill {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .tag-pill:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        /* КОНЕЦ НОВЫХ СТИЛЕЙ */
 
         .note-badge {
             background: var(--accent-light);
@@ -522,7 +457,6 @@
             border-radius: 8px;
             font-weight: 600;
             font-size: 12px;
-            flex-shrink: 0;
         }
 
         /* Modal */
@@ -576,7 +510,6 @@
             justify-content: space-between;
             align-items: center;
             background: var(--accent-light);
-            flex-shrink: 0;
         }
 
         .modal-title {
@@ -597,7 +530,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
         }
 
         .close-btn:hover {
@@ -659,63 +591,6 @@
             color: var(--text-secondary);
         }
         /* End Why Us Section Styles */
-        
-        /* --- NEW: Note Editor Fields --- */
-        .note-color-picker {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-        
-        .note-color-option {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 4px var(--shadow);
-        }
-        
-        .note-color-option.selected {
-            border-color: var(--accent);
-            transform: scale(1.1);
-            box-shadow: 0 0 0 4px var(--accent-light);
-        }
-        
-        .note-tags-input-container {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .note-tags-input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 16px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 16px;
-            font-family: inherit;
-        }
-        
-        .note-tags-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-light);
-        }
-        
-        .history-btn-group {
-            display: flex;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-        /* --- END NEW: Note Editor Fields --- */
 
 
         .editor-toolbar {
@@ -825,7 +700,6 @@
             gap: 12px;
             align-items: center;
             border-top: 2px solid var(--border);
-            flex-wrap: wrap;
         }
 
         .canvas-toolbar button {
@@ -876,7 +750,6 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid var(--border);
-            position: relative;
         }
 
         .attachment-item:hover {
@@ -977,13 +850,11 @@
             cursor: pointer;
             transition: all 0.2s ease;
             filter: grayscale(1);
-            z-index: 10; /* Above the note-card::after overlay */
         }
 
         .bookmark-btn.bookmarked {
             filter: grayscale(0);
             transform: scale(1.2);
-            color: var(--warning); /* Gold color */
         }
 
         .save-indicator {
@@ -997,10 +868,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
         }
 
         .clipboard-section {
@@ -1021,41 +888,13 @@
             max-height: 100px;
             overflow-y: auto;
         }
-        
-        /* --- NEW: History Modal Styles --- */
-        .history-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .history-item {
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bg-tertiary);
-        }
-        
-        .history-item-meta {
-            font-size: 14px;
-            color: var(--text-secondary);
-            flex-grow: 1;
-        }
-        
-        .history-item button {
-            margin-left: 15px;
-        }
-        /* --- END NEW: History Modal Styles --- */
     </style>
 </head>
 <body data-theme="light">
     <div class="app-container">
         <div class="sidebar">
             <div class="sidebar-header">
-                <div class="app-title">CloudNotes v2</div>
+                <div class="app-title">CloudNotes v1</div>
                 <div class="app-author">by Niko</div>
                 <button class="why-us-btn" onclick="openWhyUsModal()">Why Us?</button>
             </div>
@@ -1063,6 +902,7 @@
             <div class="toolbar">
                 <button class="btn" onclick="createFolder()">+ Folder</button>
                 <button class="btn btn-icon" onclick="openNewNote()">📝</button>
+                <button class="btn btn-icon btn-warning" onclick="selectFolder('trash')">🗑️</button> 
             </div>
 
             <div class="folders-container" id="foldersContainer">
@@ -1075,15 +915,14 @@
                     <input type="text" placeholder="Search notes..." id="searchInput" oninput="searchNotes()">
                     <span class="search-icon">🔍</span>
                 </div>
-                <div class="sort-bar">
-                    <label style="font-size: 14px; color: var(--text-secondary); font-weight: 600; white-space: nowrap;">Sort by:</label>
-                    <select id="sortSelect" onchange="data.sortOrder = this.value; renderNotes(data.currentFolder); saveData();">
-                        <option value="updatedDesc">Last Updated (Newest)</option>
-                        <option value="updatedAsc">Last Updated (Oldest)</option>
-                        <option value="createdDesc">Date Created (Newest)</option>
-                        <option value="titleAsc">Title (A-Z)</option>
-                        <option value="bookmarked">Bookmarked First</option>
+                <div class="sort-filter-actions">
+                    <select id="sortCriteria" onchange="loadNotes(data.currentFolder)">
+                        <option value="updatedAt_desc">Latest Edited</option>
+                        <option value="createdAt_desc">Newest First</option>
+                        <option value="title_asc">Title (A-Z)</option>
+                        <option value="color_group">Color Group</option>
                     </select>
+                    <button class="btn btn-icon" onclick="alert('Advanced Filter coming soon!')">🔎</button>
                 </div>
                 <div class="topbar-actions">
                     <div class="stat-item">
@@ -1113,24 +952,21 @@
                 <input type="text" class="note-input" id="noteTitle" placeholder="✨ Note title...">
                 
                 <h3 class="section-title" style="margin-top: 0;">🎨 Note Color</h3>
-                <div class="note-color-picker" id="noteColorPicker">
-                    <div class="note-color-option selected" style="background: var(--bg-secondary);" data-color="transparent" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #fef9c3;" data-color="#fef9c3" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #dcfce7;" data-color="#dcfce7" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #fecaca;" data-color="#fecaca" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #ede9fe;" data-color="#ede9fe" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #d4e9ff;" data-color="#d4e9ff" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #e0f2fe;" data-color="#e0f2fe" onclick="selectNoteColor(this)"></div>
-                    <div class="note-color-option" style="background: #ffe4e6;" data-color="#ffe4e6" onclick="selectNoteColor(this)"></div>
+                <div class="color-picker-container" id="noteColorPicker">
+                    <div class="color-option selected" style="background: transparent; border: 2px solid var(--border);" data-color="" onclick="selectNoteColor(this)"></div>
+                    <div class="color-option" style="background: #6366f1;" data-color="#6366f1" onclick="selectNoteColor(this)"></div>
+                    <div class="color-option" style="background: #10b981;" data-color="#10b981" onclick="selectNoteColor(this)"></div>
+                    <div class="color-option" style="background: #f59e0b;" data-color="#f59e0b" onclick="selectNoteColor(this)"></div>
+                    <div class="color-option" style="background: #ef4444;" data-color="#ef4444" onclick="selectNoteColor(this)"></div>
+                    <div class="color-option" style="background: #8b5cf6;" data-color="#8b5cf6" onclick="selectNoteColor(this)"></div>
+                    <div class="color-option" style="background: #ec4899;" data-color="#ec4899" onclick="selectNoteColor(this)"></div>
+                    <div class="color-option" style="background: #06b6d4;" data-color="#06b6d4" onclick="selectNoteColor(this)"></div>
+                    <div class="color-option" style="background: #84cc16;" data-color="#84cc16" onclick="selectNoteColor(this)"></div>
                 </div>
-                
-                <h3 class="section-title">🏷️ Tags (comma separated)</h3>
-                <div class="note-tags-input-container">
-                    <input type="text" class="note-tags-input" id="noteTags" placeholder="e.g., important, idea, v1-bug">
-                    <div class="history-btn-group">
-                        <button class="btn btn-warning" onclick="openHistoryModal()" id="historyBtn" style="display: none;">⏳ History</button>
-                        <button class="btn btn-warning" onclick="deleteNote()" id="noteDeleteBtn" style="background: var(--danger); color: white;">🗑️ Delete</button>
-                    </div>
+                <div class="tags-section" style="margin-top: 20px;">
+                    <h3 class="section-title"># Tags (e.g., срочно, работа, идея)</h3>
+                    <input type="text" class="note-input" id="noteTagsInput" placeholder="Enter tags separated by comma...">
+                    <div class="note-tags" id="currentNoteTags"></div>
                 </div>
                 <div class="editor-toolbar">
                     <select id="fontFamily" onchange="updateEditorStyle()">
@@ -1151,6 +987,7 @@
                     <button onclick="document.getElementById('fileUpload').click()">📎 File</button>
                     <button onclick="pasteFromClipboard()" class="btn-warning">📋 Paste Clipboard</button>
                     <button onclick="toggleBookmark()" id="bookmarkBtn">⭐ Bookmark</button>
+                    <button onclick="moveToTrash(data.currentNote)" class="btn" style="background: var(--danger);">🗑️ Delete</button>
                     <button onclick="saveNote()" class="btn btn-success">💾 Save Note</button>
                 </div>
 
@@ -1214,7 +1051,7 @@
     <div class="modal" id="whyUsModal">
         <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
-                <div class="modal-title">🌟 Why Choose CloudNotes v2?</div>
+                <div class="modal-title">🌟 Why Choose CloudNotes v1?</div>
                 <button class="close-btn" onclick="closeWhyUsModal()">×</button>
             </div>
             <div class="modal-body">
@@ -1224,7 +1061,7 @@
                     
                     <div class="why-us-card">
                         <h4>🔒 Absolute Privacy</h4>
-                        <p>We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application. Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> </p>
+                        <p>We <strong>don't track, collect, or sell any of your data<strong>. Everything you write or draw stays <strong>private<strong> on your device's local storage. This is a local-first application.                                                                                                     Big companies (Giants) <strong>sell storage and integration. (your data too!).<strong> <strong>We (CloudeNotes) sell privacy, simplity, and vibe. <strong> Our prices are avalaible for <strong>Everyone<strong> </p>
                     </div>
 
                     <div class="why-us-card">
@@ -1244,23 +1081,8 @@
 
                 </div>
                 <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;">CloudNotes v2: Simple, powerful, and truly private note-taking.</p>
+                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;">CloudNotes v1: Simple, powerful, and truly private note-taking.</p>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modal" id="historyModal">
-        <div class="modal-content" style="max-width: 700px;">
-            <div class="modal-header">
-                <div class="modal-title">⏳ Version History</div>
-                <button class="close-btn" onclick="closeHistoryModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <ul class="history-list" id="historyList">
-                    <p style="text-align: center; color: var(--text-secondary);">Loading history...</p>
-                </ul>
-                <p style="margin-top: 20px; font-size: 14px; color: var(--danger);">*Restoring a version will overwrite the current note content.</p>
             </div>
         </div>
     </div>
@@ -1272,20 +1094,20 @@
                 { id: 2, name: 'Home', color: '#10b981', notes: [] },
                 { id: 3, name: 'Fun Projects :)', color: '#f59e0b', notes: [] }
             ],
-            // NEW: Trash/Recycling Bin data
-            trash: [],
-            TRASH_ID: -1,
-            // NEW: Default sort order
-            sortOrder: 'updatedDesc',
+            // НОВЫЙ МАССИВ ДЛЯ КОРЗИНЫ: хранит объекты { note, deletedDate, originalFolderId }
+            trash: [], 
             currentFolder: null,
             currentNote: null,
             nextFolderId: 4,
-            nextNoteId: 1
+            nextNoteId: 1,
+            // НАСТРОЙКИ СОРТИРОВКИ/ФИЛЬТРАЦИИ
+            sortCriteria: 'updatedAt_desc',
+            filterCriteria: 'all' 
         };
 
         let canvas, ctx, isDrawing = false;
-        let selectedColor = '#6366f1'; // For folder creation
-        let selectedNoteColor = 'transparent'; // For note color
+        let selectedColor = '#6366f1'; // For folders
+        let currentNoteColor = '';    // For notes
         let drawingData = null;
         let currentBookmark = false;
         let clipboardContent = '';
@@ -1293,70 +1115,18 @@
         // Initialize
         function init() {
             loadData();
+            cleanupTrash(); // NEW: Автоматическая очистка старых заметок в корзине
             renderFolders();
+            // Set initial sort criteria (UI)
+            document.getElementById('sortCriteria').value = data.sortCriteria;
+            
+            // Wait for DOM to load before setting up canvas
+            document.addEventListener('DOMContentLoaded', () => {
+                setupCanvas();
+            });
             setupCanvas();
             updateTotalNotes();
-            // Set initial sort order
-            document.getElementById('sortSelect').value = data.sortOrder;
         }
-
-        // --- Core Data Functions (Save/Load) ---
-        function saveData() {
-            localStorage.setItem('cloudNotesData', JSON.stringify(data));
-            localStorage.setItem('theme', document.body.getAttribute('data-theme'));
-        }
-
-        function loadData() {
-            try {
-                const storedData = localStorage.getItem('cloudNotesData');
-                if (storedData) {
-                    const parsed = JSON.parse(storedData);
-                    data.folders = parsed.folders || data.folders;
-                    data.trash = parsed.trash || data.trash;
-                    // Ensure TRASH_ID exists on load
-                    data.TRASH_ID = parsed.TRASH_ID || data.TRASH_ID; 
-                    data.currentFolder = parsed.currentFolder;
-                    data.nextFolderId = parsed.nextFolderId || data.nextFolderId;
-                    data.nextNoteId = parsed.nextNoteId || data.nextNoteId;
-                    data.sortOrder = parsed.sortOrder || data.sortOrder;
-
-                    // Check for trash auto-delete on load
-                    checkAutoDelete();
-                }
-
-                const storedTheme = localStorage.getItem('theme');
-                if (storedTheme) {
-                    document.body.setAttribute('data-theme', storedTheme);
-                    document.getElementById('themeToggle').textContent = 
-                        storedTheme === 'light' ? '🌙' : '☀️';
-                }
-            } catch (e) {
-                console.error('Error loading data:', e);
-            }
-        }
-        
-        // --- NEW: Trash Auto-Delete ---
-        function checkAutoDelete() {
-            const now = Date.now();
-            // 30 days in milliseconds
-            const thirtyDays = 30 * 24 * 60 * 60 * 1000; 
-
-            // Filter out notes in trash that are older than 30 days
-            const initialTrashCount = data.trash.length;
-            data.trash = data.trash.filter(note => {
-                // If a note doesn't have deletedAt or it's not a valid date, we keep it for safety.
-                if (!note.deletedAt) return true; 
-
-                const deletedTime = new Date(note.deletedAt).getTime();
-                return (now - deletedTime) < thirtyDays;
-            });
-
-            if (data.trash.length !== initialTrashCount) {
-                console.log(`🧹 Auto-deleted ${initialTrashCount - data.trash.length} notes from trash.`);
-                saveData();
-            }
-        }
-        // --- END NEW: Trash Auto-Delete ---
 
         // Theme toggle
         function toggleTheme() {
@@ -1368,7 +1138,17 @@
             saveData();
         }
         
-        // Update total notes count (including trash, but counting only active notes for total)
+        // NEW FUNCTIONS: Why Us Modal
+        function openWhyUsModal() {
+            document.getElementById('whyUsModal').classList.add('active');
+        }
+
+        function closeWhyUsModal() {
+            document.getElementById('whyUsModal').classList.remove('active');
+        }
+        // END NEW FUNCTIONS
+
+        // Update total notes count
         function updateTotalNotes() {
             let total = 0;
             data.folders.forEach(folder => {
@@ -1377,7 +1157,7 @@
             document.getElementById('totalNotes').textContent = total;
         }
 
-        // --- Clipboard functions ---
+        // Clipboard functions
         async function pasteFromClipboard() {
             try {
                 const text = await navigator.clipboard.readText();
@@ -1395,19 +1175,57 @@
 
         function insertClipboard() {
             const editor = document.getElementById('noteContent');
-            const currentContent = editor.value;
-            editor.value = currentContent + (currentContent ? '\n\n' : '') + clipboardContent;
+            // Use innerHTML for rich text editor
+            editor.innerHTML += (editor.innerHTML ? '<br><br>' : '') + clipboardContent;
             document.getElementById('clipboardSection').style.display = 'none';
         }
 
-        // --- Folders and Trash ---
+        // Local Storage
+        function saveData() {
+            localStorage.setItem('cloudNotesData', JSON.stringify({
+                folders: data.folders,
+                trash: data.trash, // NEW: Save trash
+                currentFolder: data.currentFolder,
+                nextFolderId: data.nextFolderId,
+                nextNoteId: data.nextNoteId,
+                theme: document.body.getAttribute('data-theme'),
+                sortCriteria: document.getElementById('sortCriteria').value // NEW: Save sort criteria
+            }));
+        }
+
+        function loadData() {
+            try {
+                const storedData = localStorage.getItem('cloudNotesData');
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    data.folders = parsed.folders || data.folders;
+                    data.currentFolder = parsed.currentFolder;
+                    data.nextFolderId = parsed.nextFolderId;
+                    data.nextNoteId = parsed.nextNoteId;
+                    
+                    // NEW: Load new properties, use defaults if not found (for backward compatibility)
+                    data.trash = parsed.trash || [];
+                    data.sortCriteria = parsed.sortCriteria || 'updatedAt_desc';
+                    data.filterCriteria = parsed.filterCriteria || 'all';
+
+                    if (parsed.theme) {
+                        document.body.setAttribute('data-theme', parsed.theme);
+                        document.getElementById('themeToggle').textContent = 
+                            parsed.theme === 'light' ? '🌙' : '☀️';
+                    }
+                    
+                    console.log('✅ Data loaded from storage!');
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+            }
+        }
+        
+        // FOLDERS
         function renderFolders() {
             const container = document.getElementById('foldersContainer');
             container.innerHTML = '';
             
-            // Render main folders
-            const folderList = document.createElement('div');
-            folderList.className = 'main-folders';
             data.folders.forEach(folder => {
                 const item = document.createElement('div');
                 item.className = 'folder-item';
@@ -1418,41 +1236,32 @@
                     <div class="folder-count">${folder.notes.length}</div>
                 `;
                 item.onclick = () => selectFolder(folder.id);
-                folderList.appendChild(item);
+                container.appendChild(item);
             });
-            container.appendChild(folderList);
-            
-            // Render system folders (Trash)
-            const trashContainer = document.createElement('div');
-            trashContainer.className = 'system-folders';
-            
-            const trashItem = document.createElement('div');
-            trashItem.className = 'folder-item trash-item';
-            if (data.currentFolder === data.TRASH_ID) trashItem.classList.add('active');
-            trashItem.innerHTML = `
-                <div class="folder-icon">🗑️</div>
-                <div class="folder-name">Trash</div>
-                <div class="folder-count">${data.trash.length}</div>
-            `;
-            trashItem.onclick = () => selectFolder(data.TRASH_ID);
-            trashContainer.appendChild(trashItem);
-            container.appendChild(trashContainer);
         }
 
         function selectFolder(id) {
             data.currentFolder = id;
             data.currentNote = null;
             renderFolders();
-            renderNotes(id);
+            // NEW: Handle trash view
+            if (id === 'trash') {
+                loadTrash();
+            } else {
+                loadNotes(id);
+            }
             saveData();
         }
 
         function createFolder() {
             document.getElementById('folderName').value = '';
+            // Reset color selection
             document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
             const defaultColor = document.querySelector('.color-picker-container div');
-            defaultColor.classList.add('selected');
-            selectedColor = defaultColor.getAttribute('data-color');
+            if (defaultColor) {
+                defaultColor.classList.add('selected');
+                selectedColor = defaultColor.getAttribute('data-color');
+            }
             
             document.getElementById('folderModal').classList.add('active');
         }
@@ -1465,14 +1274,6 @@
             document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
             element.classList.add('selected');
             selectedColor = element.getAttribute('data-color');
-        }
-        
-        // NEW: Note color picker
-        function selectNoteColor(element) {
-            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedNoteColor = element.getAttribute('data-color');
-            document.getElementById('noteModal').querySelector('.modal-content').style.background = selectedNoteColor;
         }
 
         function saveFolderModal() {
@@ -1495,93 +1296,110 @@
             saveData();
         }
         
-        // --- Notes Rendering and Sorting ---
-        function getNoteBadgeText(note) {
-            if (note.isBookmarked) return '⭐ Bookmarked';
-            if (note.attachments && note.attachments.length > 0) return `📎 ${note.attachments.length} files`;
-            if (note.tags && note.tags.length > 0) return `🏷️ ${note.tags[0]}`;
-            return 'Note';
+        // NOTES
+        
+        /**
+         * Renders the HTML for tags (used on note card)
+         */
+        function renderTagsDisplayHTML(tags) {
+            return (tags || []).map(tag => `<span class="tag-pill">#${tag}</span>`).join('');
         }
         
-        function sortNotes(notes) {
-            const sortOrder = data.sortOrder;
-            
-            return notes.sort((a, b) => {
-                if (sortOrder === 'bookmarked') {
-                    if (a.isBookmarked && !b.isBookmarked) return -1;
-                    if (!a.isBookmarked && b.isBookmarked) return 1;
-                }
-                
-                if (sortOrder === 'titleAsc') {
-                    return a.title.localeCompare(b.title);
-                }
-                
-                if (sortOrder === 'titleDesc') {
-                    return b.title.localeCompare(a.title);
-                }
-                
-                // For date sorting (updatedDesc, updatedAsc, createdDesc)
-                const dateA = new Date(a[sortOrder.includes('created') ? 'createdAt' : 'updatedAt']).getTime();
-                const dateB = new Date(b[sortOrder.includes('created') ? 'createdAt' : 'updatedAt']).getTime();
-                
-                if (sortOrder.includes('Desc')) {
-                    return dateB - dateA;
-                }
-                
-                if (sortOrder.includes('Asc')) {
-                    return dateA - dateB;
-                }
-                
-                return 0;
+        /**
+         * Displays the tags in the note editor modal (dynamically)
+         */
+        function renderTagsDisplay(tags) {
+            const tagContainer = document.getElementById('currentNoteTags');
+            tagContainer.innerHTML = '';
+            tags.forEach(tag => {
+                const pill = document.createElement('span');
+                pill.className = 'tag-pill';
+                pill.textContent = `#${tag.trim()}`;
+                pill.onclick = (e) => {
+                    e.stopPropagation();
+                    // Implement filtering logic here later
+                    alert(`Filtering by tag: #${tag.trim()}`);
+                };
+                tagContainer.appendChild(pill);
             });
         }
+        
+        /**
+         * Sets the color for the note in the modal.
+         */
+        function selectNoteColor(element) {
+            document.querySelectorAll('#noteColorPicker .color-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            currentNoteColor = element.getAttribute('data-color');
+        }
 
+        /**
+         * Helper to get attachments from the editor modal
+         */
+        function getNoteAttachments() {
+            const attachments = [];
+            const attachmentElements = document.getElementById('attachmentsGrid').children;
+            for (let el of attachmentElements) {
+                attachments.push({
+                    name: el.dataset.name,
+                    type: el.dataset.type,
+                    dataUrl: el.dataset.data
+                });
+            }
+            return attachments;
+        }
 
-        function renderNotes(folderId) {
+        /**
+         * Loads and displays notes for the specified folderId.
+         * Includes sorting logic.
+         * @param {number|string} folderId - The ID of the folder.
+         */
+        function loadNotes(folderId) {
             const contentArea = document.getElementById('contentArea');
             contentArea.innerHTML = '';
             
-            let notes = [];
-            let folderColor = var(--accent);
-            let isTrashView = false;
-            
-            if (folderId === data.TRASH_ID) {
-                notes = data.trash;
-                folderColor = var(--danger);
-                isTrashView = true;
-                contentArea.innerHTML = `
-                    <h2 style="color: var(--danger); margin-bottom: 20px;">🗑️ Trash / Recycling Bin</h2>
-                    <p style="color: var(--text-secondary); margin-bottom: 40px;">Notes here are automatically deleted after 30 days from their deletion date.</p>
-                `;
-            } else {
-                const folder = data.folders.find(f => f.id === folderId);
-                if (!folder) {
-                    contentArea.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">⚠️</div>
-                            <div class="empty-text">Folder not found.</div>
-                        </div>
-                    `;
-                    return;
-                }
-                notes = folder.notes;
-                folderColor = folder.color;
-            }
-            
-            // Apply sorting to active folders only
-            if (!isTrashView) {
-                notes = sortNotes(notes);
-            }
-
-            if (notes.length === 0) {
-                contentArea.innerHTML += `
-                    <div class="empty-state">
-                        <div class="empty-icon">${isTrashView ? '🗑️' : '✨'}</div>
-                        <div class="empty-text">${isTrashView ? 'Trash is empty.' : 'No notes yet. Create your first note!'}</div>
-                    </div>
-                `;
+            if (folderId === 'trash') {
+                loadTrash();
                 return;
             }
+            
+            const folder = data.folders.find(f => f.id === folderId);
+
+            if (!folder) {
+                contentArea.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">Folder not found.</div></div>`;
+                return;
+            }
+
+            let notes = folder.notes;
+
+            if (notes.length === 0) {
+                contentArea.innerHTML = `<div class="empty-state"><div class="empty-icon">✨</div><div class="empty-text">No notes yet. Create your first note!</div></div>`;
+                return;
+            }
+
+            // NEW: ПРИМЕНЕНИЕ СОРТИРОВКИ (The Super-Sort)
+            const criteria = document.getElementById('sortCriteria').value;
+            notes.sort((a, b) => {
+                const aDate = new Date(a.updatedAt || a.createdAt).getTime();
+                const bDate = new Date(b.updatedAt || b.createdAt).getTime();
+                
+                switch (criteria) {
+                    case 'updatedAt_desc':
+                        return bDate - aDate;
+                    case 'createdAt_desc':
+                        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                    case 'title_asc':
+                        return a.title.localeCompare(b.title);
+                    case 'color_group':
+                        // Сортировка по цвету (None в начало)
+                        const colorA = a.color || '';
+                        const colorB = b.color || '';
+                        return colorA.localeCompare(colorB);
+                    default:
+                        return 0;
+                }
+            });
+
 
             const grid = document.createElement('div');
             grid.className = 'notes-grid';
@@ -1589,234 +1407,96 @@
             notes.forEach(note => {
                 const card = document.createElement('div');
                 card.className = 'note-card';
-                card.style.background = note.noteColor || var(--bg-secondary);
+                card.setAttribute('data-color', note.color || ''); // NEW: Установка цвета карточки
+                card.onclick = () => editNote(note.id);
                 
-                // Card Border Color for better visibility with light note colors
-                if (note.noteColor && note.noteColor !== 'transparent') {
-                    // Simple logic to darken the note color for the border in light mode
-                    const colorVal = parseInt(note.noteColor.substring(1), 16);
-                    const R = (colorVal >> 16) & 255;
-                    const G = (colorVal >> 8) & 255;
-                    const B = colorVal & 255;
-                    const brightness = (R * 299 + G * 587 + B * 114) / 1000;
-                    
-                    if (brightness > 200) { // If color is very bright, use a soft grey border
-                        card.style.borderColor = 'rgba(0, 0, 0, 0.1)';
-                    }
-                }
-                
+                // Safely extract text content from rich HTML for preview
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(note.content, 'text/html');
+                const textPreview = doc.body.textContent.substring(0, 100) + (doc.body.textContent.length > 100 ? '...' : '');
+
                 card.innerHTML = `
-                    ${note.isBookmarked && !isTrashView ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation(); toggleBookmarkInCard(${note.id}, ${folderId})">🌟</button>` : ''}
-                    <h3 class="note-title">${note.title || 'Untitled'}</h3>
-                    
-                    ${note.tags && note.tags.length > 0 ? `
-                        <div class="note-tags-display">
-                            ${note.tags.map(tag => `<span class="note-tag-display">${tag}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                    <p class="note-preview">${note.content || 'No content'}</p>
-                    
-                    ${isTrashView ? `
-                        <div class="note-meta trash-note-meta">
-                            <span>📅 Deleted: ${new Date(note.deletedAt).toLocaleDateString()}</span>
-                            <button class="btn btn-success" onclick="event.stopPropagation(); restoreNote(${note.id})">↩️ Restore</button>
-                            <button class="btn" style="background: var(--danger); color: white;" onclick="event.stopPropagation(); permanentlyDeleteNote(${note.id})">❌ Delete Forever</button>
-                        </div>
-                    ` : `
-                        <div class="note-meta">
-                            <span>📅 Updated: ${new Date(note.updatedAt || note.createdAt).toLocaleDateString()}</span>
-                            <span class="note-badge" style="background: ${folderColor}1A; color: ${folderColor};">${getNoteBadgeText(note)}</span>
-                        </div>
-                    `}
+                    ${note.isBookmarked ? '<button class="bookmark-btn bookmarked" onclick="event.stopPropagation();">🌟</button>' : ''}
+                    <div class="note-title">${note.title || 'Untitled'}</div>
+                    <div class="note-preview">${textPreview || 'No content...'}</div>
+                    <div class="note-tags">${renderTagsDisplayHTML(note.tags || [])}</div> 
+                    <div class="note-meta">
+                        <span>📅 ${new Date(note.updatedAt || note.createdAt).toLocaleDateString()}</span>
+                        <span class="note-badge">📎 ${(note.attachments || []).length} files</span>
+                    </div>
                 `;
-                
-                if (isTrashView) {
-                    card.onclick = (e) => { e.stopPropagation(); }; // Disable clicking trash notes to open
-                    card.classList.add('trash-card');
-                } else {
-                    card.onclick = () => openNoteModal(note.id);
-                }
                 grid.appendChild(card);
             });
-            
-            if (isTrashView) {
-                contentArea.appendChild(grid);
-            } else {
-                contentArea.appendChild(grid);
-            }
+            contentArea.appendChild(grid);
         }
-        
-        // Function for quick bookmarking from card view
-        function toggleBookmarkInCard(noteId, folderId) {
-            const folder = data.folders.find(f => f.id === folderId);
-            const note = folder.notes.find(n => n.id === noteId);
-            if (note) {
-                note.isBookmarked = !note.isBookmarked;
-                note.updatedAt = new Date().toISOString(); // Update timestamp
-                saveData();
-                renderNotes(folderId); // Re-render to update the view/sorting
-            }
-        }
-        
-        // --- NEW: Trash Management Functions ---
-        function deleteNote() {
-            if (!data.currentFolder || data.currentNote === null) return;
-            
-            if (data.currentFolder === data.TRASH_ID) {
-                // Should not happen if deleteNote is only called from noteModal
-                return;
-            }
 
-            if (!confirm('Are you sure you want to move this note to Trash?')) return;
-
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const noteIndex = folder.notes.findIndex(n => n.id === data.currentNote);
-            
-            if (noteIndex !== -1) {
-                const noteToTrash = folder.notes.splice(noteIndex, 1)[0];
-                
-                noteToTrash.isTrashed = true;
-                noteToTrash.deletedAt = new Date().toISOString();
-                
-                data.trash.push(noteToTrash);
-                
-                saveData();
-                updateTotalNotes();
-                
-                // Show indicator
-                const indicator = document.createElement('div');
-                indicator.className = 'save-indicator';
-                indicator.innerHTML = '🗑️ Moved to Trash!';
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 2000);
-                
-                closeNoteModal();
-            }
-        }
-        
-        function restoreNote(noteId) {
-            if (!confirm('Restore this note to its original folder?')) return;
-            
-            const noteIndex = data.trash.findIndex(n => n.id === noteId);
-            if (noteIndex === -1) return;
-            
-            const noteToRestore = data.trash.splice(noteIndex, 1)[0];
-            
-            // Find the original folder (assuming we store the folderId somewhere, but since we don't, 
-            // we'll restore to the first folder for simplicity, or the currently selected folder)
-            const targetFolder = data.folders.find(f => f.id === data.currentFolder && f.id !== data.TRASH_ID) || data.folders[0];
-            
-            if (targetFolder) {
-                noteToRestore.isTrashed = false;
-                noteToRestore.deletedAt = null;
-                noteToRestore.updatedAt = new Date().toISOString(); // Mark as recently updated
-                
-                targetFolder.notes.push(noteToRestore);
-                
-                saveData();
-                updateTotalNotes();
-                renderNotes(data.TRASH_ID); // Re-render trash view
-                
-                const indicator = document.createElement('div');
-                indicator.className = 'save-indicator';
-                indicator.style.background = 'var(--accent)';
-                indicator.innerHTML = `↩️ Restored to ${targetFolder.name}!`;
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 2000);
-            } else {
-                alert('Could not find a folder to restore to. Please create a folder first.');
-                data.trash.push(noteToRestore); // Put it back if no folder found
-            }
-        }
-        
-        function permanentlyDeleteNote(noteId) {
-            if (!confirm('DANGER: This action cannot be undone. Permanently delete this note?')) return;
-            
-            const noteIndex = data.trash.findIndex(n => n.id === noteId);
-            if (noteIndex !== -1) {
-                data.trash.splice(noteIndex, 1);
-                saveData();
-                renderNotes(data.TRASH_ID);
-                
-                const indicator = document.createElement('div');
-                indicator.className = 'save-indicator';
-                indicator.style.background = 'var(--danger)';
-                indicator.innerHTML = `❌ Permanently Deleted!`;
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 2000);
-            }
-        }
-        // --- END NEW: Trash Management Functions ---
-
-
-        // --- Note Modal Management ---
         function openNewNote() {
-            if (!data.currentFolder || data.currentFolder === data.TRASH_ID) {
-                return alert('Please select an active folder first, or create a new one.');
+            if (!data.currentFolder || data.currentFolder === 'trash') {
+                return alert('Please select a folder first or restore notes from Trash.');
             }
             data.currentNote = null;
             currentBookmark = false;
             drawingData = null;
-            selectedNoteColor = 'transparent';
             clipboardContent = '';
+            currentNoteColor = ''; // NEW: Reset color
             
             document.getElementById('modalTitle').textContent = '✨ New Note';
             document.getElementById('noteTitle').value = '';
-            document.getElementById('noteContent').value = '';
-            document.getElementById('noteTags').value = ''; // NEW: Clear tags
+            document.getElementById('noteContent').innerHTML = ''; // Use innerHTML for rich text
             document.getElementById('attachmentsGrid').innerHTML = '';
             document.getElementById('canvasContainer').style.display = 'none';
             document.getElementById('clipboardSection').style.display = 'none';
-            document.getElementById('historyBtn').style.display = 'none'; // NEW: Hide history button for new notes
-            document.getElementById('noteDeleteBtn').style.display = 'block'; // Show delete button
+            document.getElementById('bookmarkBtn').innerHTML = '⭐ Bookmark';
             
-            updateBookmarkButton();
-            updateEditorStyle();
+            // NEW: Reset color and tags
+            document.querySelectorAll('#noteColorPicker .color-option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.getAttribute('data-color') === '') opt.classList.add('selected');
+            });
+            document.getElementById('noteTagsInput').value = '';
+            document.getElementById('currentNoteTags').innerHTML = '';
             
-            // Reset and select default color
-            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
-            document.querySelector('#noteColorPicker div[data-color="transparent"]').classList.add('selected');
-            document.getElementById('noteModal').querySelector('.modal-content').style.background = 'var(--bg-secondary)';
-
             document.getElementById('noteModal').classList.add('active');
+            updateEditorStyle();
         }
 
-        function openNoteModal(noteId) {
+        function editNote(noteId) {
             const folder = data.folders.find(f => f.id === data.currentFolder);
             const note = folder.notes.find(n => n.id === noteId);
+            
             if (!note) return;
-
+            
             data.currentNote = noteId;
-
-            // Load all note properties
-            document.getElementById('modalTitle').textContent = note.title || 'Untitled';
-            document.getElementById('noteTitle').value = note.title || '';
-            document.getElementById('noteContent').value = note.content || '';
-            document.getElementById('fontFamily').value = note.fontFamily || 'Arial';
-            document.getElementById('fontSize').value = note.fontSize || '16';
-            document.getElementById('noteTags').value = (note.tags || []).join(', '); // NEW: Load tags
             
-            selectedNoteColor = note.noteColor || 'transparent'; // NEW: Load color
-            document.getElementById('noteModal').querySelector('.modal-content').style.background = note.noteColor || 'var(--bg-secondary)';
-            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
-            document.querySelector(`#noteColorPicker div[data-color="${selectedNoteColor}"]`).classList.add('selected');
-
-
-            currentBookmark = note.isBookmarked || false;
-            drawingData = note.drawing || null;
+            document.getElementById('modalTitle').textContent = note.title;
+            document.getElementById('noteTitle').value = note.title;
+            document.getElementById('noteContent').innerHTML = note.content;
             
-            // NEW: Show history button if history exists
-            document.getElementById('historyBtn').style.display = (note.history && note.history.length > 0) ? 'block' : 'none';
-            document.getElementById('noteDeleteBtn').style.display = 'block'; // Show delete button
+            // NEW: Load color
+            currentNoteColor = note.color || '';
+            document.querySelectorAll('#noteColorPicker .color-option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.getAttribute('data-color') === currentNoteColor) {
+                    opt.classList.add('selected');
+                }
+            });
 
-            updateBookmarkButton();
+            // NEW: Load tags
+            document.getElementById('noteTagsInput').value = (note.tags || []).join(', ');
+            renderTagsDisplay(note.tags || []);
+            
+            // ... (existing code for font, drawing, etc.)
+            document.getElementById('fontFamily').value = note.fontFamily;
+            document.getElementById('fontSize').value = note.fontSize; 
             updateEditorStyle();
-            
+
+            drawingData = note.drawing || null;
+            currentBookmark = note.isBookmarked || false;
+            updateBookmarkButton();
             renderAttachments(note.attachments);
             
             document.getElementById('canvasContainer').style.display = drawingData ? 'block' : 'none';
-            if (drawingData) {
-                // Small delay for canvas to be visible before loading
+            if (drawingData) { 
                 setTimeout(() => loadDrawing(drawingData), 50); 
             }
             document.getElementById('clipboardSection').style.display = 'none';
@@ -1825,360 +1505,298 @@
 
         function closeNoteModal() {
             document.getElementById('noteModal').classList.remove('active');
-            // Re-render notes to show changes if any
             if (data.currentFolder) {
-                renderNotes(data.currentFolder);
+                loadNotes(data.currentFolder);
             }
             data.currentNote = null;
         }
 
+        /**
+         * Saves the current note (create or update).
+         */
         function saveNote() {
-            const title = document.getElementById('noteTitle').value.trim() || 'Untitled Note';
-            const content = document.getElementById('noteContent').value.trim();
-            const fontFamily = document.getElementById('fontFamily').value;
-            const fontSize = parseInt(document.getElementById('fontSize').value);
-            const tags = document.getElementById('noteTags').value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+            const title = document.getElementById('noteTitle').value.trim();
+            const content = document.getElementById('noteContent').innerHTML;
             
             const folder = data.folders.find(f => f.id === data.currentFolder);
+            
             if (!folder) {
-                alert('No active folder selected!');
+                alert('No folder selected!');
                 return;
             }
-            
-            let currentNoteData = {
-                title, 
-                content, 
-                fontFamily, 
-                fontSize, 
-                drawing: drawingData, 
+            if (!title) {
+                alert('Title cannot be empty!');
+                return;
+            }
+
+            // НОВОЕ: Обработка тегов
+            const tagsInput = document.getElementById('noteTagsInput').value.trim();
+            const tagsArray = tagsInput ? tagsInput.split(',').map(tag => tag.trim().toLowerCase()).filter(tag => tag) : [];
+
+            // Data object for update/creation
+            const now = new Date().toISOString();
+            const newNoteData = {
+                title,
+                content,
+                // НОВЫЕ ПОЛЯ
+                color: currentNoteColor, // Note card color
+                tags: tagsArray,         // Array of tags
+                
+                // ОБНОВЛЕННЫЕ ПОЛЯ ДАТЫ
+                updatedAt: now,
+                
+                // ... existing properties
+                fontFamily: document.getElementById('fontFamily').value,
+                fontSize: parseInt(document.getElementById('fontSize').value),
+                drawing: drawingData,
                 isBookmarked: currentBookmark,
-                noteColor: selectedNoteColor, // NEW: Save note color
-                tags: tags, // NEW: Save tags
-                attachments: folder.notes.find(n => n.id === data.currentNote)?.attachments || [], 
-                updatedAt: new Date().toISOString()
+                attachments: getNoteAttachments(),
             };
 
             if (data.currentNote === null) {
                 // New note
-                currentNoteData.id = data.nextNoteId++;
-                currentNoteData.createdAt = currentNoteData.updatedAt;
-                currentNoteData.history = []; // NEW: Initialize history
-                folder.notes.push(currentNoteData);
+                newNoteData.id = data.nextNoteId++;
+                newNoteData.createdAt = now; // Дата создания
+                newNoteData.history = []; // Инициализация истории
+                folder.notes.push(newNoteData);
             } else {
                 // Edit existing note
                 const noteIndex = folder.notes.findIndex(n => n.id === data.currentNote);
                 if (noteIndex !== -1) {
                     const existingNote = folder.notes[noteIndex];
                     
-                    // NEW: Save old version to history if content changed
-                    if (existingNote.content !== content) {
-                        const historyEntry = {
-                            content: existingNote.content,
-                            date: existingNote.updatedAt
-                        };
-                        
-                        existingNote.history = existingNote.history || []; // Ensure history array exists
-                        existingNote.history.push(historyEntry);
+                    // НОВОЕ: Version History: Save a copy of the old note before update
+                    if (!existingNote.history) existingNote.history = [];
+                    // Сохраняем только ключевые поля для истории
+                    existingNote.history.unshift({ 
+                        title: existingNote.title, 
+                        content: existingNote.content, 
+                        updatedAt: existingNote.updatedAt || existingNote.createdAt 
+                    });
+                    // Ограничиваем историю до 5 версий
+                    if (existingNote.history.length > 5) {
+                        existingNote.history.pop();
                     }
-                    
-                    // Overwrite/update existing note fields
-                    folder.notes[noteIndex] = { ...existingNote, ...currentNoteData };
+
+                    // Update with new data, keeping original createdAt
+                    folder.notes[noteIndex] = { 
+                        ...existingNote, 
+                        ...newNoteData,
+                        createdAt: existingNote.createdAt // Preserve original creation date
+                    };
                 }
             }
 
             saveData();
             updateTotalNotes();
-
             // Show save indicator
             const saveIndicator = document.createElement('div');
             saveIndicator.className = 'save-indicator';
-            saveIndicator.innerHTML = '✅ Note Saved!';
+            saveIndicator.innerHTML = '✅ Saved!';
+            saveIndicator.style.position = 'fixed';
+            saveIndicator.style.top = '20px';
+            saveIndicator.style.right = '20px';
+            saveIndicator.style.zIndex = '10000';
             document.body.appendChild(saveIndicator);
             setTimeout(() => saveIndicator.remove(), 1500);
 
-            // Re-render notes on save
             closeNoteModal();
-        }
-        
-        function updateEditorStyle() {
-            const editor = document.getElementById('noteContent');
-            editor.style.fontFamily = document.getElementById('fontFamily').value;
-            editor.style.fontSize = document.getElementById('fontSize').value + 'px';
+            loadNotes(data.currentFolder); 
         }
 
-        // --- NEW: History Modal Functions ---
-        function openHistoryModal() {
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            if (!note || !note.history || note.history.length === 0) {
-                alert('No version history found for this note.');
-                return;
-            }
-            
-            const historyList = document.getElementById('historyList');
-            historyList.innerHTML = '';
-            
-            // Sort history by date descending (newest first)
-            const sortedHistory = note.history.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+        // ATTACHMENTS (existing functions)
 
-            sortedHistory.forEach((version, index) => {
-                const item = document.createElement('li');
-                item.className = 'history-item';
-                
-                const preview = version.content.substring(0, 50) + (version.content.length > 50 ? '...' : '');
-                
-                item.innerHTML = `
-                    <div class="history-item-meta">
-                        <strong>Version ${sortedHistory.length - index}</strong> 
-                        <span style="display: block; font-size: 12px;">Saved: ${new Date(version.date).toLocaleString()}</span>
-                        <span style="font-style: italic;">Preview: "${preview}"</span>
+        function renderAttachments(attachments) {
+            const grid = document.getElementById('attachmentsGrid');
+            grid.innerHTML = (attachments || []).map((att, index) => {
+                const icon = getAttachmentIcon(att.type);
+                return `
+                    <div class="attachment-item" data-type="${att.type}" data-name="${att.name}" data-data="${att.dataUrl}">
+                        <div class="attachment-icon">${icon}</div>
+                        <div class="attachment-name">${att.name}</div>
+                        <button style="background: var(--danger); color: white; border: none; padding: 4px 8px; border-radius: 4px; margin-top: 8px; cursor: pointer;" onclick="deleteAttachment(${index})">Delete</button>
                     </div>
-                    <button class="btn btn-warning" onclick="restoreVersion('${version.date}')">Restore</button>
                 `;
-                historyList.appendChild(item);
-            });
-            
-            document.getElementById('historyModal').classList.add('active');
+            }).join('');
         }
 
-        function closeHistoryModal() {
-            document.getElementById('historyModal').classList.remove('active');
-        }
-
-        function restoreVersion(versionDate) {
-            if (!confirm('Are you sure you want to restore this version? The current content will be overwritten (but saved to history).')) return;
-            
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            
-            const versionToRestore = note.history.find(v => v.date === versionDate);
-            
-            if (versionToRestore) {
-                // 1. Save current content to history first
-                const currentContent = document.getElementById('noteContent').value.trim();
-                const historyEntry = {
-                    content: currentContent,
-                    date: new Date().toISOString()
-                };
-                note.history.push(historyEntry);
-                
-                // 2. Overwrite editor content with restored version
-                document.getElementById('noteContent').value = versionToRestore.content;
-                
-                // 3. Update the note in memory (important for drawing data/other fields)
-                // We DON'T call saveNote here, as it would create two history entries. 
-                // We only update the content field and close the modal. User must click 'Save' later.
-                note.content = versionToRestore.content;
-                
-                saveData();
-                closeHistoryModal();
-                
-                const indicator = document.createElement('div');
-                indicator.className = 'save-indicator';
-                indicator.style.background = 'var(--warning)';
-                indicator.innerHTML = `🔄 Restored! Click 'Save Note' to finalize.`;
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 2500);
-            } else {
-                alert('Version not found.');
-            }
-        }
-        // --- END NEW: History Modal Functions ---
-
-
-        // --- Attachments ---
         function getAttachmentIcon(type) {
             if (type.startsWith('image')) return '🖼️';
             if (type.startsWith('audio')) return '🎵';
             if (type.startsWith('video')) return '🎬';
-            if (type.includes('pdf')) return '📄';
-            if (type.includes('zip') || type.includes('rar')) return '📦';
-            if (type.includes('text') || type.includes('document')) return '📝';
+            if (type.includes('pdf') || type.includes('doc')) return '📄';
             return '📎';
-        }
-
-        function renderAttachments(attachments) {
-            const grid = document.getElementById('attachmentsGrid');
-            grid.innerHTML = attachments.map((att, index) => `
-                <div class="attachment-item" onclick="viewAttachment('${att.dataUrl}', '${att.name}', '${att.type}')" data-type="${att.type}" data-name="${att.name}" data-dataurl="${att.dataUrl}">
-                    <div class="attachment-icon">${getAttachmentIcon(att.type)}</div>
-                    <div class="attachment-name">${att.name}</div>
-                    <button class="close-btn" style="position: absolute; top: 0; right: 0; transform: scale(0.6); background: var(--danger); color: white; border: none;" onclick="event.stopPropagation(); deleteAttachment(${index})">×</button>
-                </div>
-            `).join('');
         }
 
         function addImage() {
             const files = document.getElementById('imageUpload').files;
-            if (!files.length) return;
-            
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            if (!note) return alert('Please save the note first or open an existing one.');
-
-            Array.from(files).forEach(file => {
+            for (let file of files) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    note.attachments.push({ name: file.name, type: file.type, dataUrl: e.target.result });
-                    renderAttachments(note.attachments);
-                    saveData();
+                reader.onload = (e) => {
+                    addAttachmentItem(file.name, file.type, e.target.result);
                 };
                 reader.readAsDataURL(file);
-            });
+            }
         }
-        
+
         function addFile() {
             const files = document.getElementById('fileUpload').files;
-            if (!files.length) return;
-            
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            if (!note) return alert('Please save the note first or open an existing one.');
-
-            Array.from(files).forEach(file => {
+            for (let file of files) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    note.attachments.push({ name: file.name, type: file.type, dataUrl: e.target.result });
-                    renderAttachments(note.attachments);
-                    saveData();
+                reader.onload = (e) => {
+                    addAttachmentItem(file.name, file.type, e.target.result);
                 };
                 reader.readAsDataURL(file);
-            });
+            }
+        }
+
+        function addAttachmentItem(name, type, dataUrl) {
+            const grid = document.getElementById('attachmentsGrid');
+            const icon = getAttachmentIcon(type);
+            const item = document.createElement('div');
+            item.className = 'attachment-item';
+            item.dataset.type = type;
+            item.dataset.name = name;
+            item.dataset.data = dataUrl;
+            
+            const index = grid.children.length; // Calculate the new index for the delete button
+            
+            item.innerHTML = `
+                <div class="attachment-icon">${icon}</div>
+                <div class="attachment-name">${name}</div>
+                <button style="background: var(--danger); color: white; border: none; padding: 4px 8px; border-radius: 4px; margin-top: 8px; cursor: pointer;" onclick="deleteAttachment(${index})">Delete</button>
+            `;
+            // Re-render is safer for dynamic attachment lists
+            if (data.currentNote) {
+                const folder = data.folders.find(f => f.id === data.currentFolder);
+                const note = folder.notes.find(n => n.id === data.currentNote);
+                if (note) {
+                    note.attachments.push({ name, type, dataUrl });
+                    renderAttachments(note.attachments);
+                }
+            } else {
+                grid.appendChild(item);
+                // For new notes, attachments are gathered in saveNote()
+            }
+            
+            saveData();
         }
 
         function deleteAttachment(index) {
             if (!confirm('Are you sure you want to delete this attachment?')) return;
-            const folder = data.folders.find(f => f.id === data.currentFolder);
-            const note = folder.notes.find(n => n.id === data.currentNote);
-            if (note && note.attachments) {
-                note.attachments.splice(index, 1);
-                renderAttachments(note.attachments);
-                saveData();
+            
+            // For existing note
+            if (data.currentNote) {
+                const folder = data.folders.find(f => f.id === data.currentFolder);
+                const note = folder.notes.find(n => n.id === data.currentNote);
+                if (note && note.attachments) {
+                    note.attachments.splice(index, 1);
+                    renderAttachments(note.attachments);
+                    saveData();
+                }
+            } else {
+                // For new note, just remove from the DOM and rely on saveNote to capture the rest
+                const grid = document.getElementById('attachmentsGrid');
+                if (grid.children[index]) {
+                    grid.children[index].remove();
+                }
             }
         }
 
-        function viewAttachment(dataUrl, name, type) {
-            if (type.startsWith('image')) {
-                const newWindow = window.open();
-                newWindow.document.write(`<img src="${dataUrl}" alt="${name}" style="max-width: 100%; display: block; margin: 20px;">`);
-            } else { 
-                // For other files, download them
-                const link = document.createElement('a');
-                link.href = dataUrl;
-                link.download = name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-        
-        // --- Drawing Canvas ---
+        // DRAWING (existing functions)
+
         function setupCanvas() {
             canvas = document.getElementById('drawingCanvas');
+            if (!canvas) return; // Prevent error if canvas isn't visible yet
             ctx = canvas.getContext('2d');
             
             canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            ctx.lineCap = 'round';
+            canvas.height = 400;
 
-            // Event listeners
             canvas.addEventListener('mousedown', startDrawing);
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseout', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing); // Stop drawing when mouse leaves
 
             // Touch events
             canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
             canvas.addEventListener('touchend', stopDrawing);
             canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
         }
-
+        
         function toggleDrawing() {
             const container = document.getElementById('canvasContainer');
             if (container.style.display === 'block') {
                 container.style.display = 'none';
-                // Automatically save drawing to data when hiding
-                drawingData = canvas.toDataURL(); 
+                saveDrawing(); // Save before hiding
             } else {
                 container.style.display = 'block';
-                // Reset canvas size (for responsiveness)
+                // Reset size/color on open
+                document.getElementById('drawColor').value = '#6366f1';
+                document.getElementById('drawSize').value = 3;
+                
+                // Set canvas size correctly on display
                 canvas.width = canvas.offsetWidth;
                 canvas.height = 400; 
-                loadDrawing(drawingData); // Load previous drawing if available
+
+                loadDrawing(drawingData);
             }
         }
-
+        
         function startDrawing(e) {
             isDrawing = true;
             ctx.beginPath();
-            
-            // Calculate coordinates relative to canvas
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            ctx.moveTo(x, y);
-            
-            // Apply current settings
-            ctx.strokeStyle = document.getElementById('drawColor').value;
-            ctx.lineWidth = document.getElementById('drawSize').value;
+            ctx.moveTo(
+                e.offsetX || (e.clientX - canvas.getBoundingClientRect().left),
+                e.offsetY || (e.clientY - canvas.getBoundingClientRect().top)
+            );
+            document.getElementById('drawingStatus').textContent = 'Drawing...';
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+            document.getElementById('drawingStatus').textContent = 'Ready';
         }
 
         function draw(e) {
             if (!isDrawing) return;
             
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            ctx.lineTo(x, y);
+            ctx.lineWidth = document.getElementById('drawSize').value;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = document.getElementById('drawColor').value;
+
+            ctx.lineTo(
+                e.offsetX || (e.clientX - canvas.getBoundingClientRect().left),
+                e.offsetY || (e.clientY - canvas.getBoundingClientRect().top)
+            );
             ctx.stroke();
-            
-            // For continuous drawing when mouse is down, move to the new position
-            ctx.beginPath();
-            ctx.moveTo(x, y);
         }
 
-        function stopDrawing() {
-            isDrawing = false;
-        }
-        
         function clearCanvas() {
-            if (confirm('Are you sure you want to clear the drawing?')) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                drawingData = null;
-                document.getElementById('drawingStatus').textContent = 'Cleared!';
-                setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1000);
-            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawingData = null;
         }
-        
+
         function saveDrawing() {
             drawingData = canvas.toDataURL();
-            document.getElementById('drawingStatus').textContent = 'Drawing Saved to Note!';
-            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1500);
-            // The drawingData will be saved to local storage when saveNote is called
+            document.getElementById('drawingStatus').textContent = 'Drawing Saved!';
         }
-
+        
         function loadDrawing(dataUrl) {
-            if (dataUrl) {
-                const img = new Image();
-                img.onload = function() {
-                    // Draw image centered and covering the canvas if possible
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                };
-                img.src = dataUrl;
-                document.getElementById('drawingStatus').textContent = 'Drawing Loaded!';
-                setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1000);
-            } else {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                document.getElementById('drawingStatus').textContent = 'New Drawing.';
-                setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1000);
+            if (!dataUrl) {
+                clearCanvas();
+                return;
             }
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                document.getElementById('drawingStatus').textContent = 'Drawing Loaded';
+            };
+            img.src = dataUrl;
         }
 
-
-        // --- Bookmarks ---
+        // BOOKMARK
         function toggleBookmark() {
             currentBookmark = !currentBookmark;
             updateBookmarkButton();
@@ -2189,113 +1807,192 @@
             if (currentBookmark) {
                 btn.classList.add('bookmarked');
                 btn.innerHTML = '🌟 Bookmarked';
+                btn.style.background = 'var(--warning)';
+                btn.style.color = 'white';
             } else {
                 btn.classList.remove('bookmarked');
                 btn.innerHTML = '⭐ Bookmark';
+                btn.style.background = 'var(--bg-secondary)';
+                btn.style.color = 'var(--text-primary)';
+            }
+        }
+        
+        // UTILS
+        function updateEditorStyle() {
+            const editor = document.getElementById('noteContent');
+            editor.style.fontFamily = document.getElementById('fontFamily').value;
+            editor.style.fontSize = document.getElementById('fontSize').value + 'px';
+        }
+        
+        
+        // NEW: TRASH & CLEANUP FUNCTIONS
+        
+        /**
+         * Permanently removes notes from trash that are older than 30 days.
+         */
+        function cleanupTrash() {
+            const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+            const now = Date.now();
+            
+            const initialTrashCount = data.trash.length;
+            
+            // Фильтруем и оставляем только те, что удалены менее 30 дней назад
+            data.trash = data.trash.filter(item => {
+                const deletedTime = new Date(item.deletedDate).getTime();
+                return (now - deletedTime) < thirtyDaysInMs;
+            });
+            
+            if (initialTrashCount > data.trash.length) {
+                console.log(`🗑️ Cleared ${initialTrashCount - data.trash.length} old notes from trash.`);
+                saveData();
+                updateTotalNotes();
+            }
+        }
+        
+        /**
+         * Moves a note from a folder to the trash array.
+         * @param {number} noteId - ID of the note to delete.
+         */
+        function moveToTrash(noteId) {
+            if (!noteId) {
+                return alert('Please save the note before deleting.');
+            }
+            if (!confirm('Are you sure you want to delete this note? It will be moved to the Trash for 30 days.')) return;
+            
+            let noteToMove = null;
+            let folderId = null;
+            
+            // Find the note and its folder
+            for (let folder of data.folders) {
+                const noteIndex = folder.notes.findIndex(n => n.id === noteId);
+                if (noteIndex !== -1) {
+                    noteToMove = folder.notes.splice(noteIndex, 1)[0]; // Remove and get the note
+                    folderId = folder.id;
+                    break;
+                }
+            }
+
+            if (noteToMove && folderId !== null) {
+                // Store the note in trash with deletion date and original folder ID
+                data.trash.unshift({
+                    note: noteToMove,
+                    deletedDate: new Date().toISOString(),
+                    originalFolderId: folderId
+                });
+                
+                saveData();
+                closeNoteModal(); // Close modal after deletion
+                updateTotalNotes();
+                loadNotes(data.currentFolder); // Re-render current folder
+            } else {
+                alert('Note not found or already deleted!');
             }
         }
 
-        // --- Search ---
-        function searchNotes() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        /**
+         * Loads and displays notes currently in the trash.
+         */
+        function loadTrash() {
             const contentArea = document.getElementById('contentArea');
             contentArea.innerHTML = '';
             
-            let allNotes = [];
-            // Collect all notes from all ACTIVE folders, excluding trash
-            data.folders.forEach(folder => {
-                folder.notes.forEach(note => {
-                    allNotes.push({ 
-                        ...note, 
-                        folderColor: folder.color,
-                        folderName: folder.name
-                    });
-                });
-            });
-
-            const filteredNotes = allNotes.filter(note => 
-                (note.title && note.title.toLowerCase().includes(searchTerm)) || 
-                (note.content && note.content.toLowerCase().includes(searchTerm)) ||
-                (note.tags && note.tags.some(tag => tag.toLowerCase().includes(searchTerm))) // NEW: Search tags
-            );
+            if (data.trash.length === 0) {
+                contentArea.innerHTML = `<div class="empty-state"><div class="empty-icon">🗑️</div><div class="empty-text">Trash is empty.</div></div>`;
+                return;
+            }
             
-            // If search is empty, go back to the current folder view
-            if (searchTerm === '') {
-                if (data.currentFolder) {
-                    renderNotes(data.currentFolder);
-                } else {
-                    contentArea.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">📝</div>
-                            <div class="empty-text">Select a folder or create a new note</div>
-                        </div>
-                    `;
-                }
-                return;
-            }
-
-            if (filteredNotes.length === 0) {
-                contentArea.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">🔍</div>
-                        <div class="empty-text">No notes found matching "${searchTerm}"</div>
-                    </div>
-                `;
-                return;
-            }
-
-            // Render search results
             const grid = document.createElement('div');
             grid.className = 'notes-grid';
+            
+            data.trash.forEach(item => {
+                const note = item.note;
+                const deletedDate = new Date(item.deletedDate);
+                const daysLeft = Math.ceil((deletedDate.getTime() + (30 * 24 * 60 * 60 * 1000) - Date.now()) / (24 * 60 * 60 * 1000));
+                
+                // Safely extract text content from rich HTML for preview
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(note.content, 'text/html');
+                const textPreview = doc.body.textContent.substring(0, 100) + (doc.body.textContent.length > 100 ? '...' : '');
 
-            filteredNotes.forEach(note => {
                 const card = document.createElement('div');
                 card.className = 'note-card';
-                card.style.background = note.noteColor || var(--bg-secondary); // Apply color
+                card.setAttribute('data-color', note.color || '');
+                // Trash cards are NOT clickable to open the editor
+                
                 card.innerHTML = `
-                    ${note.isBookmarked ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation(); toggleBookmarkInCard(${note.id}, ${data.folders.find(f => f.name === note.folderName)?.id})">🌟</button>` : ''}
-                    <h3 class="note-title">${note.title}</h3>
-                    
-                    ${note.tags && note.tags.length > 0 ? `
-                        <div class="note-tags-display">
-                            ${note.tags.map(tag => `<span class="note-tag-display">${tag}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                    
-                    <p class="note-preview">${note.content.substring(0, 100)}...</p>
-                    <div class="note-meta">
-                        <span>📁 ${note.folderName}</span>
-                        <span class="note-badge" style="background: ${note.folderColor}1A; color: ${note.folderColor};">${getNoteBadgeText(note)}</span>
+                    <div class="note-title">${note.title}</div>
+                    <div class="note-preview">${textPreview || 'No content...'}</div>
+                    <div class="note-tags">${renderTagsDisplayHTML(note.tags || [])}</div>
+                    <div class="note-meta" style="flex-direction: column; align-items: flex-start;">
+                        <span style="font-weight: 600; color: var(--danger);">🛑 Deletion in ${daysLeft} days</span>
+                        <span>🗑️ Deleted: ${deletedDate.toLocaleDateString()}</span>
+                        <button class="btn btn-success" style="margin-top: 10px; padding: 6px 12px;" onclick="restoreFromTrash(${note.id}, ${item.originalFolderId})">↩️ Restore</button>
                     </div>
                 `;
-                card.onclick = () => {
-                    // Select the folder of the note before opening the modal
-                    const folder = data.folders.find(f => f.name === note.folderName);
-                    if (folder) {
-                        selectFolder(folder.id);
-                        openNoteModal(note.id);
-                    }
-                };
                 grid.appendChild(card);
             });
+            
             contentArea.appendChild(grid);
-        }
-        
-        // --- Why Us Modal Functions ---
-        function openWhyUsModal() {
-            document.getElementById('whyUsModal').classList.add('active');
+            // Add button to empty trash
+            const emptyBtn = document.createElement('button');
+            emptyBtn.className = 'btn btn-danger';
+            emptyBtn.textContent = 'Permanently Empty Trash';
+            emptyBtn.onclick = emptyTrash;
+            emptyBtn.style.marginTop = '20px';
+            contentArea.appendChild(emptyBtn);
         }
 
-        function closeWhyUsModal() {
-            document.getElementById('whyUsModal').classList.remove('active');
+        /**
+         * Restores a note from trash back to its original folder.
+         * @param {number} noteId - ID of the note to restore.
+         * @param {number} originalFolderId - ID of the folder to restore to.
+         */
+        function restoreFromTrash(noteId, originalFolderId) {
+            // Find the trash item
+            const trashIndex = data.trash.findIndex(item => item.note.id === noteId);
+            if (trashIndex === -1) return alert('Note not found in trash!');
+            
+            const trashItem = data.trash.splice(trashIndex, 1)[0];
+            const noteToRestore = trashItem.note;
+            
+            // Find the original folder
+            const targetFolder = data.folders.find(f => f.id === originalFolderId);
+            
+            if (targetFolder) {
+                targetFolder.notes.push(noteToRestore);
+                alert(`Note "${noteToRestore.title}" restored to folder "${targetFolder.name}".`);
+            } else {
+                // If original folder not found, restore to the first available folder
+                const activeFolder = data.folders[0];
+                if (activeFolder) {
+                    activeFolder.notes.push(noteToRestore);
+                    alert(`Note restored to first folder "${activeFolder.name}" (Original folder not found).`);
+                } else {
+                    data.trash.push(trashItem); 
+                    return alert('Could not find any folder to restore to!');
+                }
+            }
+            
+            saveData();
+            updateTotalNotes();
+            loadTrash(); // Re-render trash view
+            renderFolders(); // Update folder counts
         }
-        // --- End Why Us Modal Functions ---
+
+        /**
+         * Permanently removes all notes from the trash array.
+         */
+        function emptyTrash() {
+            if (!confirm('WARNING: Are you sure you want to permanently delete ALL notes in the trash? This action cannot be undone.')) return;
+            
+            data.trash = [];
+            saveData();
+            loadTrash();
+            alert('Trash has been permanently emptied.');
+        }
 
         // Initialize app
         init();
-        
-        // Timer to check auto-delete every hour (60 minutes)
-        setInterval(checkAutoDelete, 60 * 60 * 1000); 
     </script>
 </body>
 </html>
