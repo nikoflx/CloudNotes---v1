@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="appTitle">CloudNotes v2.3 - Максимальная Версия</title>
+    <title>CloudNotes v2.3 - Ultimate Edition</title>
     
     <style>
         /* CSS Reset and Box Model */
@@ -180,34 +180,6 @@
             background: #d97706;
         }
         
-        /* NEW: Language Switcher Styles */
-        .lang-switcher {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 20px 15px;
-        }
-        
-        .lang-switcher select {
-            width: 100%;
-            padding: 10px 15px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .lang-switcher select:hover {
-            border-color: var(--accent);
-        }
-        /* End NEW: Language Switcher Styles */
-        
         /* NEW: Trash Folder Styles */
         .folder-item.trash-item {
             border: 2px solid var(--danger) !important;
@@ -306,24 +278,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-        
-        /* NEW: Lock Icon Style for PRO folder */
-        .folder-name .lock-icon {
-            margin-left: 8px;
-            color: var(--warning); 
-            font-size: 16px;
-            filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.6));
-            flex-shrink: 0;
-        }
-        
-        .folder-item.pro-locked .folder-icon {
-            background: var(--warning) !important;
-            color: white !important;
-        }
-        
-        .folder-item.pro-locked:hover {
-            border-color: var(--warning);
         }
 
         .folder-count {
@@ -736,8 +690,7 @@
             color: var(--text-primary);
         }
         
-        /* Space Theme: Style section titles and inner elements based on modal background */
-        .modal-content[style*="#0D0F16"] .section-title {
+        .modal-content[style*="0D0F16"] .section-title {
             color: #f5f5f5 !important;
         }
 
@@ -865,8 +818,7 @@
             transition: all 0.3s ease;
         }
         
-        /* Space Theme Input/Editor Styles */
-        .modal-content[style*="#0D0F16"] .note-input {
+        .modal-content[style*="0D0F16"] .note-input {
             background: #262626;
             color: #f5f5f5;
             border-color: #3b82f6;
@@ -888,7 +840,7 @@
             transition: all 0.3s ease;
         }
         
-        .modal-content[style*="#0D0F16"] .note-editor {
+        .modal-content[style*="0D0F16"] .note-editor {
             background: #262626;
             color: #f5f5f5;
             border-color: #3b82f6;
@@ -973,7 +925,7 @@
             position: relative;
         }
         
-        .modal-content[style*="#0D0F16"] .attachment-item {
+        .modal-content[style*="0D0F16"] .attachment-item {
             background: #262626;
             color: #f5f5f5;
             border-color: #3b82f6;
@@ -1012,7 +964,7 @@
             border: 2px solid var(--accent);
         }
         
-        .modal-content[style*="#0D0F16"] .clipboard-section {
+        .modal-content[style*="0D0F16"] .clipboard-section {
             background: #1e3a8a;
             border-color: #3b82f6;
         }
@@ -1028,7 +980,7 @@
             overflow-y: auto;
         }
         
-        .modal-content[style*="#0D0F16"] .clipboard-preview {
+        .modal-content[style*="0D0F16"] .clipboard-preview {
             background: #0f0f0f;
             color: #9ca3af;
         }
@@ -1168,40 +1120,6 @@
         }
         /* END NEW: History Modal Styles */
         
-        /* NEW: Go PRO Message Modal */
-        .pro-modal-content {
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            border: 3px solid var(--warning);
-        }
-
-        .pro-modal-content h2 {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--warning);
-            margin-bottom: 15px;
-        }
-
-        .pro-modal-content p {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-        }
-
-        .pro-modal-content .btn {
-            background: var(--warning);
-            color: black;
-            font-weight: 700;
-            font-size: 16px;
-            padding: 12px 24px;
-        }
-        
     </style>
 </head>
 <body data-theme="light">
@@ -1211,27 +1129,17 @@
         <div class="sidebar">
             
             <div class="sidebar-header">
-                <div class="app-title" data-i18n="appTitle">CloudNotes v2.3</div>
-                <div class="app-author" data-i18n="appAuthor">от Niko (Максимальная Версия)</div>
-                <div id="proStatus" style="font-size: 14px; font-weight: 700; margin-bottom: 15px; color: var(--accent);">
-                    </div>
-                <button class="why-us-btn" data-i18n="whyUsBtn" onclick="openWhyUsModal()">Почему мы?</button>
+                <div class="app-title">CloudNotes v2.3</div>
+                <div class="app-author">by Niko (Improved Note Colors)</div>
+                <button class="why-us-btn" onclick="openWhyUsModal()">Why Us?</button>
             </div>
             
             <div class="toolbar">
-                <button class="btn" data-i18n="newFolderBtn" onclick="createFolder()">+ Папка</button>
-                <button class="btn btn-icon" data-i18n="newNoteBtn" onclick="openNewNote()">📝</button>
-                <button class="btn btn-warning" onclick="toggleProStatus()" id="proBtn" style="flex: 1; min-width: 100%;"></button>
-                <button class="btn btn-warning" data-i18n="exportBtn" onclick="exportData()">⬇️ Экспорт</button>
-                <button class="btn btn-success" data-i18n="importBtn" onclick="document.getElementById('importFile').click()">⬆️ Импорт</button>
+                <button class="btn" onclick="createFolder()">+ Folder</button>
+                <button class="btn btn-icon" onclick="openNewNote()">📝</button>
+                <button class="btn btn-warning" onclick="exportData()">⬇️ Export Data</button>
+                <button class="btn btn-success" onclick="document.getElementById('importFile').click()">⬆️ Import Data</button>
                 <input type="file" id="importFile" accept="application/json" onchange="importData(event)" style="display: none;">
-            </div>
-            
-            <div class="lang-switcher">
-                <select id="langSelect" onchange="changeLanguage(this.value)">
-                    <option value="ru">🇷🇺 Русский</option>
-                    <option value="en">🇺🇸 English</option>
-                </select>
             </div>
 
             <div class="folders-container" id="foldersContainer">
@@ -1244,25 +1152,25 @@
             <div class="topbar">
                 
                 <div class="search-bar">
-                    <input type="text" id="searchInput" oninput="searchNotes()">
+                    <input type="text" placeholder="Search notes..." id="searchInput" oninput="searchNotes()">
                     <span class="search-icon">🔍</span>
                 </div>
                 
                 <div class="sort-bar">
-                    <label style="font-size: 14px; color: var(--text-secondary); font-weight: 600; white-space: nowrap;" data-i18n="sortLabel">Сортировать по:</label>
+                    <label style="font-size: 14px; color: var(--text-secondary); font-weight: 600; white-space: nowrap;">Sort by:</label>
                     <select id="sortSelect" onchange="data.sortOrder = this.value; renderNotes(data.currentFolder); saveData();">
-                        <option value="updatedDesc" data-i18n="sortUpdatedDesc">Обновлено (Новые)</option>
-                        <option value="updatedAsc" data-i18n="sortUpdatedAsc">Обновлено (Старые)</option>
-                        <option value="createdDesc" data-i18n="sortCreatedDesc">Дата создания (Новые)</option>
-                        <option value="titleAsc" data-i18n="sortTitleAsc">Заголовок (А-Я)</option>
-                        <option value="bookmarked" data-i18n="sortBookmarked">Сначала избранные</option>
+                        <option value="updatedDesc">Last Updated (Newest)</option>
+                        <option value="updatedAsc">Last Updated (Oldest)</option>
+                        <option value="createdDesc">Date Created (Newest)</option>
+                        <option value="titleAsc">Title (A-Z)</option>
+                        <option value="bookmarked">Bookmarked First</option>
                     </select>
                 </div>
                 
                 <div class="topbar-actions">
                     <div class="stat-item">
                         <span class="stat-value" id="totalNotes">0</span>
-                        <div class="stat-label" data-i18n="totalNotes">Заметок</div>
+                        <div class="stat-label">Total Notes</div>
                     </div>
                     <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
                 </div>
@@ -1272,7 +1180,7 @@
             <div class="content-area" id="contentArea">
                 <div class="empty-state">
                     <div class="empty-icon">📝</div>
-                    <div class="empty-text" id="emptyStateText">Выберите папку или создайте новую заметку</div>
+                    <div class="empty-text">Select a folder or create a new note</div>
                 </div>
             </div>
             
@@ -1284,25 +1192,25 @@
     <div class="modal" id="noteModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title" id="modalTitle" data-i18n="newNoteModalTitle">Новая Заметка</div>
+                <div class="modal-title" id="modalTitle">New Note</div>
                 <button class="close-btn" onclick="closeNoteModal()">×</button>
             </div>
             <div class="modal-body">
-                <input type="text" class="note-input" id="noteTitle">
+                <input type="text" class="note-input" id="noteTitle" placeholder="✨ Note title...">
                 
-                <h3 class="section-title" data-i18n="colorIndicatorTitle" style="margin-top: 0;">🎨 Цветной Индикатор Заметки</h3>
+                <h3 class="section-title" style="margin-top: 0;">🎨 Note Color Indicator</h3>
                 <div class="note-color-picker" id="noteColorPicker">
                     <div class="note-color-option selected" style="background: var(--bg-secondary);" data-color="transparent" onclick="selectNoteColor(this)"></div>
                     
                     <div class="note-color-option" style="background: #4ade80;" data-color="#4ade80" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #fb7185;" data-color="#fb7185" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #facc15;" data-color="#facc15" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #60a5fa;" data-color="#60a5fa" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #a855f7;" data-color="#a855f7" onclick="selectNoteColor(this)"></div> <div class="note-color-option" style="background: #0D0F16; border: 2px solid #3b82f6;" data-color="space" onclick="selectNoteColor(this)"></div> 
                 </div>
                 
-                <h3 class="section-title" data-i18n="tagsTitle">🏷️ Теги (через запятую)</h3>
+                <h3 class="section-title">🏷️ Tags (comma separated)</h3>
                 <div class="note-tags-input-container">
-                    <input type="text" class="note-tags-input" id="noteTags">
+                    <input type="text" class="note-tags-input" id="noteTags" placeholder="e.g., important, idea, v1-bug">
                     <div class="history-btn-group">
-                        <button class="btn btn-warning" data-i18n="historyBtn" onclick="openHistoryModal()" id="historyBtn" style="display: none;">⏳ История</button>
-                        <button class="btn btn-warning" data-i18n="deleteBtn" onclick="deleteNote()" id="noteDeleteBtn" style="background: var(--danger); color: white;">🗑️ Удалить</button>
+                        <button class="btn btn-warning" onclick="openHistoryModal()" id="historyBtn" style="display: none;">⏳ History</button>
+                        <button class="btn btn-warning" onclick="deleteNote()" id="noteDeleteBtn" style="background: var(--danger); color: white;">🗑️ Delete</button>
                     </div>
                 </div>
                 
@@ -1318,38 +1226,38 @@
                         <option value="Trebuchet MS">Trebuchet</option>
                     </select>
                     
-                    <input type="number" id="fontSize" value="16" min="10" max="48" onchange="updateEditorStyle()" data-i18n-placeholder="fontSizePlaceholder" placeholder="Размер">
+                    <input type="number" id="fontSize" value="16" min="10" max="48" onchange="updateEditorStyle()" placeholder="Size">
                     
-                    <button onclick="toggleDrawing()" data-i18n="editorDrawBtn">🎨 Рисовать</button>
-                    <button onclick="document.getElementById('imageUpload').click()" data-i18n="editorImageBtn">🖼️ Изображение</button>
-                    <button onclick="document.getElementById('fileUpload').click()" data-i18n="editorFileBtn">📎 Файл</button>
-                    <button onclick="pasteFromClipboard()" class="btn-warning" data-i18n="editorPasteBtn">📋 Вставить из буфера</button>
-                    <button onclick="toggleBookmark()" id="bookmarkBtn"></button>
-                    <button onclick="saveNote()" class="btn btn-success" data-i18n="saveNoteBtn">💾 Сохранить Заметку</button>
+                    <button onclick="toggleDrawing()">🎨 Draw</button>
+                    <button onclick="document.getElementById('imageUpload').click()">🖼️ Image</button>
+                    <button onclick="document.getElementById('fileUpload').click()">📎 File</button>
+                    <button onclick="pasteFromClipboard()" class="btn-warning">📋 Paste Clipboard</button>
+                    <button onclick="toggleBookmark()" id="bookmarkBtn">⭐ Bookmark</button>
+                    <button onclick="saveNote()" class="btn btn-success">💾 Save Note</button>
                 </div>
 
-                <textarea class="note-editor" id="noteContent"></textarea>
+                <textarea class="note-editor" id="noteContent" placeholder="✍️ Start writing your amazing ideas..."></textarea>
 
                 <div class="canvas-container" id="canvasContainer" style="display: none;">
                     <canvas id="drawingCanvas"></canvas>
                     <div class="canvas-toolbar">
-                        <button onclick="clearCanvas()" style="background: var(--danger); color: white;" data-i18n="canvasClearBtn">🗑️ Очистить</button>
-                        <button onclick="saveDrawing()" class="btn-success" style="background: var(--success); color: white;" data-i18n="canvasSaveBtn">💾 Сохранить Рисунок</button>
+                        <button onclick="clearCanvas()" style="background: var(--danger); color: white;">🗑️ Clear</button>
+                        <button onclick="saveDrawing()" class="btn-success" style="background: var(--success); color: white;">💾 Save Drawing</button>
                         <input type="color" id="drawColor" value="#6366f1">
-                        <label style="color: var(--text-secondary); font-size: 13px; font-weight: 600;" data-i18n="canvasBrushSize">Размер кисти:</label>
+                        <label style="color: var(--text-secondary); font-size: 13px; font-weight: 600;">Brush Size:</label>
                         <input type="range" id="drawSize" min="1" max="30" value="3">
                         <span id="drawingStatus"></span>
                     </div>
                 </div>
 
                 <div class="clipboard-section" id="clipboardSection" style="display: none;">
-                    <h3 class="section-title" data-i18n="clipboardTitle">📋 Содержимое Буфера Обмена</h3>
+                    <h3 class="section-title">📋 Clipboard Content</h3>
                     <div class="clipboard-preview" id="clipboardPreview"></div>
-                    <button class="btn" style="margin-top: 12px;" data-i18n="clipboardInsertBtn" onclick="insertClipboard()">✨ Вставить в Заметку</button>
+                    <button class="btn" style="margin-top: 12px;" onclick="insertClipboard()">✨ Insert into Note</button>
                 </div>
 
                 <div class="attachments-section">
-                    <h3 class="section-title" data-i18n="attachmentsTitle">📎 Вложения</h3>
+                    <h3 class="section-title">📎 Attachments</h3>
                     <div class="attachments-grid" id="attachmentsGrid"></div>
                 </div>
 
@@ -1362,13 +1270,13 @@
     <div class="modal" id="folderModal">
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
-                <div class="modal-title" data-i18n="folderModalTitle">✨ Новая Папка</div>
+                <div class="modal-title">✨ New Folder</div>
                 <button class="close-btn" onclick="closeFolderModal()">×</button>
             </div>
             <div class="modal-body">
-                <input type="text" class="note-input" id="folderName">
+                <input type="text" class="note-input" id="folderName" placeholder="📁 Folder name...">
                 
-                <h3 class="section-title" data-i18n="folderColorTitle">🎨 Выберите Цвет Иконки</h3>
+                <h3 class="section-title">🎨 Choose Icon Color</h3>
                 <div class="color-picker-container">
                     <div class="color-option selected" style="background: #6366f1;" data-color="#6366f1" onclick="selectColor(this)"></div>
                     <div class="color-option" style="background: #10b981;" data-color="#10b981" onclick="selectColor(this)"></div>
@@ -1380,7 +1288,7 @@
                     <div class="color-option" style="background: #84cc16;" data-color="#84cc16" onclick="selectColor(this)"></div>
                 </div>
 
-                <button class="btn" style="margin-top: 28px; width: 100%;" data-i18n="folderCreateBtn" onclick="saveFolderModal()">✨ Создать Папку</button>
+                <button class="btn" style="margin-top: 28px; width: 100%;" onclick="saveFolderModal()">✨ Create Folder</button>
             </div>
         </div>
     </div>
@@ -1388,37 +1296,37 @@
     <div class="modal" id="whyUsModal">
         <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
-                <div class="modal-title" data-i18n="whyUsModalTitle">🌟 Почему CloudNotes v2.3?</div>
+                <div class="modal-title">🌟 Why Choose CloudNotes v2.3?</div>
                 <button class="close-btn" onclick="closeWhyUsModal()">×</button>
             </div>
             <div class="modal-body">
-                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);" data-i18n="whyUsHeading">Ваши Данные. Ваш Контроль. Всегда.</h2>
-                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);" data-i18n="whyUsSubheading">Мы построили CloudNotes v1 на простом принципе: <strong>максимальная конфиденциальность и простота</strong>.</p>
+                <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 20px; color: var(--accent);">Your Data. Your Control. Always.</h2>
+                <p style="font-size: 16px; text-align: center; color: var(--text-secondary);">We built CloudNotes v1 on a simple principle: <strong>ultimate privacy and simplicity</strong>.</p>
                 <div class="why-us-section">
                     
                     <div class="why-us-card">
-                        <h4 data-i18n="whyUsCard1Title">🔒 Абсолютная Приватность</h4>
-                        <p data-i18n="whyUsCard1Text">Мы <strong>не отслеживаем, не собираем и не продаем ваши данные</strong>. Все, что вы пишете или рисуете, остается <strong>приватным</strong> в локальном хранилище вашего устройства. Это приложение, ориентированное на локальное использование. Крупные компании (Гиганты) <strong>продают хранилище и интеграцию. (и ваши данные тоже!)</strong>. <strong>Мы (CloudNotes) продаем приватность, простоту и вайб.</strong> Наши цены доступны для <strong>Каждого</strong></p>
+                        <h4>🔒 Absolute Privacy</h4>
+                        <p>We <strong>don't track, collect, or sell any of your data</strong>. Everything you write or draw stays <strong>private</strong> on your device's local storage. This is a local-first application. Big companies (Giants) <strong>sell storage and integration. (your data too!)</strong>. <strong>We (CloudeNotes) sell privacy, simplity, and vibe.</strong> Our prices are avalaible for <strong>Everyone</strong> </p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4 data-i18n="whyUsCard2Title">🚫 Ноль Аккаунтов</h4>
-                        <p data-i18n="whyUsCard2Text">Нет необходимости в электронной почте, именах пользователей или паролях. <strong>Никакой регистрации</strong>, никаких входов, и никакого облачного хранилища. Просто откройте приложение и начните делать заметки.</p>
+                        <h4>🚫 Zero Accounts</h4>
+                        <p>No need for email, usernames, or passwords. <strong>No sign-ups</strong>, no log-ins, and no cloud storage required. Just open the app and start noting.</p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4 data-i18n="whyUsCard3Title">⚡️ Быстро и Надежно</h4>
-                        <p data-i18n="whyUsCard3Text">Поскольку ваши заметки хранятся <strong>локально</strong> в вашем браузере, загрузка происходит мгновенно. Вы никогда не зависите от интернет-соединения или статуса сервера.</p>
+                        <h4>⚡️ Fast & Reliable</h4>
+                        <p>Since your notes are stored <strong>locally</strong> on your browser, loading is instantaneous. You're never dependent on a network connection or server status.</p>
                     </div>
 
                     <div class="why-us-card">
-                        <h4 data-i18n="whyUsCard4Title">📝 Многофункциональный Редактор</h4>
-                        <p data-i18n="whyUsCard4Text">Наш редактор включает <strong>функции форматирования текста</strong>, полный <strong>холст для рисования</strong> и возможность добавлять <strong>вложения</strong>, при этом сохраняя ваши данные в тайне и локально.</p>
+                        <h4>📝 Feature-Rich Editor</h4>
+                        <p>Our editor includes <strong>rich text options</strong>, a full <strong>drawing canvas</strong>, and the ability to add <strong>attachments</strong>, all while keeping your data private and local.</p>
                     </div>
 
                 </div>
                 <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;" data-i18n="whyUsFooter">CloudNotes v2.3: Простое, мощное и по-настоящему приватное создание заметок.</p>
+                    <p style="font-size: 14px; color: var(--text-primary); font-weight: 600;">CloudNotes v2.3: Simple, powerful, and truly private note-taking.</p>
                 </div>
             </div>
         </div>
@@ -1427,747 +1335,337 @@
     <div class="modal" id="historyModal">
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
-                <div class="modal-title" data-i18n="historyModalTitle">⏳ История Версий</div>
+                <div class="modal-title">⏳ Version History</div>
                 <button class="close-btn" onclick="closeHistoryModal()">×</button>
             </div>
             <div class="modal-body">
                 <ul class="history-list" id="historyList">
-                    <p style="text-align: center; color: var(--text-secondary)" data-i18n="historyLoading">Загрузка истории...</p>
+                    <p style="text-align: center; color: var(--text-secondary);">Loading history...</p>
                 </ul>
-                <p style="margin-top: 20px; font-size: 14px; color: var(--danger);" data-i18n="historyWarning">*Восстановление версии перезапишет текущее содержимое заметки.</p>
+                <p style="margin-top: 20px; font-size: 14px; color: var(--danger);">*Restoring a version will overwrite the current note content.</p>
             </div>
         </div>
     </div>
     
-    <div class="modal" id="proMessageModal">
-        <div class="pro-modal-content">
-            <h2 id="proMessageTitle">🔓 Доступ PRO!</h2>
-            <p id="proMessageText"></p>
-            <button class="btn" id="proMessageActionBtn" onclick="toggleProStatus(); closeProMessageModal()"></button>
-            <button class="close-btn" onclick="closeProMessageModal()" style="margin-top: 20px; background: none; border: none; font-size: 16px; color: var(--text-secondary);">&times; <span data-i18n="proMessageClose">Закрыть</span></button>
-        </div>
-    </div>
-
-    
     <script>
         
-        // --- LOCALIZATION DATA ---
-        const translations = {
-            'en': {
-                // Sidebar & Header
-                'appAuthor': 'by Niko (Maximal Version)',
-                'whyUsBtn': 'Why Us?',
-                'proStatus': 'PRO Status: {status}',
-                'proBtnActive': 'Manage PRO',
-                'proBtnInactive': 'Go PRO (Demo)',
-                'newFolderBtn': '+ Folder',
-                'newNoteBtn': '📝 New Note',
-                'exportBtn': '⬇️ Export',
-                'importBtn': '⬆️ Import',
-                'searchPlaceholder': 'Search notes...',
-                'sortLabel': 'Sort by:',
-                'sortUpdatedDesc': 'Updated (Newest)',
-                'sortUpdatedAsc': 'Updated (Oldest)',
-                'sortCreatedDesc': 'Creation Date (Newest)',
-                'sortTitleAsc': 'Title (A-Z)',
-                'sortBookmarked': 'Bookmarked First',
-                'totalNotes': 'Notes',
-                'folderWork': 'Work',
-                'folderHome': 'Home',
-                'folderFunProjects': 'Fun Projects :)',
-                'folderTrash': 'Trash',
-                'folderPlanning': 'Planning (PRO)',
-                'emptyFolderTrash': 'Trash is empty. Nice!',
-                'emptyFolderNotes': 'No notes in this folder yet. Create one!',
-                'emptySelectFolder': 'Select a folder or create a new note',
-                'noteRestoreBtn': '↩️ Restore',
-                'noteDeletePermanentBtn': '❌ Delete Permanently',
-                // Messages (Indicators)
-                'noteUpdateSuccess': 'Note updated!',
-                'noteCreateSuccess': 'Note created!',
-                'noteTrashSuccess': 'Moved to Trash!',
-                'noteRestoreSuccess': 'Note restored!',
-                'noteDeletePermanentSuccess': 'Deleted permanently!',
-                'folderCreatedSuccess': 'Folder created!',
-                'folderDeletedSuccess': 'Folder deleted!',
-                'attachmentAddedSuccess': 'Attachment added!',
-                'attachmentRemovedSuccess': 'Attachment removed!',
-                'clipboardLoadedSuccess': 'Clipboard data loaded!',
-                'clipboardInsertedSuccess': 'Text inserted!',
-                'drawingSavedSuccess': 'Drawing saved to note!',
-                'drawingCleared': 'Canvas cleared. Drawing removed.',
-                'exportSuccess': 'Data exported!',
-                'importSuccess': 'Data imported successfully!',
-                // Modal & Editor
-                'newNoteModalTitle': 'New Note',
-                'noteTitlePlaceholder': '✨ Note Title...',
-                'noteContentPlaceholder': '✍️ Start writing your awesome ideas...',
-                'colorIndicatorTitle': '🎨 Note Color Indicator',
-                'tagsTitle': '🏷️ Tags (comma separated)',
-                'tagsPlaceholder': 'e.g., important, idea, bug-v1',
-                'historyBtn': '⏳ History',
-                'deleteBtn': '🗑️ Delete',
-                'bookmarkBtn': '⭐ Bookmark',
-                'bookmarkedBtn': '★ Bookmarked',
-                'saveNoteBtn': '💾 Save Note',
-                'editorDrawBtn': '🎨 Draw',
-                'editorImageBtn': '🖼️ Image',
-                'editorFileBtn': '📎 File',
-                'editorPasteBtn': '📋 Paste from Clipboard',
-                'editorStatusDrawingSaved': 'Saved drawing exists.',
-                'editorStatusDrawingNone': 'No drawing.',
-                'canvasClearBtn': '🗑️ Clear',
-                'canvasSaveBtn': '💾 Save Drawing',
-                'canvasBrushSize': 'Brush Size:',
-                'clipboardTitle': '📋 Clipboard Content',
-                'clipboardInsertBtn': '✨ Insert into Note',
-                'attachmentsTitle': '📎 Attachments',
-                'attachmentClickToDelete': '(Click to delete)',
-                'folderModalTitle': '✨ New Folder',
-                'folderNamePlaceholder': '📁 Folder Name...',
-                'folderColorTitle': '🎨 Choose Icon Color',
-                'folderCreateBtn': '✨ Create Folder',
-                'whyUsModalTitle': '🌟 Why CloudNotes v2.3?',
-                'whyUsHeading': 'Your Data. Your Control. Always.',
-                'whyUsSubheading': 'We built CloudNotes v1 on a simple principle: **maximum privacy and simplicity**.',
-                'whyUsCard1Title': '🔒 Absolute Privacy',
-                'whyUsCard1Text': 'We **do not track, collect, or sell your data**. Everything you write or draw remains **private** in your device\'s local storage. This is a local-first application. The big companies (Giants) **sell storage and integration. (and your data too!)**. **We (CloudNotes) sell privacy, simplicity, and a vibe.** Our prices are affordable for **Everyone**.',
-                'whyUsCard2Title': '🚫 Zero Accounts',
-                'whyUsCard2Text': 'No need for email, usernames, or passwords. **No sign-up**, no logins, and no cloud storage. Just open the app and start taking notes.',
-                'whyUsCard3Title': '⚡️ Fast and Reliable',
-                'whyUsCard3Text': 'Because your notes are stored **locally** in your browser, loading is instantaneous. You never depend on an internet connection or server status.',
-                'whyUsCard4Title': '📝 Multifunctional Editor',
-                'whyUsCard4Text': 'Our editor includes **text formatting features**, a full **drawing canvas**, and the ability to add **attachments**, all while keeping your data secret and local.',
-                'whyUsFooter': 'CloudNotes v2.3: Simple, powerful, and truly private note-taking.',
-                'historyModalTitle': '⏳ Version History',
-                'historyLoading': 'Loading history...',
-                'historyWarning': '*Restoring a version will overwrite the current note content.',
-                // PRO Message
-                'proMessageTitlePro': '🔓 PRO Access!',
-                'proMessageTitleLock': '🔒 PRO Access Required',
-                'proMessageTextPro': 'This is a PRO-only folder. Get PRO status to unlock advanced features like this Planning folder!',
-                'proMessageActionBtn': '✨ Get PRO Status Now (Demo)',
-                'proMessageClose': 'Close',
-                // Alerts/Prompts
-                'alertNoFolderName': 'Please enter a folder name.',
-                'alertNoNoteContent': 'Note content cannot be empty.',
-                'alertSelectFolder': 'Please select a folder before creating a new note.',
-                'confirmDeleteFolder': 'Are you sure you want to delete this folder and ALL notes within it? This action is irreversible.',
-                'confirmDeletePermanent': 'WARNING: Are you sure you want to delete this note FOREVER? This action is IRREVERSIBLE.',
-                'alertNoRestoreFolder': 'No folders to restore the note to.',
-                'alertClipboardError': 'Error: Failed to access the clipboard. Please ensure your browser has the necessary permissions.'
-            },
-            'ru': {
-                // Sidebar & Header
-                'appAuthor': 'от Niko (Максимальная Версия)',
-                'whyUsBtn': 'Почему мы?',
-                'proStatus': 'PRO-Статус: {status}',
-                'proBtnActive': 'Управлять PRO',
-                'proBtnInactive': 'Получить PRO (Демо)',
-                'newFolderBtn': '+ Папка',
-                'newNoteBtn': '📝 Новая Заметка',
-                'exportBtn': '⬇️ Экспорт',
-                'importBtn': '⬆️ Импорт',
-                'searchPlaceholder': 'Поиск заметок...',
-                'sortLabel': 'Сортировать по:',
-                'sortUpdatedDesc': 'Обновлено (Новые)',
-                'sortUpdatedAsc': 'Обновлено (Старые)',
-                'sortCreatedDesc': 'Дата создания (Новые)',
-                'sortTitleAsc': 'Заголовок (А-Я)',
-                'sortBookmarked': 'Сначала избранные',
-                'totalNotes': 'Заметок',
-                'folderWork': 'Работа',
-                'folderHome': 'Дом',
-                'folderFunProjects': 'Веселые Проекты :)',
-                'folderTrash': 'Корзина',
-                'folderPlanning': 'Планирование (PRO)',
-                'emptyFolderTrash': 'Корзина пуста. Отлично!',
-                'emptyFolderNotes': 'В этой папке пока нет заметок. Создайте новую!',
-                'emptySelectFolder': 'Выберите папку или создайте новую заметку',
-                'noteRestoreBtn': '↩️ Восстановить',
-                'noteDeletePermanentBtn': '❌ Удалить Навсегда',
-                // Messages (Indicators)
-                'noteUpdateSuccess': 'Заметка обновлена!',
-                'noteCreateSuccess': 'Заметка создана!',
-                'noteTrashSuccess': 'Перемещено в Корзину!',
-                'noteRestoreSuccess': 'Заметка восстановлена!',
-                'noteDeletePermanentSuccess': 'Удалено навсегда!',
-                'folderCreatedSuccess': 'Папка создана!',
-                'folderDeletedSuccess': 'Папка удалена!',
-                'attachmentAddedSuccess': 'Вложение добавлено!',
-                'attachmentRemovedSuccess': 'Вложение удалено!',
-                'clipboardLoadedSuccess': 'Данные из буфера загружены!',
-                'clipboardInsertedSuccess': 'Текст вставлен!',
-                'drawingSavedSuccess': 'Рисунок сохранен в заметку!',
-                'drawingCleared': 'Холст очищен. Рисунок удален.',
-                'exportSuccess': 'Данные экспортированы!',
-                'importSuccess': 'Данные импортированы успешно!',
-                // Modal & Editor
-                'newNoteModalTitle': 'Новая Заметка',
-                'noteTitlePlaceholder': '✨ Заголовок заметки...',
-                'noteContentPlaceholder': '✍️ Начните писать свои потрясающие идеи...',
-                'colorIndicatorTitle': '🎨 Цветной Индикатор Заметки',
-                'tagsTitle': '🏷️ Теги (через запятую)',
-                'tagsPlaceholder': 'напр., важно, идея, баг-v1',
-                'historyBtn': '⏳ История',
-                'deleteBtn': '🗑️ Удалить',
-                'bookmarkBtn': '⭐ В избранное',
-                'bookmarkedBtn': '★ В избранном',
-                'saveNoteBtn': '💾 Сохранить Заметку',
-                'editorDrawBtn': '🎨 Рисовать',
-                'editorImageBtn': '🖼️ Изображение',
-                'editorFileBtn': '📎 Файл',
-                'editorPasteBtn': '📋 Вставить из буфера',
-                'editorStatusDrawingSaved': 'Сохраненный рисунок есть.',
-                'editorStatusDrawingNone': 'Нет рисунка.',
-                'canvasClearBtn': '🗑️ Очистить',
-                'canvasSaveBtn': '💾 Сохранить Рисунок',
-                'canvasBrushSize': 'Размер кисти:',
-                'clipboardTitle': '📋 Содержимое Буфера Обмена',
-                'clipboardInsertBtn': '✨ Вставить в Заметку',
-                'attachmentsTitle': '📎 Вложения',
-                'attachmentClickToDelete': '(Нажмите для удаления)',
-                'folderModalTitle': '✨ Новая Папка',
-                'folderNamePlaceholder': '📁 Название папки...',
-                'folderColorTitle': '🎨 Выберите Цвет Иконки',
-                'folderCreateBtn': '✨ Создать Папку',
-                'whyUsModalTitle': '🌟 Почему CloudNotes v2.3?',
-                'whyUsHeading': 'Ваши Данные. Ваш Контроль. Всегда.',
-                'whyUsSubheading': 'Мы построили CloudNotes v1 на простом принципе: <strong>максимальная конфиденциальность и простота</strong>.',
-                'whyUsCard1Title': '🔒 Абсолютная Приватность',
-                'whyUsCard1Text': 'Мы <strong>не отслеживаем, не собираем и не продаем ваши данные</strong>. Все, что вы пишете или рисуете, остается <strong>приватным</strong> в локальном хранилище вашего устройства. Это приложение, ориентированное на локальное использование. Крупные компании (Гиганты) <strong>продают хранилище и интеграцию. (и ваши данные тоже!)</strong>. <strong>Мы (CloudNotes) продаем приватность, простоту и вайб.</strong> Наши цены доступны для <strong>Каждого</strong>',
-                'whyUsCard2Title': '🚫 Ноль Аккаунтов',
-                'whyUsCard2Text': 'Нет необходимости в электронной почте, именах пользователей или паролях. <strong>Никакой регистрации</strong>, никаких входов, и никакого облачного хранилища. Просто откройте приложение и начните делать заметки.',
-                'whyUsCard3Title': '⚡️ Быстро и Надежно',
-                'whyUsCard3Text': 'Поскольку ваши заметки хранятся <strong>локально</strong> в вашем браузере, загрузка происходит мгновенно. Вы никогда не зависите от интернет-соединения или статуса сервера.',
-                'whyUsCard4Title': '📝 Многофункциональный Редактор',
-                'whyUsCard4Text': 'Наш редактор включает <strong>функции форматирования текста</strong>, полный <strong>холст для рисования</strong> и возможность добавлять <strong>вложения</strong>, при этом сохраняя ваши данные в тайне и локально.',
-                'whyUsFooter': 'CloudNotes v2.3: Простое, мощное и по-настоящему приватное создание заметок.',
-                'historyModalTitle': '⏳ История Версий',
-                'historyLoading': 'Загрузка истории...',
-                'historyWarning': '*Восстановление версии перезапишет текущее содержимое заметки.',
-                // PRO Message
-                'proMessageTitlePro': '🔓 Доступ PRO!',
-                'proMessageTitleLock': '🔒 Требуется PRO-доступ',
-                'proMessageTextPro': 'Эта папка доступна только для PRO-подписчиков. Получите PRO-статус, чтобы разблокировать расширенные функции, такие как эта папка для Планирования!',
-                'proMessageActionBtn': '✨ Получить PRO-статус сейчас (Демо)',
-                'proMessageClose': 'Закрыть',
-                // Alerts/Prompts
-                'alertNoFolderName': 'Пожалуйста, введите название папки.',
-                'alertNoNoteContent': 'Содержимое заметки не может быть пустым.',
-                'alertSelectFolder': 'Пожалуйста, выберите папку, прежде чем создавать новую заметку.',
-                'confirmDeleteFolder': 'Вы уверены, что хотите удалить эту папку и ВСЕ заметки в ней? Это действие необратимо.',
-                'confirmDeletePermanent': 'ВНИМАНИЕ: Вы уверены, что хотите удалить эту заметку НАВСЕГДА? Это действие НЕОБРАТИМО.',
-                'alertNoRestoreFolder': 'Нет папок для восстановления заметки.',
-                'alertClipboardError': 'Ошибка: Не удалось получить доступ к буферу обмена. Пожалуйста, убедитесь, что у браузера есть соответствующие разрешения.'
-            }
-        };
-
         // --- DATA STRUCTURE ---
         let data = {
             folders: [
-                { id: 1, name: 'Работа', i18nKey: 'folderWork', color: '#6366f1', notes: [] },
-                { id: 2, name: 'Дом', i18nKey: 'folderHome', color: '#10b981', notes: [] },
-                { id: 3, name: 'Веселые Проекты :)', i18nKey: 'folderFunProjects', color: '#f59e0b', notes: [] }
+                { id: 1, name: 'Work', color: '#6366f1', notes: [] },
+                { id: 2, name: 'Home', color: '#10b981', notes: [] },
+                { id: 3, name: 'Fun Projects :)', color: '#f59e0b', notes: [] }
             ],
-            trash: [], // Корзина
+            trash: [], // NEW: Recycling Bin
             TRASH_ID: -1, 
-            PLANNING_ID: -2, // Папка Планирование (PRO Feature)
-            isPro: false, 
-            sortOrder: 'updatedDesc', 
+            sortOrder: 'updatedDesc', // NEW: Default sort order
             currentFolder: null,
             currentNote: null,
-            currentLang: 'ru', // NEW: Current Language
             nextFolderId: 4,
             nextNoteId: 1
         };
 
         // --- GLOBAL STATE ---
         let canvas, ctx, isDrawing = false;
-        let selectedColor = '#6366f1'; 
-        let selectedNoteColor = 'transparent'; 
+        let selectedColor = '#6366f1'; // For folder creation
+        let selectedNoteColor = 'transparent'; // For note color
         let drawingData = null;
         let currentBookmark = false;
         let clipboardContent = '';
+
         
-        // --- LOCALIZATION FUNCTIONS ---
-
-        /** Переводит ключ на текущий язык. */
-        function translate(key, replacements = {}) {
-            let text = translations[data.currentLang][key] || translations['en'][key] || `[${key}]`;
-            for (const [k, v] of Object.entries(replacements)) {
-                text = text.replace(`{${k}}`, v);
-            }
-            return text;
-        }
-
-        /** Обновляет все элементы DOM с атрибутом data-i18n. */
-        function updateUI(lang) {
-            data.currentLang = lang;
-            document.documentElement.lang = lang;
-            document.getElementById('langSelect').value = lang;
-            
-            // 1. Static Text Elements
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (key) {
-                    element.textContent = translate(key);
-                }
-            });
-            
-            // 2. Placeholders
-            document.getElementById('searchInput').setAttribute('placeholder', translate('searchPlaceholder'));
-            document.getElementById('noteTitle').setAttribute('placeholder', translate('noteTitlePlaceholder'));
-            document.getElementById('noteContent').setAttribute('placeholder', translate('noteContentPlaceholder'));
-            document.getElementById('noteTags').setAttribute('placeholder', translate('tagsPlaceholder'));
-            document.getElementById('folderName').setAttribute('placeholder', translate('folderNamePlaceholder'));
-            
-            // 3. Dynamic Elements (that need text update after translation)
-            updateProStatusDisplay();
-            updateEmptyStateText();
-            updateBookmarkButton();
-            
-            // For select options, update the display text while keeping the value
-            document.querySelectorAll('#sortSelect option').forEach(option => {
-                const key = option.getAttribute('data-i18n');
-                if (key) {
-                    option.textContent = translate(key);
-                }
-            });
-            
-            // Re-render folders/notes to apply translated names/buttons
+        // --- INITIALIZATION ---
+        function init() {
+            loadData();
             renderFolders();
-            renderNotes(data.currentFolder);
-            saveData();
+            setupCanvas();
+            updateTotalNotes();
+            
+            // Set initial sort order on load
+            document.getElementById('sortSelect').value = data.sortOrder;
+            
+            // Auto-select first folder if none is selected
+            if (!data.currentFolder && data.folders.length > 0) {
+                 selectFolder(data.folders[0].id);
+            } else if (data.currentFolder) {
+                // Re-render notes for the last selected folder on load
+                selectFolder(data.currentFolder); 
+            }
         }
 
-        /** Смена языка. */
-        function changeLanguage(lang) {
-            updateUI(lang);
-        }
-
-        // --- UTILITY FUNCTIONS ---
-        
-        /** Сохраняет текущее состояние data в Local Storage. */
+        // --- CORE DATA FUNCTIONS (Save/Load) ---
         function saveData() {
             try {
-                const theme = document.body.getAttribute('data-theme') || 'light';
-                const dataToSave = {
-                    ...data,
-                    theme: theme
-                };
-                localStorage.setItem('cloudNotesData', JSON.stringify(dataToSave));
+                // Save the main data structure
+                localStorage.setItem('cloudNotesData', JSON.stringify(data));
+                // Save the current theme preference
+                localStorage.setItem('theme', document.body.getAttribute('data-theme'));
             } catch (e) {
-                console.error('Ошибка сохранения данных:', e);
+                console.error("Error saving data to localStorage:", e);
+                alert("Error saving data. Your browser storage may be full or disabled.");
             }
         }
-        
-        /** Загружает данные из Local Storage. */
+
         function loadData() {
             try {
-                const savedData = localStorage.getItem('cloudNotesData');
-                if (savedData) {
-                    const parsed = JSON.parse(savedData);
+                const storedData = localStorage.getItem('cloudNotesData');
+                const storedTheme = localStorage.getItem('theme');
+                
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
                     
+                    // Restore data object, providing defaults for new fields if they don't exist
                     data.folders = parsed.folders || data.folders;
-                    data.trash = parsed.trash || data.trash;
-                    data.isPro = parsed.isPro !== undefined ? parsed.isPro : data.isPro; 
-                    data.sortOrder = parsed.sortOrder || data.sortOrder;
+                    data.trash = parsed.trash || [];
+                    data.TRASH_ID = parsed.TRASH_ID || -1;
                     data.currentFolder = parsed.currentFolder;
-                    data.currentLang = parsed.currentLang || 'ru'; // NEW: Load language
                     data.nextFolderId = parsed.nextFolderId || data.nextFolderId;
                     data.nextNoteId = parsed.nextNoteId || data.nextNoteId;
+                    data.sortOrder = parsed.sortOrder || 'updatedDesc';
                     
-                    if (parsed.theme) {
-                        document.body.setAttribute('data-theme', parsed.theme);
-                        document.getElementById('themeToggle').textContent = 
-                            parsed.theme === 'light' ? '🌙' : '☀️';
-                    }
+                    // IMPORTANT: Ensure all notes have a history array (for new feature compatibility)
+                    data.folders.forEach(f => f.notes.forEach(n => n.history = n.history || []));
+                    data.trash.forEach(n => n.history = n.history || []);
+                    
+                    // Check for trash auto-delete on load
+                    checkAutoDelete();
                 }
-            } catch (e) {
-                console.error('Ошибка загрузки данных:', e);
-            }
-        }
 
-        /** Находит папку по ID. */
-        function getFolder(folderId) {
-            if (folderId === data.TRASH_ID) return { id: data.TRASH_ID, name: translate('folderTrash'), icon: '🗑️', color: 'var(--danger)', notes: data.trash };
-            if (folderId === data.PLANNING_ID) return { 
-                id: data.PLANNING_ID, 
-                name: translate('folderPlanning'), 
-                icon: '🗓️', 
-                color: 'var(--warning)', 
-                notes: getPlanningNotes(), 
-                isProLocked: !data.isPro 
-            };
-            const folder = data.folders.find(f => f.id === folderId);
-            // Translate default folders
-            if (folder && folder.i18nKey) {
-                folder.name = translate(folder.i18nKey);
+                if (storedTheme) {
+                    document.body.setAttribute('data-theme', storedTheme);
+                    document.getElementById('themeToggle').textContent = 
+                        storedTheme === 'light' ? '🌙' : '☀️';
+                }
+                
+            } catch (e) {
+                console.error('Error loading data:', e);
             }
-            return folder;
         }
         
-        /** NEW: Обновляет текст пустого состояния. */
-        function updateEmptyStateText() {
-            const folder = getFolder(data.currentFolder);
-            let text = translate('emptySelectFolder');
-            if (folder) {
-                if (folder.id === data.TRASH_ID) {
-                    text = translate('emptyFolderTrash');
-                } else if (folder.id === data.PLANNING_ID && folder.isProLocked) {
-                    text = translate('proLockedMessage');
-                } else if (folder.notes.length === 0) {
-                    text = translate('emptyFolderNotes');
-                }
-            }
-            document.getElementById('emptyStateText').textContent = text;
-        }
-
-        /** NEW: Функция для получения заметок для папки "Планирование" (Для демо) */
-        function getPlanningNotes() {
-            if (!data.planningNotes) {
-                data.planningNotes = [
-                    { id: 9001, title: 'Запуск v3.0 / v3.0 Launch', content: 'Подготовить план маркетинга и фичи / Prepare marketing plan and features.', tags: ['проект', 'важно', 'project', 'important'], color: '#a855f7', bookmarked: true, created: Date.now() - 86400000 * 2, updated: Date.now() - 86400000 * 2, history: [] },
-                    { id: 9002, title: 'Анализ конкурентов / Competitor Analysis', content: 'Провести анализ рынка и определить УТП / Conduct market analysis and determine USP.', tags: ['анализ', 'analysis'], color: '#60a5fa', bookmarked: false, created: Date.now() - 86400000 * 1, updated: Date.now() - 86400000 * 1, history: [] }
-                ];
-            }
-            return data.planningNotes;
-        }
-
-        /** Находит заметку по ID в текущей папке. */
-        function getNote(noteId) {
-            const currentFolder = getFolder(data.currentFolder);
-            if (!currentFolder) return null;
-
-            if (currentFolder.id === data.PLANNING_ID) {
-                 return getPlanningNotes().find(n => n.id === noteId);
-            }
-
-            return currentFolder.notes.find(n => n.id === noteId);
-        }
-
-        /** Показывает сообщение о действии (Сохранено/Удалено). */
-        function showIndicator(messageKey, type = 'success') {
+        // --- RESTORED: EXPORT/IMPORT FUNCTIONS ---
+        function exportData() {
+            const dataToExport = JSON.stringify(data, null, 2);
+            
+            const blob = new Blob([dataToExport], { type: 'application/json' });
+            
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `CloudNotes_Backup_${new Date().toISOString().substring(0, 10)}.json`;
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); 
+            
             const indicator = document.createElement('div');
             indicator.className = 'save-indicator';
-            indicator.style.background = type === 'success' ? 'var(--success)' : 'var(--danger)';
-            indicator.innerHTML = `${type === 'success' ? '✅' : '🗑️'} ${translate(messageKey)}`;
+            indicator.style.background = 'var(--success)';
+            indicator.innerHTML = `⬇️ Data Exported Successfully!`;
             document.body.appendChild(indicator);
-
-            setTimeout(() => {
-                indicator.style.opacity = '0';
-                indicator.style.transform = 'translateY(-20px)';
-                indicator.addEventListener('transitionend', () => indicator.remove());
-            }, 2000);
-        }
-        
-        /** Форматирует дату. */
-        function formatDate(timestamp) {
-             const locale = data.currentLang === 'en' ? 'en-US' : 'ru-RU';
-             return new Date(timestamp).toLocaleDateString(locale, { 
-                year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-             });
-        }
-        
-        // --- PRO LOGIC ---
-        function updateProStatusDisplay() {
-            const statusText = data.isPro ? 'PRO' : 'Standard';
-            document.getElementById('proStatus').innerHTML = translate('proStatus', { status: `<span style="color: ${data.isPro ? 'var(--success)' : 'var(--danger)'};">${statusText}</span>` });
-            
-            const proBtn = document.getElementById('proBtn');
-            proBtn.textContent = data.isPro ? translate('proBtnActive') : translate('proBtnInactive');
-            proBtn.style.background = data.isPro ? 'var(--accent)' : 'var(--warning)';
+            setTimeout(() => indicator.remove(), 2500);
         }
 
-        function toggleProStatus() {
-            data.isPro = !data.isPro;
-            saveData();
-            updateProStatusDisplay();
-            renderFolders();
-            if (data.currentFolder === data.PLANNING_ID) {
-                 renderNotes(data.PLANNING_ID); // Re-render to unlock/lock planning folder view
+        function importData(event) {
+            if (!confirm('WARNING: Importing data will OVERWRITE your current notes. Are you sure you want to proceed?')) {
+                event.target.value = null; 
+                return;
             }
-            showIndicator(data.isPro ? 'proStatusEnabled' : 'proStatusDisabled', data.isPro ? 'success' : 'danger');
+            
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (!importedData.folders || !Array.isArray(importedData.folders)) {
+                        alert('Import Failed: The file does not appear to be a valid CloudNotes backup file.');
+                        return;
+                    }
+                    
+                    // Overwrite current data in localStorage
+                    localStorage.setItem('cloudNotesData', JSON.stringify(importedData));
+                    
+                    const indicator = document.createElement('div');
+                    indicator.className = 'save-indicator';
+                    indicator.style.background = 'var(--accent)';
+                    indicator.innerHTML = `⬆️ Data Imported! Reloading...`;
+                    document.body.appendChild(indicator);
+                    
+                    setTimeout(() => {
+                        location.reload(); 
+                    }, 2000);
+                    
+                } catch (error) {
+                    alert('Import Failed: Error parsing the JSON file. It may be corrupted.');
+                    console.error('Import Error:', error);
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+        // --- END RESTORED: EXPORT/IMPORT FUNCTIONS ---
+        
+        // --- NEW: Trash Auto-Delete ---
+        function checkAutoDelete() {
+            const now = Date.now();
+            const thirtyDays = 30 * 24 * 60 * 60 * 1000; 
+
+            // Filter out notes in trash that are older than 30 days
+            const initialTrashCount = data.trash.length;
+            data.trash = data.trash.filter(note => {
+                // Keep notes without a deletedAt date for safety
+                if (!note.deletedAt) return true; 
+
+                const deletedTime = new Date(note.deletedAt).getTime();
+                return (now - deletedTime) < thirtyDays;
+            });
+
+            if (data.trash.length !== initialTrashCount) {
+                console.log(`🧹 Auto-deleted ${initialTrashCount - data.trash.length} notes from trash.`);
+                saveData();
+                renderFolders(); 
+            }
         }
         
-        function openProMessageModal(titleKey, textKey) {
-             const isLock = titleKey.includes('Lock');
-             document.getElementById('proMessageTitle').textContent = translate(isLock ? 'proMessageTitleLock' : 'proMessageTitlePro');
-             document.getElementById('proMessageText').innerHTML = translate('proMessageTextPro');
-             document.getElementById('proMessageActionBtn').textContent = translate('proMessageActionBtn');
-             document.getElementById('proMessageModal').classList.add('active');
+        // --- Theme and Stats ---
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            document.getElementById('themeToggle').textContent = newTheme === 'light' ? '🌙' : '☀️';
+            saveData();
         }
-
-        function closeProMessageModal() {
-            document.getElementById('proMessageModal').classList.remove('active');
-        }
-
-
-        // --- RENDER FUNCTIONS ---
         
-        /** Отображает список папок и корзину. */
+        function updateTotalNotes() {
+            let total = 0;
+            data.folders.forEach(folder => {
+                total += folder.notes.length;
+            });
+            document.getElementById('totalNotes').textContent = total;
+        }
+
+        // --- RESTORED: Clipboard functions ---
+        async function pasteFromClipboard() {
+            try {
+                // Use the modern clipboard API
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    clipboardContent = text;
+                    document.getElementById('clipboardSection').style.display = 'block';
+                    document.getElementById('clipboardPreview').textContent = text.substring(0, 200) + (text.length > 200 ? '...' : '');
+                } else {
+                    alert('Clipboard is empty or access denied!');
+                }
+            } catch (err) {
+                alert('Could not access clipboard. Please make sure you granted permission in browser settings.');
+            }
+        }
+
+        function insertClipboard() {
+            const editor = document.getElementById('noteContent');
+            const currentContent = editor.value;
+            // Insert the clipboard content, adding newlines for separation
+            editor.value = currentContent + (currentContent ? '\n\n' : '') + clipboardContent;
+            document.getElementById('clipboardSection').style.display = 'none';
+            clipboardContent = ''; // Clear after insertion
+        }
+
+        // --- FOLDERS ---
         function renderFolders() {
             const container = document.getElementById('foldersContainer');
             container.innerHTML = '';
             
-            // System Folders (Planning & Trash)
-            const systemFolders = document.createElement('div');
-            systemFolders.className = 'system-folders';
-            
-            // 1. Planning Folder (PRO)
-            const planningFolder = getFolder(data.PLANNING_ID);
-            systemFolders.appendChild(createFolderElement(planningFolder));
-
-            // 2. Trash Folder
-            const trashFolder = getFolder(data.TRASH_ID);
-            systemFolders.appendChild(createFolderElement(trashFolder));
-
-            container.appendChild(systemFolders);
-
-            // User-Created Folders
+            // Render main folders
+            const folderList = document.createElement('div');
+            folderList.className = 'main-folders';
             data.folders.forEach(folder => {
-                const translatedFolder = getFolder(folder.id);
-                container.appendChild(createFolderElement(translatedFolder));
+                const item = document.createElement('div');
+                item.className = 'folder-item';
+                if (data.currentFolder === folder.id) item.classList.add('active');
+                item.innerHTML = `
+                    <div class="folder-icon" style="background: ${folder.color};">📁</div>
+                    <div class="folder-name">${folder.name}</div>
+                    <div class="folder-count">${folder.notes.length}</div>
+                `;
+                item.onclick = () => selectFolder(folder.id);
+                folderList.appendChild(item);
             });
+            container.appendChild(folderList);
             
-            updateProStatusDisplay();
-        }
-
-        /** Создает элемент папки DOM. */
-        function createFolderElement(folder) {
-            const isTrash = folder.id === data.TRASH_ID;
-            const isPlanning = folder.id === data.PLANNING_ID;
-            const notes = folder.notes;
+            // Render system folders (Trash)
+            const trashContainer = document.createElement('div');
+            trashContainer.className = 'system-folders';
             
-            const folderElement = document.createElement('div');
-            folderElement.className = `folder-item ${data.currentFolder === folder.id ? 'active' : ''} ${isTrash ? 'trash-item' : ''} ${isPlanning && folder.isProLocked ? 'pro-locked' : ''}`;
-            folderElement.setAttribute('data-folder-id', folder.id);
-            folderElement.onclick = () => selectFolder(folder.id);
-            
-            const iconBg = isTrash ? 'white' : folder.color;
-            const iconColor = isTrash ? folder.color : 'white';
-            
-            folderElement.innerHTML = `
-                <div class="folder-icon" style="background: ${iconBg}; color: ${iconColor};">
-                    ${folder.icon || '📁'}
-                </div>
-                <div class="folder-name">
-                    ${folder.name} 
-                    ${isPlanning && folder.isProLocked ? '<span class="lock-icon">🔒</span>' : ''}
-                </div>
-                <div class="folder-count" style="background: ${isTrash ? 'rgba(255, 255, 255, 0.4)' : folder.color}">${notes.length}</div>
+            const trashItem = document.createElement('div');
+            trashItem.className = 'folder-item trash-item';
+            if (data.currentFolder === data.TRASH_ID) trashItem.classList.add('active');
+            trashItem.innerHTML = `
+                <div class="folder-icon">🗑️</div>
+                <div class="folder-name">Trash</div>
+                <div class="folder-count">${data.trash.length}</div>
             `;
-            
-            // Add right-click context menu listener for user folders (not system folders)
-            if (!isTrash && !isPlanning) {
-                 folderElement.oncontextmenu = (e) => openFolderContextMenu(e, folder.id);
-            }
-
-            return folderElement;
-        }
-        
-        /** Открывает контекстное меню папки (удаление). */
-        function openFolderContextMenu(e, folderId) {
-            e.preventDefault();
-            
-            const menu = document.createElement('div');
-            menu.style.position = 'fixed';
-            menu.style.left = `${e.clientX}px`;
-            menu.style.top = `${e.clientY}px`;
-            menu.style.background = 'var(--bg-secondary)';
-            menu.style.border = '1px solid var(--border)';
-            menu.style.borderRadius = '8px';
-            menu.style.padding = '5px 0';
-            menu.style.zIndex = '10000';
-            menu.style.boxShadow = '0 4px 12px var(--shadow)';
-            
-            const deleteItem = document.createElement('div');
-            deleteItem.textContent = translate('deleteFolderContextMenu');
-            deleteItem.style.padding = '10px 15px';
-            deleteItem.style.cursor = 'pointer';
-            deleteItem.style.color = 'var(--danger)';
-            deleteItem.onmouseover = () => deleteItem.style.background = 'var(--accent-light)';
-            deleteItem.onmouseout = () => deleteItem.style.background = 'none';
-            deleteItem.onclick = () => {
-                deleteFolder(folderId);
-                menu.remove();
-            };
-            
-            menu.appendChild(deleteItem);
-            document.body.appendChild(menu);
-            
-            const closeMenu = (event) => {
-                if (!menu.contains(event.target)) {
-                    menu.remove();
-                    document.removeEventListener('click', closeMenu);
-                }
-            };
-            document.addEventListener('click', closeMenu);
+            trashItem.onclick = () => selectFolder(data.TRASH_ID);
+            trashContainer.appendChild(trashItem);
+            container.appendChild(trashContainer);
         }
 
-        /** Отображает заметки в текущей папке. */
-        function renderNotes(folderId) {
-            const container = document.getElementById('contentArea');
-            const folder = getFolder(folderId);
-            
-            if (!folder) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-icon">📂</div><div class="empty-text" id="emptyStateText">${translate('emptySelectFolder')}</div></div>`;
-                document.getElementById('totalNotes').textContent = 0;
-                return;
-            }
-            
-            // NEW: PRO Lock check
-            if (folder.id === data.PLANNING_ID && folder.isProLocked) {
-                 container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">🔒</div>
-                        <div class="empty-text" id="emptyStateText">${translate('proLockedMessage')}</div>
-                        <button class="why-us-btn" style="width: auto; margin-top: 20px;" onclick="openProMessageModal('proMessageTitleLock', 'proMessageTextPro')">${translate('proBtnInactive')}</button>
-                    </div>`;
-                 document.getElementById('totalNotes').textContent = 0;
-                 return;
-            }
-
-            // Get notes for rendering (either regular notes, trash, or planning notes)
-            let notes = folder.notes;
-            const isTrash = folder.id === data.TRASH_ID;
-            
-            // Search filtering
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            if (searchTerm) {
-                notes = notes.filter(note => 
-                    note.title.toLowerCase().includes(searchTerm) || 
-                    note.content.toLowerCase().includes(searchTerm) ||
-                    (note.tags && note.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
-                );
-            }
-
-            // Sorting
-            notes.sort((a, b) => {
-                switch (data.sortOrder) {
-                    case 'updatedDesc': return b.updated - a.updated;
-                    case 'updatedAsc': return a.updated - b.updated;
-                    case 'createdDesc': return b.created - a.created;
-                    case 'titleAsc': return a.title.localeCompare(b.title);
-                    case 'bookmarked':
-                        if (a.bookmarked && !b.bookmarked) return -1;
-                        if (!a.bookmarked && b.bookmarked) return 1;
-                        return b.updated - a.updated; // Fallback sort
-                    default: return b.updated - a.updated;
-                }
-            });
-
-            document.getElementById('totalNotes').textContent = folder.notes.length;
-
-            if (notes.length === 0) {
-                 container.innerHTML = `<div class="empty-state"><div class="empty-icon">${isTrash ? '🧹' : '💡'}</div><div class="empty-text" id="emptyStateText">${isTrash ? translate('emptyFolderTrash') : translate('emptyFolderNotes')}</div></div>`;
-                return;
-            }
-
-            const grid = document.createElement('div');
-            grid.className = 'notes-grid';
-            
-            notes.forEach(note => {
-                grid.appendChild(createNoteCard(note, isTrash));
-            });
-
-            container.innerHTML = '';
-            container.appendChild(grid);
-        }
-
-        /** Создает карточку заметки DOM. */
-        function createNoteCard(note, isTrash) {
-            const card = document.createElement('div');
-            const isSpaceTheme = note.color === 'space';
-            
-            const indicatorColor = isSpaceTheme ? '#3b82f6' : (note.color === 'transparent' ? 'var(--accent)' : note.color);
-            
-            card.className = `note-card ${isSpaceTheme ? 'space-bg' : ''}`;
-            card.style.cssText = `--note-indicator-color: ${indicatorColor};`;
-            card.setAttribute('data-note-id', note.id);
-            card.onclick = () => openNote(note.id);
-            
-            const tagsHtml = (note.tags || []).map(tag => `<span class="note-tag-display">${tag}</span>`).join('');
-
-            let metaHtml = `
-                <div class="note-meta ${isTrash ? 'trash-note-meta' : ''}">
-                    ${isTrash ? `
-                        <button class="btn btn-success" onclick="event.stopPropagation(); restoreNote(${note.id})">${translate('noteRestoreBtn')}</button>
-                        <button class="btn" style="background: var(--danger); color: white;" onclick="event.stopPropagation(); permanentlyDeleteNote(${note.id})">${translate('noteDeletePermanentBtn')}</button>
-                    ` : `
-                        <span class="note-badge">${getFolder(data.currentFolder).name}</span>
-                        <span class="note-date">${translate('sortUpdatedDesc').split(' ')[0]}: ${formatDate(note.updated)}</span>
-                    `}
-                </div>
-            `;
-            
-            let bookmarkBtn = '';
-            if (!isTrash) {
-                 bookmarkBtn = `
-                    <button class="bookmark-btn ${note.bookmarked ? 'bookmarked' : ''}" 
-                            onclick="event.stopPropagation(); toggleBookmarkOnCard(${note.id})">
-                        ${note.bookmarked ? '★' : '☆'}
-                    </button>
-                 `;
-            }
-
-            card.innerHTML = `
-                ${bookmarkBtn}
-                <div class="note-title">${note.title || 'Без заголовка / No Title'}</div>
-                <div class="note-tags-display">${tagsHtml}</div>
-                <div class="note-preview">${note.content.substring(0, 100).replace(/<[^>]*>/g, '').trim()}${note.content.length > 100 ? '...' : ''}</div>
-                ${metaHtml}
-            `;
-
-            return card;
-        }
-
-        /** Переключает статус избранного на карточке заметки. */
-        function toggleBookmarkOnCard(noteId) {
-            const folder = getFolder(data.currentFolder);
-            if (!folder) return;
-            const note = folder.notes.find(n => n.id === noteId);
-            if (note) {
-                note.bookmarked = !note.bookmarked;
-                saveData();
-                renderNotes(data.currentFolder);
-                showIndicator(note.bookmarked ? 'bookmarkAdded' : 'bookmarkRemoved');
-            }
-        }
-        
-        // --- ACTION HANDLERS ---
-        
-        /** Выбор папки. */
-        function selectFolder(folderId) {
-            const folder = getFolder(folderId);
-            
-            if (folder.id === data.PLANNING_ID && folder.isProLocked) {
-                openProMessageModal('proMessageTitleLock', 'proMessageTextPro');
-                return; 
-            }
-            
-            data.currentFolder = folderId;
+        function selectFolder(id) {
+            data.currentFolder = id;
             data.currentNote = null;
-            saveData();
             renderFolders();
-            renderNotes(folderId);
+            renderNotes(id);
+            saveData();
         }
 
-        /** Создание новой папки (открытие модального окна). */
         function createFolder() {
+            // Reset modal inputs and color selection
             document.getElementById('folderName').value = '';
-            selectedColor = '#6366f1';
-            document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
-            document.querySelector(`.color-option[data-color="#6366f1"]`).classList.add('selected');
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            const defaultColor = document.querySelector('.color-picker-container div');
+            defaultColor.classList.add('selected');
+            selectedColor = defaultColor.getAttribute('data-color');
+            
             document.getElementById('folderModal').classList.add('active');
         }
 
-        /** Сохранение новой папки. */
+        function closeFolderModal() {
+            document.getElementById('folderModal').classList.remove('active');
+        }
+
+        function selectColor(element) {
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedColor = element.getAttribute('data-color');
+        }
+        
+        // MODIFIED: Logic for handling the 'space' theme preview
+        function selectNoteColor(element) {
+            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedNoteColor = element.getAttribute('data-color');
+            
+            // Apply the color immediately to the modal content
+            const modalContent = document.getElementById('noteModal').querySelector('.modal-content');
+            
+            if (selectedNoteColor === 'space') {
+                modalContent.style.background = '#0D0F16'; 
+                modalContent.style.color = '#f5f5f5'; // Change text color for dark background
+                document.querySelectorAll('.section-title').forEach(el => el.style.color = '#f5f5f5');
+            } else {
+                modalContent.style.background = 'var(--bg-secondary)'; 
+                modalContent.style.color = 'var(--text-primary)'; // Reset text color
+                document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
+            }
+        }
+
         function saveFolderModal() {
             const name = document.getElementById('folderName').value.trim();
             if (!name) {
-                alert(translate('alertNoFolderName'));
+                alert('Folder name cannot be empty!');
                 return;
             }
 
@@ -2179,369 +1677,643 @@
             };
 
             data.folders.push(newFolder);
-            saveData();
-            renderFolders();
-            selectFolder(newFolder.id);
             closeFolderModal();
-            showIndicator('folderCreatedSuccess');
+            renderFolders();
+            saveData();
         }
         
-        /** Удаление папки. */
-        function deleteFolder(folderId) {
-            if (confirm(translate('confirmDeleteFolder'))) {
-                data.folders = data.folders.filter(f => f.id !== folderId);
-                
-                if (data.currentFolder === folderId) {
-                    data.currentFolder = data.folders.length > 0 ? data.folders[0].id : null;
+        // --- NOTES RENDERING AND SORTING ---
+        function getNoteBadgeText(note) {
+            if (note.isBookmarked) return '⭐ Bookmarked';
+            if (note.attachments && note.attachments.length > 0) return `📎 ${note.attachments.length} files`;
+            if (note.tags && note.tags.length > 0) return `🏷️ ${note.tags[0]}`;
+            return 'Note';
+        }
+        
+        function sortNotes(notes) {
+            const sortOrder = data.sortOrder;
+            
+            return notes.sort((a, b) => {
+                // 1. Bookmarked first
+                if (sortOrder === 'bookmarked') {
+                    if (a.isBookmarked && !b.isBookmarked) return -1;
+                    if (!a.isBookmarked && b.isBookmarked) return 1;
                 }
                 
-                saveData();
-                renderFolders();
-                renderNotes(data.currentFolder);
-                showIndicator('folderDeletedSuccess', 'danger');
+                // 2. Title sorting
+                if (sortOrder === 'titleAsc') {
+                    return a.title.localeCompare(b.title);
+                }
+                
+                // 3. Date sorting (updatedAt is preferred for sorting)
+                const dateA = new Date(a[sortOrder.includes('created') ? 'createdAt' : 'updatedAt'] || a.createdAt).getTime();
+                const dateB = new Date(b[sortOrder.includes('created') ? 'createdAt' : 'updatedAt'] || b.createdAt).getTime();
+                
+                if (sortOrder.includes('Desc')) {
+                    return dateB - dateA;
+                }
+                
+                if (sortOrder.includes('Asc')) {
+                    return dateA - dateB;
+                }
+                
+                return 0;
+            });
+        }
+
+        function renderNotes(folderId) {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = '';
+            
+            let notes = [];
+            let folderColor = 'var(--accent)';
+            let isTrashView = false;
+            
+            // --- TRASH VIEW LOGIC ---
+            if (folderId === data.TRASH_ID) {
+                notes = data.trash;
+                folderColor = '#ef4444'; // Use danger color for trash
+                isTrashView = true;
+                contentArea.innerHTML = `
+                    <h2 style="color: var(--danger); margin-bottom: 20px;">🗑️ Trash / Recycling Bin</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 40px;">Notes here are automatically deleted after 30 days from their deletion date. Use the Restore/Delete Forever buttons below.</p>
+                `;
+            } else {
+                // --- REGULAR FOLDER VIEW LOGIC ---
+                const folder = data.folders.find(f => f.id === folderId);
+                if (!folder) {
+                    contentArea.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">⚠️</div>
+                            <div class="empty-text">Folder not found.</div>
+                        </div>
+                    `;
+                    return;
+                }
+                notes = folder.notes;
+                folderColor = folder.color;
             }
-        }
-
-        /** Закрытие модального окна папки. */
-        function closeFolderModal() {
-            document.getElementById('folderModal').classList.remove('active');
-        }
-        
-        /** Выбор цвета папки. */
-        function selectColor(element) {
-            document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedColor = element.getAttribute('data-color');
-        }
-
-        /** NEW: Обновляет текст кнопки избранного. */
-        function updateBookmarkButton() {
-            const btn = document.getElementById('bookmarkBtn');
-            if (btn) {
-                btn.textContent = currentBookmark ? translate('bookmarkedBtn') : translate('bookmarkBtn');
+            
+            // Apply sorting to active folders only
+            if (!isTrashView) {
+                notes = sortNotes(notes);
             }
-        }
 
-        /** Открытие модального окна новой заметки. */
-        function openNewNote() {
-            if (!data.currentFolder || data.currentFolder === data.TRASH_ID) {
-                alert(translate('alertSelectFolder'));
+            if (notes.length === 0) {
+                contentArea.innerHTML += `
+                    <div class="empty-state">
+                        <div class="empty-icon">${isTrashView ? '🗑️' : '✨'}</div>
+                        <div class="empty-text">${isTrashView ? 'Trash is empty.' : 'No notes yet. Create your first note!'}</div>
+                    </div>
+                `;
                 return;
             }
-            if (data.currentFolder === data.PLANNING_ID && !data.isPro) {
-                openProMessageModal('proMessageTitleLock', 'proMessageTextPro');
-                return; 
-            }
 
-            data.currentNote = null;
-            
-            document.getElementById('noteTitle').value = '';
-            document.getElementById('noteContent').value = '';
-            document.getElementById('noteTags').value = '';
-            document.getElementById('attachmentsGrid').innerHTML = '';
-            document.getElementById('modalTitle').textContent = translate('newNoteModalTitle');
-            document.getElementById('noteDeleteBtn').style.display = 'none';
-            document.getElementById('historyBtn').style.display = 'none';
-            currentBookmark = false;
-            updateBookmarkButton();
-            drawingData = null;
-            selectedNoteColor = 'transparent';
+            const grid = document.createElement('div');
+            grid.className = 'notes-grid';
 
-            document.getElementById('noteContent').style.fontFamily = 'Arial';
-            document.getElementById('noteContent').style.fontSize = '16px';
-            document.getElementById('fontFamily').value = 'Arial';
-            document.getElementById('fontSize').value = '16';
-            
-            document.querySelectorAll('.note-color-option').forEach(el => el.classList.remove('selected'));
-            document.querySelector(`.note-color-option[data-color="transparent"]`).classList.add('selected');
-            document.getElementById('noteModal').querySelector('.modal-content').style.background = 'var(--bg-secondary)';
-            document.getElementById('noteModal').classList.add('active');
-        }
-        
-        /** Открытие существующей заметки. */
-        function openNote(noteId) {
-            data.currentNote = noteId;
-            const note = getNote(noteId);
-            if (!note) return;
-
-            const modalContent = document.getElementById('noteModal').querySelector('.modal-content');
-            modalContent.style.background = note.color === 'space' ? '#0D0F16' : 'var(--bg-secondary)';
-            
-            document.getElementById('modalTitle').textContent = note.title || translate('newNoteModalTitle');
-            document.getElementById('noteTitle').value = note.title;
-            document.getElementById('noteContent').value = note.content;
-            document.getElementById('noteTags').value = (note.tags || []).join(', ');
-            
-            document.getElementById('historyBtn').style.display = (note.history && note.history.length > 0) ? 'inline-block' : 'none';
-
-            renderAttachments(note.attachments || []);
-            
-            document.getElementById('noteContent').style.fontFamily = note.fontFamily || 'Arial';
-            document.getElementById('noteContent').style.fontSize = `${note.fontSize || 16}px`;
-            document.getElementById('fontFamily').value = note.fontFamily || 'Arial';
-            document.getElementById('fontSize').value = note.fontSize || 16;
-            
-            currentBookmark = note.bookmarked || false;
-            updateBookmarkButton();
-            
-            drawingData = note.drawing || null;
-            const statusKey = drawingData ? 'editorStatusDrawingSaved' : 'editorStatusDrawingNone';
-            document.getElementById('drawingStatus').textContent = translate(statusKey);
-
-            selectedNoteColor = note.color || 'transparent';
-            document.querySelectorAll('.note-color-option').forEach(el => {
-                el.classList.remove('selected');
-                if (el.getAttribute('data-color') === selectedNoteColor) {
-                    el.classList.add('selected');
+            notes.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'note-card';
+                
+                // MODIFIED: Apply Note Color to Indicator Bar and Special Class
+                if (note.noteColor === 'space') {
+                    card.classList.add('space-bg');
+                    card.style.setProperty('--note-indicator-color', '#3b82f6'); // Bright blue indicator for space theme
+                } else if (note.noteColor && note.noteColor !== 'transparent') {
+                    // Set the CSS variable for the left color bar
+                    card.style.setProperty('--note-indicator-color', note.noteColor);
+                    // Ensure space-bg is removed if the color changes away from 'space'
+                    card.classList.remove('space-bg'); 
+                } else {
+                    card.style.setProperty('--note-indicator-color', 'transparent'); 
+                    card.classList.remove('space-bg'); 
                 }
+                // END MODIFIED
+
+                card.innerHTML = `
+                    ${note.isBookmarked && !isTrashView ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation(); toggleBookmarkInCard(${note.id}, ${folderId})">🌟</button>` : ''}
+                    <h3 class="note-title">${note.title || 'Untitled'}</h3>
+                    
+                    ${note.tags && note.tags.length > 0 ? `
+                        <div class="note-tags-display">
+                            ${note.tags.map(tag => `<span class="note-tag-display">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <p class="note-preview">${note.content || 'No content'}</p>
+                    
+                    ${isTrashView ? `
+                        <div class="note-meta trash-note-meta">
+                            <span>📅 Deleted: ${new Date(note.deletedAt).toLocaleDateString()}</span>
+                            <button class="btn btn-success" onclick="event.stopPropagation(); restoreNote(${note.id})">↩️ Restore</button>
+                            <button class="btn" style="background: var(--danger); color: white;" onclick="event.stopPropagation(); permanentlyDeleteNote(${note.id})">❌ Delete Forever</button>
+                        </div>
+                    ` : `
+                        <div class="note-meta">
+                            <span>📅 Updated: ${new Date(note.updatedAt || note.createdAt).toLocaleDateString()}</span>
+                            <span class="note-badge" style="background: ${folderColor}1A; color: ${folderColor};">${getNoteBadgeText(note)}</span>
+                        </div>
+                    `}
+                `;
+                
+                if (isTrashView) {
+                    card.onclick = (e) => { e.stopPropagation(); };
+                    card.classList.add('trash-card');
+                } else {
+                    card.onclick = () => openNoteModal(note.id);
+                }
+                grid.appendChild(card);
             });
             
-            const isTrash = data.currentFolder === data.TRASH_ID;
-            document.getElementById('noteDeleteBtn').style.display = 'inline-block';
-            document.getElementById('noteDeleteBtn').textContent = isTrash ? translate('noteDeletePermanentBtn') : translate('deleteBtn');
+            contentArea.appendChild(grid);
+        }
+        
+        function hexToRgb(hex) {
+            var bigint = parseInt(hex.slice(1), 16);
+            var r = (bigint >> 16) & 255;
+            var g = (bigint >> 8) & 255;
+            var b = bigint & 255;
+            return { r: r, g: g, b: b };
+        }
+
+        // Quick bookmarking from card view
+        function toggleBookmarkInCard(noteId, folderId) {
+            const folder = data.folders.find(f => f.id === folderId);
+            const note = folder.notes.find(n => n.id === noteId);
+            if (note) {
+                note.isBookmarked = !note.isBookmarked;
+                note.updatedAt = new Date().toISOString();
+                saveData();
+                renderNotes(folderId);
+            }
+        }
+        
+        // --- TRASH MANAGEMENT FUNCTIONS ---
+        function deleteNote() {
+            if (!data.currentFolder || data.currentNote === null) return;
+            
+            if (data.currentFolder === data.TRASH_ID) {
+                return;
+            }
+
+            if (!confirm('Are you sure you want to move this note to Trash?')) return;
+
+            const folder = data.folders.find(f => f.id === data.currentFolder);
+            const noteIndex = folder.notes.findIndex(n => n.id === data.currentNote);
+            
+            if (noteIndex !== -1) {
+                const noteToTrash = folder.notes.splice(noteIndex, 1)[0];
+                
+                noteToTrash.isTrashed = true;
+                noteToTrash.deletedAt = new Date().toISOString();
+                
+                data.trash.push(noteToTrash);
+                
+                saveData();
+                updateTotalNotes();
+                
+                const indicator = document.createElement('div');
+                indicator.className = 'save-indicator';
+                indicator.innerHTML = '🗑️ Moved to Trash!';
+                document.body.appendChild(indicator);
+                setTimeout(() => indicator.remove(), 2000);
+                
+                closeNoteModal();
+            }
+        }
+        
+        function restoreNote(noteId) {
+            if (!confirm('Restore this note to its original folder?')) return;
+            
+            const noteIndex = data.trash.findIndex(n => n.id === noteId);
+            if (noteIndex === -1) return;
+            
+            const noteToRestore = data.trash.splice(noteIndex, 1)[0];
+            
+            // Restore to the first active folder if a default cannot be determined
+            const targetFolder = data.folders[0];
+            
+            if (targetFolder) {
+                noteToRestore.isTrashed = false;
+                noteToRestore.deletedAt = null;
+                noteToRestore.updatedAt = new Date().toISOString();
+                
+                targetFolder.notes.push(noteToRestore);
+                
+                saveData();
+                updateTotalNotes();
+                renderNotes(data.TRASH_ID); 
+                renderFolders(); // Update folder count in sidebar
+                
+                const indicator = document.createElement('div');
+                indicator.className = 'save-indicator';
+                indicator.style.background = 'var(--accent)';
+                indicator.innerHTML = `↩️ Restored to ${targetFolder.name}!`;
+                document.body.appendChild(indicator);
+                setTimeout(() => indicator.remove(), 2000);
+            } else {
+                alert('Could not find a folder to restore to. Please create a folder first.');
+                data.trash.push(noteToRestore);
+            }
+        }
+        
+        function permanentlyDeleteNote(noteId) {
+            if (!confirm('DANGER: This action cannot be undone. Permanently delete this note?')) return;
+            
+            const noteIndex = data.trash.findIndex(n => n.id === noteId);
+            if (noteIndex !== -1) {
+                data.trash.splice(noteIndex, 1);
+                saveData();
+                renderNotes(data.TRASH_ID);
+                renderFolders(); // Update trash count in sidebar
+                
+                const indicator = document.createElement('div');
+                indicator.className = 'save-indicator';
+                indicator.style.background = 'var(--danger)';
+                indicator.innerHTML = `❌ Permanently Deleted!`;
+                document.body.appendChild(indicator);
+                setTimeout(() => indicator.remove(), 2000);
+            }
+        }
+        
+        // --- NOTE MODAL MANAGEMENT ---
+        function openNewNote() {
+            if (!data.currentFolder || data.currentFolder === data.TRASH_ID) {
+                return alert('Please select an active folder first, or create a new one.');
+            }
+            data.currentNote = null;
+            currentBookmark = false;
+            drawingData = null;
+            selectedNoteColor = 'transparent';
+            clipboardContent = '';
+            
+            // Reset fields
+            document.getElementById('modalTitle').textContent = '✨ New Note';
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+            document.getElementById('noteTags').value = ''; 
+            document.getElementById('attachmentsGrid').innerHTML = '';
+            
+            // Hide specific sections for a clean start
+            document.getElementById('canvasContainer').style.display = 'none';
+            document.getElementById('clipboardSection').style.display = 'none';
+            document.getElementById('historyBtn').style.display = 'none'; 
+            document.getElementById('noteDeleteBtn').style.display = 'block'; 
+            
+            // Reset styles and bookmark state
+            updateBookmarkButton();
+            updateEditorStyle();
+            
+            // Reset modal background to default and select 'transparent'
+            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector('#noteColorPicker div[data-color="transparent"]').classList.add('selected');
+            document.getElementById('noteModal').querySelector('.modal-content').style.background = 'var(--bg-secondary)';
+            document.getElementById('noteModal').querySelector('.modal-content').style.color = 'var(--text-primary)';
+            document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
 
             document.getElementById('noteModal').classList.add('active');
         }
-        
-        /** Сохранение или обновление заметки. */
-        function saveNote() {
-            const folder = getFolder(data.currentFolder);
-            if (!folder) {
-                alert(translate('alertSelectFolder'));
-                return;
-            }
-            
-            const title = document.getElementById('noteTitle').value.trim() || translate('newNoteModalTitle');
-            const content = document.getElementById('noteContent').value.trim();
-            const tagsInput = document.getElementById('noteTags').value.trim();
-            const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
-            
-            if (!content) {
-                alert(translate('alertNoNoteContent'));
-                return;
-            }
 
-            const now = Date.now();
-            const fontFamily = document.getElementById('noteContent').style.fontFamily;
-            const fontSize = parseInt(document.getElementById('noteContent').style.fontSize.replace('px', '')) || 16;
+        function openNoteModal(noteId) {
+            const folder = data.folders.find(f => f.id === data.currentFolder);
+            const note = folder.notes.find(n => n.id === noteId);
+            if (!note) return;
+
+            data.currentNote = noteId;
+
+            // Load all note properties
+            document.getElementById('modalTitle').textContent = note.title || 'Untitled';
+            document.getElementById('noteTitle').value = note.title || '';
+            document.getElementById('noteContent').value = note.content || '';
+            document.getElementById('fontFamily').value = note.fontFamily || 'Arial';
+            document.getElementById('fontSize').value = note.fontSize || '16';
+            document.getElementById('noteTags').value = (note.tags || []).join(', ');
             
-            if (data.currentNote !== null) {
-                // Обновление существующей заметки
-                let note = folder.notes.find(n => n.id === data.currentNote);
-                if (note) {
-                    if (note.title !== title || note.content !== content) {
-                         if (!note.history) note.history = [];
-                         note.history.unshift({
-                             title: note.title,
-                             content: note.content,
-                             updated: note.updated,
-                             attachments: note.attachments ? JSON.parse(JSON.stringify(note.attachments)) : []
-                         });
-                         if (note.history.length > 10) note.history.pop();
-                    }
-                    
-                    note.title = title;
-                    note.content = content;
-                    note.tags = tags;
-                    note.updated = now;
-                    note.fontFamily = fontFamily;
-                    note.fontSize = fontSize;
-                    note.bookmarked = currentBookmark;
-                    note.drawing = drawingData;
-                    note.color = selectedNoteColor;
-                    
-                    showIndicator('noteUpdateSuccess');
-                }
+            selectedNoteColor = note.noteColor || 'transparent';
+            
+            // MODIFIED: Apply correct theme to modal based on note color
+            const modalContent = document.getElementById('noteModal').querySelector('.modal-content');
+            if (selectedNoteColor === 'space') {
+                modalContent.style.background = '#0D0F16'; 
+                modalContent.style.color = '#f5f5f5';
+                document.querySelectorAll('.section-title').forEach(el => el.style.color = '#f5f5f5');
             } else {
-                // Создание новой заметки
-                const newNote = {
-                    id: data.nextNoteId++,
-                    title: title,
-                    content: content,
-                    tags: tags,
-                    created: now,
-                    updated: now,
-                    attachments: getAttachmentsFromGrid(),
-                    fontFamily: fontFamily,
-                    fontSize: fontSize,
-                    bookmarked: currentBookmark,
-                    drawing: drawingData,
-                    color: selectedNoteColor,
-                    history: []
-                };
-                folder.notes.push(newNote);
-                data.currentNote = newNote.id; 
-                document.getElementById('noteDeleteBtn').style.display = 'inline-block'; 
-                
-                showIndicator('noteCreateSuccess');
+                modalContent.style.background = 'var(--bg-secondary)'; 
+                modalContent.style.color = 'var(--text-primary)';
+                document.querySelectorAll('.section-title').forEach(el => el.style.color = 'var(--text-primary)');
             }
             
-            saveData();
-            renderNotes(data.currentFolder);
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('historyBtn').style.display = 'inline-block';
-        }
+            // Select the correct color circle
+            document.querySelectorAll('#noteColorPicker .note-color-option').forEach(opt => opt.classList.remove('selected'));
+            const colorOption = document.querySelector(`#noteColorPicker div[data-color="${selectedNoteColor}"]`);
+            if(colorOption) colorOption.classList.add('selected');
 
-        /** Перемещение заметки в Корзину. */
-        function deleteNote() {
-            const folder = getFolder(data.currentFolder);
-            if (!folder || data.currentNote === null) return;
+
+            currentBookmark = note.isBookmarked || false;
+            drawingData = note.drawing || null;
             
-            if (folder.id === data.TRASH_ID) {
-                permanentlyDeleteNote(data.currentNote);
-                return;
-            }
+            document.getElementById('historyBtn').style.display = (note.history && note.history.length > 0) ? 'block' : 'none';
+            document.getElementById('noteDeleteBtn').style.display = 'block';
 
-            if (confirm(translate('confirmDeleteFolder'))) {
-                const noteIndex = folder.notes.findIndex(n => n.id === data.currentNote);
-                if (noteIndex !== -1) {
-                    const noteToTrash = folder.notes.splice(noteIndex, 1)[0];
-                    noteToTrash.deletedTime = Date.now(); 
-                    data.trash.push(noteToTrash);
-                    
-                    data.currentNote = null;
-                    saveData();
-                    renderFolders();
-                    renderNotes(data.currentFolder);
-                    closeNoteModal();
-                    showIndicator('noteTrashSuccess', 'danger');
-                }
+            updateBookmarkButton();
+            updateEditorStyle();
+            
+            renderAttachments(note.attachments || []);
+            
+            // Load canvas state
+            document.getElementById('canvasContainer').style.display = drawingData ? 'block' : 'none';
+            if (drawingData) {
+                setTimeout(() => loadDrawing(drawingData), 50); 
+            } else {
+                 clearCanvas(false); // Reset canvas on modal open if no drawing data
             }
-        }
-        
-        /** Восстановление заметки из Корзины. */
-        function restoreNote(noteId) {
-            const noteIndex = data.trash.findIndex(n => n.id === noteId);
-            if (noteIndex !== -1) {
-                const noteToRestore = data.trash.splice(noteIndex, 1)[0];
-                
-                let targetFolder = data.folders.find(f => f.id === data.currentFolder) || data.folders[0]; 
-                
-                if (targetFolder) {
-                    targetFolder.notes.push(noteToRestore);
-                    saveData();
-                    renderFolders();
-                    renderNotes(data.TRASH_ID); 
-                    showIndicator('noteRestoreSuccess');
-                } else {
-                    alert(translate('alertNoRestoreFolder'));
-                    data.trash.push(noteToRestore); 
-                }
-            }
-        }
-        
-        /** Окончательное удаление заметки. */
-        function permanentlyDeleteNote(noteId) {
-            if (confirm(translate('confirmDeletePermanent'))) {
-                
-                let targetArray = data.currentFolder === data.TRASH_ID ? data.trash : getFolder(data.currentFolder).notes;
-                
-                const index = targetArray.findIndex(n => n.id === noteId);
-                if (index !== -1) {
-                    targetArray.splice(index, 1);
-                    data.currentNote = null;
-                    saveData();
-                    renderFolders();
-                    renderNotes(data.currentFolder);
-                    closeNoteModal();
-                    showIndicator('noteDeletePermanentSuccess', 'danger');
-                }
-            }
+            
+            document.getElementById('clipboardSection').style.display = 'none';
+            document.getElementById('noteModal').classList.add('active');
         }
 
-        /** Закрытие модального окна заметки. */
         function closeNoteModal() {
             document.getElementById('noteModal').classList.remove('active');
-            document.getElementById('noteModal').querySelector('.modal-content').style.background = 'var(--bg-secondary)'; 
+            if (data.currentFolder) {
+                renderNotes(data.currentFolder);
+            }
+            data.currentNote = null;
         }
 
-        /** Выбор цвета заметки. */
-        function selectNoteColor(element) {
-            document.querySelectorAll('.note-color-option').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedNoteColor = element.getAttribute('data-color');
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value.trim() || 'Untitled Note';
+            const content = document.getElementById('noteContent').value.trim();
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = parseInt(document.getElementById('fontSize').value);
+            const tags = document.getElementById('noteTags').value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
             
-            const modalContent = document.getElementById('noteModal').querySelector('.modal-content');
-            
-            if (selectedNoteColor === 'space') {
-                 modalContent.style.background = '#0D0F16';
-            } else {
-                 modalContent.style.background = 'var(--bg-secondary)'; 
+            const folder = data.folders.find(f => f.id === data.currentFolder);
+            if (!folder) {
+                alert('No active folder selected!');
+                return;
             }
+            
+            let currentNoteData = {
+                title, 
+                content, 
+                fontFamily, 
+                fontSize, 
+                drawing: drawingData, 
+                isBookmarked: currentBookmark,
+                noteColor: selectedNoteColor,
+                tags: tags,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (data.currentNote === null) {
+                // New note
+                currentNoteData.id = data.nextNoteId++;
+                currentNoteData.createdAt = currentNoteData.updatedAt;
+                currentNoteData.history = [];
+                currentNoteData.attachments = [];
+                folder.notes.push(currentNoteData);
+            } else {
+                // Edit existing note
+                const noteIndex = folder.notes.findIndex(n => n.id === data.currentNote);
+                if (noteIndex !== -1) {
+                    const existingNote = folder.notes[noteIndex];
+                    
+                    // Save old version to history if content changed
+                    if (existingNote.content !== content) {
+                        const historyEntry = {
+                            content: existingNote.content,
+                            date: existingNote.updatedAt
+                        };
+                        
+                        existingNote.history = existingNote.history || [];
+                        // Limit history size to prevent excessive storage use (e.g., last 20 versions)
+                        if (existingNote.history.length >= 20) {
+                            existingNote.history.shift(); 
+                        }
+                        existingNote.history.push(historyEntry);
+                    }
+                    
+                    // Preserve attachments and history when spreading
+                    folder.notes[noteIndex] = { 
+                        ...existingNote, 
+                        ...currentNoteData,
+                        attachments: existingNote.attachments || [],
+                        history: existingNote.history || []
+                    };
+                }
+            }
+
+            saveData();
+            updateTotalNotes();
+
+            const saveIndicator = document.createElement('div');
+            saveIndicator.className = 'save-indicator';
+            saveIndicator.innerHTML = '✅ Note Saved!';
+            document.body.appendChild(saveIndicator);
+            setTimeout(() => saveIndicator.remove(), 1500);
+
+            closeNoteModal();
         }
         
-        // --- EDITOR STYLES ---
-        
-        /** Обновляет стиль (шрифт, размер) текстового редактора. */
         function updateEditorStyle() {
             const editor = document.getElementById('noteContent');
-            const fontFamily = document.getElementById('fontFamily').value;
-            const fontSize = document.getElementById('fontSize').value;
-            
-            editor.style.fontFamily = fontFamily;
-            editor.style.fontSize = `${fontSize}px`;
+            editor.style.fontFamily = document.getElementById('fontFamily').value;
+            editor.style.fontSize = document.getElementById('fontSize').value + 'px';
         }
 
-        // --- DRAWING CANVAS LOGIC ---
+        // --- NEW: HISTORY MODAL FUNCTIONS ---
+        function openHistoryModal() {
+            const folder = data.folders.find(f => f.id === data.currentFolder);
+            const note = folder.notes.find(n => n.id === data.currentNote);
+            if (!note || !note.history || note.history.length === 0) {
+                alert('No version history found for this note.');
+                return;
+            }
+            
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            const sortedHistory = note.history.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            sortedHistory.forEach((version, index) => {
+                const item = document.createElement('li');
+                item.className = 'history-item';
+                
+                const preview = version.content.substring(0, 50) + (version.content.length > 50 ? '...' : '');
+                
+                item.innerHTML = `
+                    <div class="history-item-meta">
+                        <strong>Version ${sortedHistory.length - index}</strong> 
+                        <span style="display: block; font-size: 12px;">Saved: ${new Date(version.date).toLocaleString()}</span>
+                        <span style="font-style: italic;">Preview: "${preview}"</span>
+                    </div>
+                    <button class="btn btn-warning" onclick="restoreVersion('${version.date}')">Restore</button>
+                `;
+                historyList.appendChild(item);
+            });
+            
+            document.getElementById('historyModal').classList.add('active');
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').classList.remove('active');
+        }
+
+        function restoreVersion(versionDate) {
+            if (!confirm('Are you sure you want to restore this version? The current content will be saved to history before restoration.')) return;
+            
+            const folder = data.folders.find(f => f.id === data.currentFolder);
+            const note = folder.notes.find(n => n.id === data.currentNote);
+            
+            const versionToRestore = note.history.find(v => v.date === versionDate);
+            
+            if (versionToRestore) {
+                // 1. Save current content to history first
+                const currentContent = document.getElementById('noteContent').value.trim();
+                const currentHistoryEntry = {
+                    content: currentContent,
+                    date: new Date().toISOString()
+                };
+                note.history.push(currentHistoryEntry);
+                
+                // 2. Overwrite editor content with restored version
+                document.getElementById('noteContent').value = versionToRestore.content;
+                
+                // 3. Update the note in memory (only content field)
+                note.content = versionToRestore.content;
+                
+                saveData();
+                closeHistoryModal();
+                
+                const indicator = document.createElement('div');
+                indicator.className = 'save-indicator';
+                indicator.style.background = 'var(--warning)';
+                indicator.innerHTML = `🔄 Restored! Click 'Save Note' to finalize.`;
+                document.body.appendChild(indicator);
+                setTimeout(() => indicator.remove(), 2500);
+            } else {
+                alert('Version not found.');
+            }
+        }
         
-        /** Переключает видимость холста для рисования. */
+        // --- RESTORED: ATTACHMENTS ---
+        function getAttachmentIcon(type) {
+            if (type.startsWith('image')) return '🖼️';
+            if (type.startsWith('audio')) return '🎵';
+            if (type.startsWith('video')) return '🎬';
+            if (type.includes('pdf')) return '📄';
+            if (type.includes('zip') || type.includes('rar')) return '📦';
+            if (type.includes('text') || type.includes('document')) return '📝';
+            return '📎';
+        }
+
+        function renderAttachments(attachments) {
+            const grid = document.getElementById('attachmentsGrid');
+            grid.innerHTML = attachments.map((att, index) => `
+                <div class="attachment-item" onclick="viewAttachment('${att.dataUrl}', '${att.name}', '${att.type}')" data-type="${att.type}" data-name="${att.name}" data-dataurl="${att.dataUrl}">
+                    <div class="attachment-icon">${getAttachmentIcon(att.type)}</div>
+                    <div class="attachment-name">${att.name}</div>
+                    <button class="close-btn" style="position: absolute; top: 0; right: 0; transform: scale(0.6); background: var(--danger); color: white; border: none;" onclick="event.stopPropagation(); deleteAttachment(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        function addFileToNote(files) {
+            const folder = data.folders.find(f => f.id === data.currentFolder);
+            const note = folder.notes.find(n => n.id === data.currentNote);
+            
+            if (!note) {
+                alert('Please save the note first or open an existing one before adding attachments.');
+                return;
+            }
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Initialize attachments array if it doesn't exist
+                    note.attachments = note.attachments || []; 
+                    note.attachments.push({ name: file.name, type: file.type, dataUrl: e.target.result });
+                    renderAttachments(note.attachments);
+                    saveData();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function addImage() {
+            const files = document.getElementById('imageUpload').files;
+            if (files.length) addFileToNote(files);
+        }
+        
+        function addFile() {
+            const files = document.getElementById('fileUpload').files;
+            if (files.length) addFileToNote(files);
+        }
+
+        function deleteAttachment(index) {
+            if (!confirm('Are you sure you want to delete this attachment?')) return;
+            const folder = data.folders.find(f => f.id === data.currentFolder);
+            const note = folder.notes.find(n => n.id === data.currentNote);
+            if (note && note.attachments) {
+                note.attachments.splice(index, 1);
+                renderAttachments(note.attachments);
+                saveData();
+            }
+        }
+
+        function viewAttachment(dataUrl, name, type) {
+            if (type.startsWith('image')) {
+                const newWindow = window.open();
+                newWindow.document.write(`<img src="${dataUrl}" alt="${name}" style="max-width: 100%; display: block; margin: 20px;">`);
+            } else { 
+                // For other files, download them (simulating a download)
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+        
+        // --- RESTORED: DRAWING CANVAS ---
+        function setupCanvas() {
+            canvas = document.getElementById('drawingCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // Set initial dimensions based on CSS size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Event listeners
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseout', stopDrawing);
+
+            // Touch events for mobile compatibility
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
+            canvas.addEventListener('touchend', stopDrawing);
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
+        }
+
         function toggleDrawing() {
             const container = document.getElementById('canvasContainer');
-            const isVisible = container.style.display === 'block';
-            container.style.display = isVisible ? 'none' : 'block';
-            
-            if (!isVisible) {
-                if (!canvas) {
-                    canvas = document.getElementById('drawingCanvas');
-                    canvas.width = canvas.offsetWidth;
-                    canvas.height = canvas.offsetHeight;
-                    ctx = canvas.getContext('2d');
-                    
-                    canvas.addEventListener('mousedown', startDrawing);
-                    canvas.addEventListener('mousemove', draw);
-                    canvas.addEventListener('mouseup', stopDrawing);
-                    canvas.addEventListener('mouseout', stopDrawing);
-                    
-                    canvas.addEventListener('touchstart', (e) => {
-                         e.preventDefault(); 
-                         startDrawing(e.touches[0]);
-                    }, { passive: false });
-                    canvas.addEventListener('touchmove', (e) => {
-                         e.preventDefault(); 
-                         draw(e.touches[0]);
-                    }, { passive: false });
-                    canvas.addEventListener('touchend', stopDrawing);
-                }
-                
-                loadDrawing();
-            }
-        }
-        
-        /** Загружает сохраненный рисунок на холст. */
-        function loadDrawing() {
-            clearCanvas(false); 
-            if (drawingData) {
-                const img = new Image();
-                img.onload = () => {
-                    const scaleX = canvas.width / img.width;
-                    const scaleY = canvas.height / img.height;
-                    const scale = Math.min(scaleX, scaleY);
-                    
-                    const drawWidth = img.width * scale;
-                    const drawHeight = img.height * scale;
-                    const x = (canvas.width / 2) - (drawWidth / 2);
-                    const y = (canvas.height / 2) - (drawHeight / 2);
-                    
-                    ctx.drawImage(img, x, y, drawWidth, drawHeight);
-                };
-                img.src = drawingData;
-                document.getElementById('drawingStatus').textContent = translate('editorStatusDrawingSaved');
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+                drawingData = canvas.toDataURL(); // Save drawing when closing canvas UI
             } else {
-                 document.getElementById('drawingStatus').textContent = translate('editorStatusDrawingNone');
+                container.style.display = 'block';
+                // Reset canvas size before loading to ensure correct dimensions
+                canvas.width = canvas.offsetWidth;
+                canvas.height = 400; 
+                loadDrawing(drawingData);
             }
         }
-        
-        /** Начинает рисование. */
+
         function startDrawing(e) {
             isDrawing = true;
             ctx.beginPath();
@@ -2551,16 +2323,13 @@
             const y = e.clientY - rect.top;
             
             ctx.moveTo(x, y);
-            draw(e);
-        }
-        
-        /** Рисует линию. */
-        function draw(e) {
-            if (!isDrawing || !ctx) return;
             
             ctx.strokeStyle = document.getElementById('drawColor').value;
             ctx.lineWidth = document.getElementById('drawSize').value;
-            ctx.lineCap = 'round';
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
             
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -2568,235 +2337,164 @@
             
             ctx.lineTo(x, y);
             ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
         }
-        
-        /** Останавливает рисование. */
+
         function stopDrawing() {
             isDrawing = false;
-            ctx.closePath();
         }
         
-        /** Очищает холст. */
-        function clearCanvas(clearData = true) {
-            if (ctx) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
-            if (clearData) {
-                 drawingData = null;
-                 document.getElementById('drawingStatus').textContent = translate('drawingCleared');
-            }
+        function clearCanvas(confirmPrompt = true) {
+            if (confirmPrompt && !confirm('Are you sure you want to clear the drawing?')) return;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawingData = null;
+            document.getElementById('drawingStatus').textContent = 'Cleared!';
+            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1000);
         }
         
-        /** Сохраняет рисунок в заметку как Base64. */
         function saveDrawing() {
-            if (!canvas) return;
-            drawingData = canvas.toDataURL('image/png');
-            document.getElementById('drawingStatus').textContent = translate('drawingSavedSuccess');
+            // This is just a temporary save to the current session variable
+            drawingData = canvas.toDataURL();
+            document.getElementById('drawingStatus').textContent = 'Drawing Saved to Note!';
+            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1500);
+            // Actual save to localStorage happens in saveNote()
         }
 
-        // --- ATTACHMENTS LOGIC ---
-        
-        /** Добавляет изображение в заметку. */
-        function addImage() {
-            const files = document.getElementById('imageUpload').files;
-            processFiles(files, 'image');
-        }
-
-        /** Добавляет файл в заметку. */
-        function addFile() {
-            const files = document.getElementById('fileUpload').files;
-            processFiles(files, 'file');
-        }
-
-        /** Обрабатывает загруженные файлы. */
-        function processFiles(files, type) {
-            if (!data.currentNote && !data.currentFolder) {
-                alert(translate('alertSelectFolder'));
-                return;
-            }
-            
-            const note = data.currentNote !== null ? getNote(data.currentNote) : { attachments: [] }; 
-            if (!note.attachments) note.attachments = [];
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const newAttachment = {
-                        id: Date.now() + Math.random(), 
-                        name: file.name,
-                        type: type, 
-                        data: e.target.result 
-                    };
-                    
-                    note.attachments.push(newAttachment);
-                    
-                    if (data.currentNote !== null) {
-                        saveData();
-                        renderAttachments(note.attachments);
-                        showIndicator('attachmentAddedSuccess');
-                    } else {
-                        renderAttachments(note.attachments);
-                    }
+        function loadDrawing(dataUrl) {
+            // Reload the drawing onto the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (dataUrl) {
+                const img = new Image();
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 };
-                reader.readAsDataURL(file);
-            });
-        }
-        
-        /** Удаляет вложение. */
-        function removeAttachment(attachmentId) {
-            const note = getNote(data.currentNote);
-            if (!note || !note.attachments) return;
-
-            note.attachments = note.attachments.filter(a => a.id !== attachmentId);
-            saveData();
-            renderAttachments(note.attachments);
-            showIndicator('attachmentRemovedSuccess', 'danger');
+                img.src = dataUrl;
+                document.getElementById('drawingStatus').textContent = 'Drawing Loaded!';
+            } else {
+                document.getElementById('drawingStatus').textContent = 'New Drawing.';
+            }
+            setTimeout(() => document.getElementById('drawingStatus').textContent = '', 1000);
         }
 
-        /** Отображает вложения в редакторе. */
-        function renderAttachments(attachments) {
-            const grid = document.getElementById('attachmentsGrid');
-            grid.innerHTML = '';
-            
-            attachments.forEach(att => {
-                const item = document.createElement('div');
-                item.className = 'attachment-item';
-                item.onclick = () => removeAttachment(att.id); 
-                
-                let icon = '📎';
-                if (att.type === 'image') icon = '🖼️';
-                else if (att.name.toLowerCase().endsWith('.pdf')) icon = '📄';
 
-                item.innerHTML = `
-                    <div class="attachment-icon">${icon}</div>
-                    <div class="attachment-name">${att.name}</div>
-                    <div style="font-size: 10px; color: var(--danger); margin-top: 5px;">${translate('attachmentClickToDelete')}</div>
-                `;
-                
-                grid.appendChild(item);
-            });
-        }
-        
-        /** Получает список вложений из DOM (для новой заметки). */
-        function getAttachmentsFromGrid() {
-            const note = getNote(data.currentNote);
-            return note ? note.attachments : [];
-        }
-        
-        // --- CLIPBOARD LOGIC ---
-        
-        /** Вставляет содержимое буфера обмена в превью. */
-        function pasteFromClipboard() {
-            navigator.clipboard.readText()
-                .then(text => {
-                    clipboardContent = text;
-                    document.getElementById('clipboardPreview').textContent = text.substring(0, 200) + (text.length > 200 ? '...' : '');
-                    document.getElementById('clipboardSection').style.display = 'block';
-                    showIndicator('clipboardLoadedSuccess');
-                })
-                .catch(err => {
-                    console.error('Не удалось прочитать буфер обмена:', err);
-                    alert(translate('alertClipboardError'));
-                });
-        }
-        
-        /** Вставляет содержимое буфера обмена в редактор заметки. */
-        function insertClipboard() {
-            const editor = document.getElementById('noteContent');
-            editor.value += (editor.value ? '\n\n' : '') + clipboardContent;
-            document.getElementById('clipboardSection').style.display = 'none';
-            clipboardContent = '';
-            showIndicator('clipboardInsertedSuccess');
-        }
-        
-        /** Переключает статус избранного. */
+        // --- BOOKMARKS ---
         function toggleBookmark() {
             currentBookmark = !currentBookmark;
             updateBookmarkButton();
         }
-        
-        // --- THEME TOGGLE ---
-        
-        /** Переключает светлую/темную тему. */
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+        function updateBookmarkButton() {
+            const btn = document.getElementById('bookmarkBtn');
+            if (currentBookmark) {
+                btn.classList.add('bookmarked');
+                btn.innerHTML = '🌟 Bookmarked';
+            } else {
+                btn.classList.remove('bookmarked');
+                btn.innerHTML = '⭐ Bookmark';
+            }
+        }
+
+        // --- SEARCH ---
+        function searchNotes() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = '';
             
-            body.setAttribute('data-theme', newTheme);
-            document.getElementById('themeToggle').textContent = newTheme === 'light' ? '🌙' : '☀️';
-            saveData(); 
-        }
-        
-        // --- DATA IMPORT/EXPORT ---
-        
-        /** Экспортирует все данные. */
-        function exportData() {
-             const theme = document.body.getAttribute('data-theme') || 'light';
-             const dataToExport = {
-                ...data,
-                theme: theme
-             };
-             
-             const dataStr = JSON.stringify(dataToExport, null, 2);
-             const blob = new Blob([dataStr], { type: 'application/json' });
-             const url = URL.createObjectURL(blob);
-             
-             const a = document.createElement('a');
-             a.href = url;
-             a.download = `CloudNotes_Backup_${new Date().toISOString().slice(0, 10)}.json`;
-             document.body.appendChild(a);
-             a.click();
-             document.body.removeChild(a);
-             URL.revokeObjectURL(url);
-             showIndicator('exportSuccess');
-        }
+            let allNotes = [];
+            
+            // Collect all notes from all ACTIVE folders (excluding trash)
+            data.folders.forEach(folder => {
+                folder.notes.forEach(note => {
+                    allNotes.push({ 
+                        ...note, 
+                        folderColor: folder.color,
+                        folderId: folder.id, // Store folder ID for opening
+                        folderName: folder.name
+                    });
+                });
+            });
 
-        /** Импортирует данные. */
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    if (confirm(translate('importConfirm'))) {
-                        if (importedData.folders && Array.isArray(importedData.folders)) {
-                            data = { 
-                                ...data, 
-                                ...importedData, 
-                                folders: importedData.folders,
-                                trash: importedData.trash || [],
-                                currentLang: importedData.currentLang || 'ru',
-                                nextFolderId: importedData.nextFolderId || data.folders.length + 1,
-                                nextNoteId: importedData.nextNoteId || 1000 
-                            };
-                            
-                            const theme = importedData.theme || 'light';
-                            document.body.setAttribute('data-theme', theme);
-                            document.getElementById('themeToggle').textContent = theme === 'light' ? '🌙' : '☀️';
-                            
-                            updateUI(data.currentLang); // Update UI after import and language set
-                            saveData();
-                            renderFolders();
-                            renderNotes(data.currentFolder);
-                            showIndicator('importSuccess', 'success');
-                        } else {
-                            alert(translate('importErrorFormat'));
-                        }
-                    }
-                } catch (err) {
-                    alert(translate('importErrorParse'));
-                    console.error('Import error:', err);
+            const filteredNotes = allNotes.filter(note => 
+                (note.title && note.title.toLowerCase().includes(searchTerm)) || 
+                (note.content && note.content.toLowerCase().includes(searchTerm)) ||
+                (note.tags && note.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+            );
+            
+            // If search is empty, go back to the current folder view
+            if (searchTerm === '') {
+                if (data.currentFolder) {
+                    renderNotes(data.currentFolder);
+                } else {
+                    // If no folder is selected and search is empty, show empty state
+                    contentArea.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📝</div>
+                            <div class="empty-text">Select a folder or create a new note</div>
+                        </div>
+                    `;
                 }
-            };
-            reader.readAsText(file);
+                return;
+            }
+
+            // Render search results
+            const grid = document.createElement('div');
+            grid.className = 'notes-grid';
+
+            filteredNotes.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'note-card';
+                
+                // MODIFIED: Apply Note Color logic for search results
+                if (note.noteColor === 'space') {
+                    card.classList.add('space-bg');
+                    card.style.setProperty('--note-indicator-color', '#3b82f6');
+                } else if (note.noteColor && note.noteColor !== 'transparent') {
+                    card.style.setProperty('--note-indicator-color', note.noteColor);
+                } else {
+                    card.style.setProperty('--note-indicator-color', 'transparent'); 
+                }
+                // END MODIFIED
+                
+                card.innerHTML = `
+                    ${note.isBookmarked ? `<button class="bookmark-btn bookmarked" onclick="event.stopPropagation(); toggleBookmarkInCard(${note.id}, ${note.folderId})">🌟</button>` : ''}
+                    <h3 class="note-title">${note.title}</h3>
+                    
+                    ${note.tags && note.tags.length > 0 ? `
+                        <div class="note-tags-display">
+                            ${note.tags.map(tag => `<span class="note-tag-display">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <p class="note-preview">${note.content.substring(0, 100)}...</p>
+                    <div class="note-meta">
+                        <span>📁 ${note.folderName}</span>
+                        <span class="note-badge" style="background: ${note.folderColor}1A; color: ${note.folderColor};">${getNoteBadgeText(note)}</span>
+                    </div>
+                `;
+                card.onclick = () => {
+                    selectFolder(note.folderId); // Select the folder
+                    openNoteModal(note.id); // Open the note
+                };
+                grid.appendChild(card);
+            });
+            
+            if (filteredNotes.length === 0) {
+                contentArea.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div class="empty-text">No notes found matching "${searchTerm}"</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            contentArea.appendChild(grid);
         }
         
         // --- WHY US MODAL ---
-        
         function openWhyUsModal() {
             document.getElementById('whyUsModal').classList.add('active');
         }
@@ -2804,93 +2502,12 @@
         function closeWhyUsModal() {
             document.getElementById('whyUsModal').classList.remove('active');
         }
-        
-        // --- HISTORY MODAL ---
-        
-        /** Открывает модальное окно истории версий. */
-        function openHistoryModal() {
-            const note = getNote(data.currentNote);
-            if (!note || !note.history || note.history.length === 0) return;
-            
-            const list = document.getElementById('historyList');
-            list.innerHTML = '';
 
-            note.history.forEach((version, index) => {
-                const item = document.createElement('li');
-                item.className = 'history-item';
-                item.innerHTML = `
-                    <div class="history-item-meta">
-                        <strong>${index === 0 ? 'Последняя' : (note.history.length - index) + '-я'} ${translate('historyVersion')}</strong>
-                        <br>
-                        ${translate('sortUpdatedDesc').split(' ')[0]}: ${formatDate(version.updated)} 
-                        ${version.attachments.length > 0 ? ' | 📎 ' + version.attachments.length : ''}
-                    </div>
-                    <button class="btn btn-warning" onclick="restoreHistoryVersion(${index})" style="padding: 8px 12px;">${translate('noteRestoreBtn')}</button>
-                `;
-                list.appendChild(item);
-            });
-            
-            document.getElementById('historyModal').classList.add('active');
-        }
-
-        /** Восстанавливает выбранную версию из истории. */
-        function restoreHistoryVersion(index) {
-            if (confirm(translate('historyConfirmRestore'))) {
-                const note = getNote(data.currentNote);
-                if (!note || !note.history) return;
-                
-                const versionToRestore = note.history[index];
-                
-                // Add current state to history before overwriting (undo functionality)
-                note.history.unshift({
-                    title: note.title,
-                    content: note.content,
-                    updated: note.updated,
-                    attachments: note.attachments ? JSON.parse(JSON.stringify(note.attachments)) : []
-                });
-                
-                note.title = versionToRestore.title;
-                note.content = versionToRestore.content;
-                note.updated = Date.now(); // Update the updated timestamp
-                note.attachments = versionToRestore.attachments;
-
-                saveData();
-                closeHistoryModal();
-                closeNoteModal();
-                openNote(data.currentNote); // Re-open note with restored content
-                showIndicator('noteRestoreSuccess');
-            }
-        }
-
-        /** Закрывает модальное окно истории. */
-        function closeHistoryModal() {
-            document.getElementById('historyModal').classList.remove('active');
-        }
-
-        // --- SEARCH LOGIC ---
-
-        function searchNotes() {
-            renderNotes(data.currentFolder);
-        }
-
-        // --- INITIALIZATION ---
-        
-        function init() {
-            loadData();
-            updateUI(data.currentLang); // Initialize UI with the loaded language
-            
-            document.getElementById('sortSelect').value = data.sortOrder;
-            
-            if (data.folders.length > 0 && data.currentFolder === null) {
-                data.currentFolder = data.folders[0].id;
-            }
-            
-            renderFolders();
-            renderNotes(data.currentFolder);
-        }
-
-        // Run initialization
+        // --- App Lifetime ---
         init();
+        
+        // Timer to check auto-delete every hour (60 minutes)
+        setInterval(checkAutoDelete, 60 * 60 * 1000); 
     </script>
 </body>
 </html>
