@@ -1,3 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Your website content styling */
+        .website-content {
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .website-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .website-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        /* License overlay styling */
+        .license-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .license-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #6e8efb;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(to right, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #5d7dfa, #9666e0);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Hide class for when verified */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Animation for license container */
+        .license-container {
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .license-container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            input, button {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Your actual website content -->
+    <div class="website-content">
+        <h1>Your Awesome Website</h1>
+        <p>This is your actual website content that shows after license verification.</p>
+        <p>Your existing content goes here...</p>
+    </div>
+
+    <!-- License Verification Overlay -->
+    <div class="license-overlay" id="licenseOverlay">
+        <div class="license-container" id="licenseContainer">
+            <h1>License Verification</h1>
+            <p>Enter your license key to access the website</p>
+            
+            <div class="input-group">
+                <label for="licenseKey">License Key</label>
+                <input type="text" id="licenseKey" placeholder="Enter your license key">
+            </div>
+            
+            <button id="verifyBtn">Verify License</button>
+            
+            <div id="message" class="message"></div>
+            
+            <div class="footer">
+                <p>Valid keys: CloudNotesq3vhjkq8, Helloworldwgvjxs8, Nikoflxrth9s8gyr01</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const licenseKeyInput = document.getElementById('licenseKey');
+            const verifyBtn = document.getElementById('verifyBtn');
+            const messageDiv = document.getElementById('message');
+            const licenseOverlay = document.getElementById('licenseOverlay');
+            
+            // Valid license keys
+            const validKeys = [
+                "CloudNotesq3vhjkq8",
+                "Helloworldwgvjxs8", 
+                "Nikoflxrth9s8gyr01"
+            ];
+            
+            // Check if user is already verified
+            function checkVerification() {
+                const verified = getCookie('licenseVerified');
+                console.log('Cookie value:', verified);
+                
+                if (verified === 'true') {
+                    // User is verified, hide license overlay
+                    licenseOverlay.classList.add('hidden');
+                    console.log('User is verified, hiding overlay');
+                } else {
+                    // User needs to verify, show license overlay
+                    licenseOverlay.classList.remove('hidden');
+                    licenseKeyInput.focus();
+                    console.log('User needs verification, showing overlay');
+                }
+            }
+            
+            // Get cookie value
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+            
+            // Set cookie
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                const expires = `expires=${date.toUTCString()}`;
+                document.cookie = `${name}=${value}; ${expires}; path=/`;
+                console.log('Cookie set:', name, value);
+            }
+            
+            // Verify license key
+            function verifyLicense() {
+                const key = licenseKeyInput.value.trim();
+                console.log('Verifying key:', key);
+                
+                if (validKeys.includes(key)) {
+                    // Valid key
+                    showMessage("✓ License verified successfully!", "success");
+                    setCookie('licenseVerified', 'true', 30); // Store for 30 days
+                    
+                    // Hide the license overlay after success
+                    setTimeout(() => {
+                        licenseOverlay.style.opacity = '0';
+                        setTimeout(() => {
+                            licenseOverlay.classList.add('hidden');
+                        }, 500);
+                    }, 1000);
+                    
+                } else {
+                    // Invalid key
+                    showMessage("✗ Invalid license key. Please try again.", "error");
+                    licenseKeyInput.focus();
+                }
+            }
+            
+            // Show message
+            function showMessage(text, type) {
+                messageDiv.textContent = text;
+                messageDiv.className = `message ${type}`;
+                messageDiv.style.display = 'block';
+                
+                // Hide message after 5 seconds for errors
+                if (type === 'error') {
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 5000);
+                }
+            }
+            
+            // Event listeners
+            verifyBtn.addEventListener('click', verifyLicense);
+            
+            licenseKeyInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    verifyLicense();
+                }
+            });
+            
+            // Check verification status on page load
+            checkVerification();
+            
+            // Force show overlay for testing (remove this in production)
+            // licenseOverlay.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
 
 
 
